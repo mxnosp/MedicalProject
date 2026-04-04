@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Patient class represents a patient and includes all his personal information and their visits to the
  * doc's office
@@ -6,8 +9,8 @@ public class Patient {
 
     private String firstname;
     private String lastname;
-    private int amka;
-    private long int phone;
+    private long amka;
+    private long  phone;
     private ArrayList<Visit> visits;
 
 
@@ -28,14 +31,14 @@ public class Patient {
     /**
      * @return the patient phone number
      */
-    public long int getPatientPhone(){
+    public long  getPatientPhone(){
         return phone;
     }
 
     /**
      * @return the patient's amka
      */
-    public int getPatientAmka(){
+    public long getPatientAmka(){
         return amka ;
     }
 

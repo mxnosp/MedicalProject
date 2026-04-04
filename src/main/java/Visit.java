@@ -4,34 +4,21 @@
  */
 
 public class Visit {
-    private int day;
-    private int month;
-    private int year;
+    private Date date;
     private boolean paid;
 
-    /**
-     * @return the day of the visit
-     */
-    public int getDay(){
-        return day;
-    }
-    /**
-     * @return the month of the visit
-     */
-    public int getMonth(){
-        return month;
-    }
-    /**
-     * @return the year of the visit
-     */
-    public int getYear(){
-        return year;
-    }
 
     /**
      * @return true if the visit was paid otherwise false
      */
     public boolean isPaidVisit(){
         return paid;
+    }
+
+    /**
+     * @return the date of the visit
+     */
+    public Date getVisitDate(){
+        return date;
     }
 }
