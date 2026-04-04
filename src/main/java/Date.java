@@ -16,7 +16,7 @@ public class Date {
      * @param day
      * @param month
      * @param year
-     * @throws ValidationException
+     * @throws ValidationException if the day month or year are not valid
      */
     Date(int day,int month,int year) throws ValidationException {
         if(year < 2000 || year>3000){
