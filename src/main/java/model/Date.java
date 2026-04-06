@@ -1,10 +1,12 @@
-import exceptions.InvalidDateException;
-import exceptions.ValidationException;
+package model;
+
+import model.exceptions.InvalidDateException;
+import model.exceptions.ValidationException;
 
 import java.time.YearMonth;
 import java.time.Month;
 /**
- * Class Date represents a date of the calendar including its day month and year
+ * Class model.Date represents a date of the calendar including its day month and year
  */
 public class Date {
     private int day;
@@ -12,7 +14,7 @@ public class Date {
     private int year;
 
     /**
-     * Date constructor checks if the day the month and the year given is valid
+     * model.Date constructor checks if the day the month and the year given is valid
      * @param day
      * @param month
      * @param year

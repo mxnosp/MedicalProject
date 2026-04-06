@@ -1,7 +1,9 @@
-import exceptions.ValidationException;
+package model;
+
+import model.exceptions.ValidationException;
 
 /**
- * Class Visit represents a visit in the doctor's office
+ * Class model.Visit represents a visit in the doctor's office
  * by a patient it includes the date if he has paid for the visit
  */
 
@@ -12,7 +14,7 @@ public class Visit {
     private final int patient_id;
 
     /**
-     * Visit constructor initializes the date of the visit the paid boolean and the notes of the visit if the notes string is null that means that
+     * model.Visit constructor initializes the date of the visit the paid boolean and the notes of the visit if the notes string is null that means that
      * no notes were given for that visit
      * @param day
      * @param month

@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 /**
  * InvalidAmkaException is thrown when an invalid amka is provided by the user

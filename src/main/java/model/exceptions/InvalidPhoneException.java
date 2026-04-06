@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 /**
  * InvalidPhoneException is thrown when an invalid phone is provided by the user

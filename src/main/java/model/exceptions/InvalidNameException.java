@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 /**
  * InvalidNameException will be thrown when a name is not valid

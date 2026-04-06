@@ -1,10 +1,12 @@
-import exceptions.InvalidAmkaException;
-import exceptions.InvalidNameException;
-import exceptions.InvalidPhoneException;
+package model;
+
+import model.exceptions.InvalidAmkaException;
+import model.exceptions.InvalidNameException;
+import model.exceptions.InvalidPhoneException;
 
 
 /**
- * Patient class represents a patient and includes all his personal information and their visits to the
+ * model.Patient class represents a patient and includes all his personal information and their visits to the
  * doc's office
  */
 public class Patient {
@@ -15,7 +17,7 @@ public class Patient {
     private long  phone;
 
     /**
-     * Patient constructor initializes the patient object
+     * model.Patient constructor initializes the patient object
      * it checks that a valid firstname,lastname,amka and phone
      * is given by the user otherwise throws ValidationException
      * @throws InvalidNameException if the first or last name is not valid

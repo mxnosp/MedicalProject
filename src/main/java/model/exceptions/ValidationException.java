@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 /**
  * ValidationExcpeption class represents the general class for the excpetions that will be thrown if the data

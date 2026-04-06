@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 /**
  * InvalidPeriodOfPrescriptionException when the period the prescription will last is invalid
