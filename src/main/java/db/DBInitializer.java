@@ -15,7 +15,7 @@ public final class DBInitializer {
 
     private DBInitializer(){}
 
-    public void initializeDB(){
+    public static void initializeDB(){
         createPatientsTable();
         createVisitsTable();
         createDocTable();
@@ -27,8 +27,9 @@ public final class DBInitializer {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     first_name TEXT NOT NULL,
                     last_name TEXT NOT NULL,
-                    phone INTEGER ,
-                    amka INTEGER NOT NULL
+                    phone TEXT ,
+                    amka TEXT NOT NULL,
+                    search_text TEXT NOT NULL
                 );
                 """;
 
@@ -58,7 +59,7 @@ public final class DBInitializer {
         try(Connection conn=DBConnector.getConnection(); Statement stmt = conn.createStatement()){
             stmt.execute(sql);
         }catch(SQLException e){
-            throw new DBCreationException("Failed to create patients table", e);
+            throw new DBCreationException("Failed to create visits table", e);
         }
 
     }
@@ -66,7 +67,7 @@ public final class DBInitializer {
     private static void  createDocTable(){
 
         String sql = """
-                CREATE TABLE IF NOT EXISTS visits (
+                CREATE TABLE IF NOT EXISTS documents (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     patient_id INTEGER NOT NULL,
                     docpath TEXT NOT NULL
@@ -76,7 +77,7 @@ public final class DBInitializer {
         try(Connection conn=DBConnector.getConnection(); Statement stmt = conn.createStatement()){
             stmt.execute(sql);
         }catch(SQLException e){
-            throw new DBCreationException("Failed to create patients table", e);
+            throw new DBCreationException("Failed to create documents table", e);
         }
 
 

@@ -3,6 +3,7 @@ package model;
 import model.exceptions.InvalidAmkaException;
 import model.exceptions.InvalidNameException;
 import model.exceptions.InvalidPhoneException;
+import model.exceptions.ValidationException;
 
 
 /**
@@ -10,11 +11,11 @@ import model.exceptions.InvalidPhoneException;
  * doc's office
  */
 public class Patient {
-
-    private String firstname;
-    private String lastname;
-    private long amka;
-    private long  phone;
+    private final String firstname;
+    private final String lastname;
+    private final String amka;
+    private final String  phone;
+    private final int id;
 
     /**
      * model.Patient constructor initializes the patient object
@@ -28,19 +29,20 @@ public class Patient {
      * @param amka
      * @param phone
      */
-    Patient(String firstname , String lastname ,long amka , long phone ){
+    public Patient(int id, String firstname, String lastname, String phone, String amka) throws ValidationException {
         if(firstname==null) throw new InvalidNameException("Not valid first name given!");
         if(lastname==null) throw new InvalidNameException("Not valid last name given!");
-        if( amka <= 999999999L || amka >= 10000000000L){
+        if(amka==null||!amka.matches("\\d{11}")){
             throw new InvalidAmkaException("Not valid amka given !");
         }
-        if( phone <= 999999999L || phone >= 10000000000L){
+        if(!phone.matches("\\d{10}")){
             throw new InvalidPhoneException("Not valid phone given!");
         }
         this.firstname=firstname;
         this.lastname=lastname;
         this.phone=phone;
         this.amka=amka;
+        this.id=id;
     }
     /**
      * @return the patient's first name
@@ -59,15 +61,19 @@ public class Patient {
     /**
      * @return the patient phone number
      */
-    public long  getPatientPhone(){
+    public String getPatientPhone(){
         return phone;
     }
 
     /**
      * @return the patient's amka
      */
-    public long getPatientAmka(){
+    public String getPatientAmka(){
         return amka ;
     }
 
+    /**
+     * @return the patient's id
+     */
+    public int  getPatientId(){return id;}
 }

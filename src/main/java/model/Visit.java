@@ -8,6 +8,7 @@ import model.exceptions.ValidationException;
  */
 
 public class Visit {
+    private final int id;
     private  Date date;
     private boolean paid;
     private String notes;
@@ -24,7 +25,8 @@ public class Visit {
      * @param patient_id
      * @throws ValidationException if the date constructor throws it
      */
-    Visit(int day,int month ,int year,String notes,boolean paid,int patient_id) throws ValidationException{
+    Visit(int id ,int day,int month ,int year,String notes,boolean paid,int patient_id) throws ValidationException{
+        this.id=id;
         date=new Date(day,month,year);
         this.paid=paid;
         this.notes=notes;
@@ -58,4 +60,9 @@ public class Visit {
     public int getPatientid(){
         return patient_id;
     }
+
+    /**
+     * @return the id of the visit
+     */
+    public int getId(){return id;}
 }

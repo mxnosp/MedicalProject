@@ -3,12 +3,14 @@ package repository;
 import db.DBConnector;
 import model.Patient;
 import model.exceptions.DBAccessException;
-
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import static utils.TextNormalizer.normalizeGreekSearchText;
 
 /**
  * PatientRepository class communicates with the db in order to insert,delete,search and update
@@ -22,19 +24,21 @@ public class PatientRepository {
      * inserts the patient given as a parameter to the db
      * @param patient
      */
-    public void insertPatient(Patient patient){
+    public void insertPatient(Patient patient) throws DBAccessException{
 
-        String sql = "INSERT INTO patients(firstname,lastname,phone,amka) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO patients(first_name,last_name,phone,amka,search_text) VALUES(?,?,?,?,?)";
 
-        try (Connection conn = DBConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (Connection conn = DBConnector.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            String searchtext=normalizeGreekSearchText(patient.getPatientFirstName()+" "+patient.getPatientLastName());
             stmt.setString(1, patient.getPatientFirstName());
             stmt.setString(2, patient.getPatientLastName());
-            stmt.setLong(3, patient.getPatientPhone());
-            stmt.setLong(4, patient.getPatientAmka());
-
-            stmt.execute();
+            stmt.setString(3, patient.getPatientPhone());
+            stmt.setString(4, patient.getPatientAmka());
+            stmt.setString(5,searchtext);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DBAccessException("Insert failed: no rows affected");
+            }
         } catch (SQLException e) {
             throw new DBAccessException("Failed to insert patient "+patient.getPatientFirstName()+" "+patient.getPatientLastName());
         }
@@ -45,13 +49,16 @@ public class PatientRepository {
      * deletes the patient with the given id
      * @param id
      */
-    public void deletePatient(int id){
+    public void deletePatient(int id) throws DBAccessException{
 
         String sql = "DELETE FROM patients WHERE id=?";
 
         try(Connection conn = DBConnector.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)){
                 stmt.setInt(1,id);
-                stmt.execute();
+                int affected=stmt.executeUpdate();
+                if(affected==0){
+                    throw new DBAccessException("DELETE failed: no patient found with id " + id);
+                }
         }catch (SQLException e){
             throw new DBAccessException("Failed to delete patient with id "+id);
         }
@@ -59,27 +66,117 @@ public class PatientRepository {
 
     /**
      * Updates the patient with the given id to the credentials of the Patient object given as a parameter
-     * @param updatedpatient
+     * @param updatedPatient
      * @param id
      */
-    public void updatePatient(Patient updatedpatient,int id){
+    public void updatePatient(Patient updatedPatient, int id) throws DBAccessException{
+        String sql = """
+            UPDATE patients
+            SET first_name = ?, last_name = ?, phone = ?, amka = ?, search_text = ?
+            WHERE id = ?
+            """;
 
-        String sql = "UPDATE patients SET first_name = ?, last_name = ?, phone = ? , amka = ? WHERE id = ?";
+        String searchText = normalizeGreekSearchText(
+                updatedPatient.getPatientFirstName() + " " + updatedPatient.getPatientLastName()
+        );
 
-        try(Connection conn = DBConnector.getConnection(); PreparedStatement stmt=conn.prepareStatement(sql)){
-            stmt.setString(1,updatedpatient.getPatientFirstName());
-            stmt.setString(2,updatedpatient.getPatientLastName());
-            stmt.setLong(3,updatedpatient.getPatientPhone());
-            stmt.setLong(4,updatedpatient.getPatientAmka());
-            stmt.execute();
-        }catch(SQLException e){
-            throw new DBAccessException("Failed to update patient with id "+id);
+        try (
+                Connection conn = DBConnector.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1, updatedPatient.getPatientFirstName());
+            stmt.setString(2, updatedPatient.getPatientLastName());
+            stmt.setString(3, updatedPatient.getPatientPhone());
+            stmt.setString(4, updatedPatient.getPatientAmka());
+            stmt.setString(5, searchText);
+            stmt.setInt(6, id);
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new DBAccessException("Update failed: no patient found with id " + id);
+            }
+        } catch (SQLException e) {
+            throw new DBAccessException("Failed to update patient with id " + id, e);
         }
     }
 
-    public List<Patient> searchPatientsByName(String searchinput){
+    /**
+     * Searches the db to find if the input given exists inside the search_text of a patient or more and then returns a list containing the matching patients or patient
+     * @param searchInput
+     * @return
+     */
+    public List<Patient> searchPatientsByName(String searchInput) throws DBAccessException{
+        if (searchInput == null || searchInput.isBlank()) {
+            return List.of();
+        }
 
-        
+        String normalizedInput = normalizeGreekSearchText(searchInput);
+
+        String sql = """
+            SELECT id, first_name, last_name, phone, amka
+            FROM patients
+            WHERE search_text LIKE ?
+            """;
+
+        List<Patient> patients = new ArrayList<>();
+
+        try (
+                Connection conn = DBConnector.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1, "%" + normalizedInput + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    patients.add(mapPatient(rs));
+                }
+            }
+
+            return patients;
+        } catch (SQLException e) {
+            throw new DBAccessException("Failed searching patients", e);
+        }
     }
 
+    /**
+     * @return returns a list containing all the patients of the table
+     */
+    public List<Patient> findAllPatients() throws DBAccessException{
+        String sql = """
+            SELECT id, first_name, last_name, phone, amka
+            FROM patients
+            """;
+
+        List<Patient> patients = new ArrayList<>();
+
+        try (
+                Connection conn = DBConnector.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()
+        ) {
+            while (rs.next()) {
+                patients.add(mapPatient(rs));
+            }
+
+            return patients;
+        } catch (SQLException e) {
+            throw new DBAccessException("Failed fetching all patients", e);
+        }
+    }
+
+    /**
+     * Takes a resultset of the table and creates a patient with the result's sets elements
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
+    private Patient mapPatient(ResultSet rs) throws SQLException {
+        return new Patient(
+                rs.getInt("id"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getString("phone"),
+                rs.getString("amka")
+        );
+    }
 }
+
