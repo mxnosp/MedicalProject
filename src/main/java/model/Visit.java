@@ -27,7 +27,7 @@ public class Visit {
      */
     public Visit(int id, String notes, boolean paid, int day, int month, int year, int patient_id) throws ValidationException{
         this.id=id;
-        date=new Date(day,month,year);
+        this.date=new Date(day,month,year);
         this.paid=paid;
         this.notes=notes;
         this.patient_id=patient_id;

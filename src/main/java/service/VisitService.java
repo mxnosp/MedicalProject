@@ -10,7 +10,7 @@ import java.util.List;
 public class VisitService {
     private final VisitRepository repo;
 
-    VisitService(){
+    public VisitService(){
         this.repo=new VisitRepository();
     }
 
@@ -54,7 +54,7 @@ public class VisitService {
      * @throws ValidationException
      */
     public void updateVisit(String notes,boolean paid,int day,int month,int year,int patient_id,int visitid) throws ValidationException,DBAccessException{
-        Visit updatedVisit=new Visit(-1,notes,paid,day,month,year,patient_id);
+        Visit updatedVisit=new Visit(visitid,notes,paid,day,month,year,patient_id);
         repo.updateVisit(updatedVisit,visitid);
     }
 

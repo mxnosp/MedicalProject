@@ -31,11 +31,14 @@ public class Date {
         YearMonth ym = YearMonth.of(year, month);
         int days = ym.lengthOfMonth();
 
-        if( day < 0) throw new InvalidDateException("Not valid day given!");
+        if( day <= 0) throw new InvalidDateException("Not valid day given!");
 
-        if( day > days){
+        if( day >= days){
             throw new InvalidDateException("Not valid day given for month "+Month.of(ym.getMonthValue()));
         }
+        this.day=day;
+        this.month=month;
+        this.year=year;
     }
 
     /**
@@ -57,5 +60,8 @@ public class Date {
         return year;
     }
 
-
+    @Override
+    public String toString() {
+        return  day+"/"+month+"/"+year;
+    }
 }

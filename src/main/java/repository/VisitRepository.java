@@ -23,10 +23,8 @@ public class VisitRepository {
      */
     public void insertVisit(Visit visit) throws DBAccessException{
         String sql="INSERT INTO visits (patient_id,notes,paid,day,month,year) VALUES(?,?,?,?,?,?)";
-
         try(Connection conn= DBConnector.getConnection();
             PreparedStatement stmt=conn.prepareStatement(sql)){
-
             stmt.setInt(1,visit.getPatientid());
             stmt.setString(2,visit.getVisitNotes());
             int paid=0;
