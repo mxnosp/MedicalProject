@@ -3,7 +3,6 @@ package app;
 import db.DBInitializer;
 import model.Patient;
 import model.exceptions.DBAccessException;
-import model.exceptions.InvalidPhoneException;
 import model.exceptions.ValidationException;
 import service.PatientService;
 

@@ -25,7 +25,7 @@ public class Visit {
      * @param patient_id
      * @throws ValidationException if the date constructor throws it
      */
-    Visit(int id ,int day,int month ,int year,String notes,boolean paid,int patient_id) throws ValidationException{
+    public Visit(int id, String notes, boolean paid, int day, int month, int year, int patient_id) throws ValidationException{
         this.id=id;
         date=new Date(day,month,year);
         this.paid=paid;
