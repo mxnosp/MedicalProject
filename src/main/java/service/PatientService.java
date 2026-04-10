@@ -33,6 +33,7 @@ public class PatientService {
      *Deletes the patient with the given id if the patient is not found or the programm can't access the database it
      * throws DBAccessException
      * @param id
+     *
      * @throws DBAccessException
      */
     public void deletePatient(int id ) throws DBAccessException{
