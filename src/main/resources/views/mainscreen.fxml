@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gui.controllers.PatientDashboardController"
+            prefWidth="1100"
+            prefHeight="700"
+            stylesheets="@../styles/app.css">
+
+    <!-- Top search bar -->
+    <top>
+        <HBox spacing="10" alignment="CENTER" prefHeight="70">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+
+            <Label>
+                <graphic>
+                    <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
+                        <image>
+                            <Image url="@../images/lung.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Label>
+
+            <TextField fx:id="searchField"
+                       promptText="Αναζήτηση με όνομα"
+                       prefWidth="500"/>
+
+            <Button fx:id="searchPatient">
+                <graphic>
+                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <image>
+                            <Image url="@../images/searchbutton.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </top>
+
+    <!-- Left selected patient info -->
+    <left>
+        <VBox spacing="10" prefWidth="260" alignment="TOP_LEFT">
+            <padding>
+                <Insets top="40" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Επιλεγμένος Ασθενής" styleClass="section-title"/>
+
+            <GridPane hgap="0"
+                      vgap="0"
+                      prefWidth="220"
+                      prefHeight="250"
+                      maxHeight="250"
+                      styleClass="info-table">
+
+                <Label text="ID:" styleClass="info-cell-label"
+                       GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedPatientIdLabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Όνομα:" styleClass="info-cell-label"
+                       GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedFirstNameLabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Επίθετο:" styleClass="info-cell-label"
+                       GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedLastNameLabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Τηλέφωνο:" styleClass="info-cell-label"
+                       GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedPhoneLabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="ΑΜΚΑ:" styleClass="info-cell-label"
+                       GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedAmkaLabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+            </GridPane>
+
+            <Button fx:id="morePatientInfoButton"
+                    text="Επιπλέον Πληροφορίες"
+                    prefWidth="220"/>
+        </VBox>
+    </left>
+
+    <!-- Center patient table -->
+    <center>
+        <VBox prefWidth="700" maxWidth="700" prefHeight="500">
+            <padding>
+                <Insets top="20" right="15" bottom="10" left="0"/>
+            </padding>
+
+            <Label text="Λίστα Ασθενών" styleClass="section-title"/>
+
+            <TableView fx:id="patientTable" prefHeight="430">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
+                    <TableColumn fx:id="firstNameColumn" text="Όνομα" prefWidth="220"/>
+                    <TableColumn fx:id="lastNameColumn" text="Επίθετο" prefWidth="220"/>
+                    <TableColumn fx:id="amkaColumn" text="ΑΜΚΑ" prefWidth="170"/>
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER" spacing="20">
+                <padding>
+                    <Insets top="18" right="10" bottom="10" left="10"/>
+                </padding>
+
+                <Button fx:id="addPatient">
+                    <graphic>
+                        <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/user-plus-solid.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="editPatient">
+                    <graphic>
+                        <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/user-pen-solid.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="deletePatient" styleClass="danger-button">
+                    <graphic>
+                        <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/trash-solid.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </center>
+
+    <!-- Right patient visits -->
+    <right>
+        <VBox prefHeight="500" prefWidth="230">
+            <padding>
+                <Insets top="20" right="15" bottom="10" left="0"/>
+            </padding>
+
+            <Label text="Επισκέψεις Ασθενή" styleClass="section-title"/>
+
+            <TableView fx:id="visitTable"
+                       prefWidth="220"
+                       maxWidth="220"
+                       prefHeight="430">
+                <columns>
+                    <TableColumn fx:id="visitDateColumn" text="Ημερομηνία" prefWidth="160"/>
+                    <TableColumn fx:id="viewVisitColumn" text="" prefWidth="58"/>
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER" spacing="16">
+                <padding>
+                    <Insets top="18" right="10" bottom="10" left="10"/>
+                </padding>
+
+                <Button fx:id="addVisit">
+                    <graphic>
+                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/visit-add.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="editVisit">
+                    <graphic>
+                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/edit-visit.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button fx:id="deleteVisit" styleClass="danger-button">
+                    <graphic>
+                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/trash-solid.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </right>
+
+</BorderPane>
