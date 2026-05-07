@@ -42,24 +42,50 @@
    BUTTONS
    ========================= */
 
+/* =========================
+   BUTTONS - more alive
+   ========================= */
+
 .button {
-    -fx-background-color: #e5e7eb;
-    -fx-border-color: #9ca3af;
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #e5e7eb);
+    -fx-border-color: #cbd5e1;
     -fx-border-width: 1;
-    -fx-background-radius: 7;
-    -fx-border-radius: 7;
-    -fx-padding: 7 10;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 8 12;
     -fx-cursor: hand;
+
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f2937;
+
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.16), 8, 0.18, 0, 3);
 }
 
 .button:hover {
-    -fx-background-color: #d1d5db;
+    -fx-background-color: linear-gradient(to bottom, #f8fafc, #dbeafe);
+    -fx-border-color: #60a5fa;
+    -fx-text-fill: #1e3a8a;
+
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.28), 12, 0.24, 0, 4);
+    -fx-translate-y: -1;
 }
 
 .button:pressed {
-    -fx-background-color: #cbd5e1;
+    -fx-background-color: linear-gradient(to bottom, #bfdbfe, #93c5fd);
+    -fx-border-color: #3b82f6;
+
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.12), 4, 0.12, 0, 1);
+    -fx-translate-y: 1;
 }
 
+.button:focused {
+    -fx-border-color: #2563eb;
+    -fx-border-width: 2;
+}
+
+
+/* Icon buttons */
 #searchPatient,
 #addPatient,
 #editPatient,
@@ -67,38 +93,82 @@
 #addVisit,
 #editVisit,
 #deleteVisit {
-    -fx-pref-width: 48;
-    -fx-pref-height: 40;
-    -fx-min-width: 48;
-    -fx-min-height: 40;
-    -fx-padding: 5;
+    -fx-pref-width: 50;
+    -fx-pref-height: 42;
+    -fx-min-width: 50;
+    -fx-min-height: 42;
+    -fx-padding: 6;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
 }
 
+
+/* Search button */
+#searchPatient {
+    -fx-background-color: linear-gradient(to bottom, #e0f2fe, #bae6fd);
+    -fx-border-color: #7dd3fc;
+}
+
+#searchPatient:hover {
+    -fx-background-color: linear-gradient(to bottom, #bae6fd, #7dd3fc);
+    -fx-border-color: #0284c7;
+}
+
+
+/* Add buttons */
+#addPatient,
+#addVisit {
+    -fx-background-color: linear-gradient(to bottom, #dcfce7, #bbf7d0);
+    -fx-border-color: #86efac;
+}
+
+#addPatient:hover,
+#addVisit:hover {
+    -fx-background-color: linear-gradient(to bottom, #bbf7d0, #86efac);
+    -fx-border-color: #22c55e;
+}
+
+
+/* Edit buttons */
+#editPatient,
+#editVisit {
+    -fx-background-color: linear-gradient(to bottom, #fef9c3, #fde68a);
+    -fx-border-color: #facc15;
+}
+
+#editPatient:hover,
+#editVisit:hover {
+    -fx-background-color: linear-gradient(to bottom, #fde68a, #facc15);
+    -fx-border-color: #ca8a04;
+}
+
+
+/* Delete buttons */
 .danger-button,
 #deletePatient,
 #deleteVisit {
-    -fx-background-color: #fee2e2;
+    -fx-background-color: linear-gradient(to bottom, #fee2e2, #fecaca);
     -fx-border-color: #fca5a5;
+    -fx-text-fill: #7f1d1d;
 }
 
 .danger-button:hover,
 #deletePatient:hover,
 #deleteVisit:hover {
-    -fx-background-color: #fecaca;
+    -fx-background-color: linear-gradient(to bottom, #fecaca, #f87171);
+    -fx-border-color: #ef4444;
+    -fx-text-fill: #ffffff;
+
+    -fx-effect: dropshadow(gaussian, rgba(239, 68, 68, 0.32), 12, 0.24, 0, 4);
 }
 
-#morePatientInfoButton {
-    -fx-pref-width: 350;
-    -fx-padding: 9 12;
-    -fx-font-weight: bold;
-    -fx-background-color: #dbeafe;
-    -fx-border-color: #93c5fd;
+.danger-button:pressed,
+#deletePatient:pressed,
+#deleteVisit:pressed {
+    -fx-background-color: #dc2626;
+    -fx-border-color: #991b1b;
+    -fx-text-fill: white;
 }
-
-#morePatientInfoButton:hover {
-    -fx-background-color: #bfdbfe;
-}
-
 /* =========================
    TABLES
    ========================= */
@@ -161,30 +231,79 @@
    GridPane fake table
    ========================= */
 
-.info-table {
-    -fx-border-color: #bdbdbd;
-    -fx-border-width: 1;
-    -fx-background-color: white;
+/* ============================= */
+/* Left Selected Patient Panel    */
+/* ============================= */
+
+.left-panel {
+    -fx-background-color: transparent;
 }
 
-.info-cell-label {
-    -fx-padding: 12 14;
+/* Section title */
+.section-title {
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
-    -fx-border-color: #bdbdbd;
-    -fx-border-width: 0 1 1 0;
-    -fx-min-width: 130;
-    -fx-min-height: 48;
-    -fx-alignment: center-left;
-    -fx-text-fill: #111827;
+    -fx-text-fill: #1e293b;
 }
 
+/* Card-like GridPane */
+.info-table {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #dbe3ec;
+    -fx-border-width: 1;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.10), 18, 0.18, 0, 6);
+}
+
+/* Left column labels: ID, Όνομα, Επίθετο, etc. */
+.info-cell-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #475569;
+    -fx-min-width: 135;
+    -fx-pref-width: 135;
+    -fx-padding: 10 12 10 12;
+}
+
+/* Right column values */
 .info-cell-value {
-    -fx-padding: 12 14;
-    -fx-border-color: #bdbdbd;
-    -fx-border-width: 0 0 1 0;
-    -fx-min-width: 220;
-    -fx-min-height: 48;
-    -fx-alignment: center-left;
-    -fx-text-fill: #111827;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #0f172a;
+    -fx-min-width: 170;
+    -fx-pref-width: 170;
+    -fx-padding: 10 12 10 12;
 }
 
+#morePatientInfoButton {
+    -fx-pref-width: 350;
+
+    -fx-background-color: linear-gradient(to bottom, #3b82f6, #2563eb);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #1d4ed8;
+    -fx-border-width: 1;
+
+    -fx-padding: 12 18;
+    -fx-cursor: hand;
+
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.30), 14, 0.25, 0, 5);
+}
+
+#morePatientInfoButton:hover {
+    -fx-background-color: linear-gradient(to bottom, #60a5fa, #2563eb);
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.42), 18, 0.30, 0, 6);
+    -fx-translate-y: -1;
+}
+
+#morePatientInfoButton:pressed {
+    -fx-background-color: linear-gradient(to bottom, #1d4ed8, #1e40af);
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.20), 6, 0.16, 0, 2);
+    -fx-translate-y: 1;
+}

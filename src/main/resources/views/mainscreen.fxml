@@ -29,7 +29,7 @@
             </padding>
 
             <!-- Top-left logo -->
-            <ImageView fx:id="topLeftLogo"
+            <ImageView
                        fitWidth="150"
                        fitHeight="70"
                        preserveRatio="true"
@@ -48,7 +48,7 @@
                        prefWidth="750"
                        maxWidth="900"/>
 
-            <Button fx:id="searchPatient" styleClass="icon-button">
+            <Button fx:id="searchPatient" styleClass="icon-button" onAction="#searchPatient">
                 <graphic>
                     <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
                         <image>
@@ -109,11 +109,32 @@
                 <Label fx:id="selectedAmkaLabel" text="-"
                        styleClass="info-cell-value"
                        GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                <Label text="Ύψος:" styleClass="info-cell-label"
+                       GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedHeightLabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                <Label text="Βάρος:" styleClass="info-cell-label"
+                       GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedWeightLabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                <Label text="BMI:" styleClass="info-cell-label"
+                       GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedBMILabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+                <Label text="Καπνιστής:" styleClass="info-cell-label"
+                       GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+                <Label fx:id="selectedSmokerLabel" text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="8" GridPane.columnIndex="1"/>
 
             </GridPane>
 
             <Button fx:id="morePatientInfoButton"
                     text="Επιπλέον Πληροφορίες"
+                    onAction="#showFUllPatientInfo"
                     prefWidth="350"/>
         </VBox>
     </left>
@@ -125,7 +146,7 @@
               maxWidth="Infinity"
               VBox.vgrow="ALWAYS">
             <padding>
-                <Insets top="30" right="30" bottom="20" left="0"/>
+                <Insets top="30" right="30" bottom="20" />
             </padding>
 
             <Label text="Λίστα Ασθενών" styleClass="section-title"/>
@@ -148,7 +169,7 @@
                     <Insets top="18" right="10" bottom="10" left="10"/>
                 </padding>
 
-                <Button fx:id="addPatient">
+                <Button fx:id="addPatient" onAction="#openNewPatientForm">
                     <graphic>
                         <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
                             <image>
@@ -158,7 +179,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="editPatient">
+                <Button fx:id="editPatient" onAction="#openSelectedPatientForm">
                     <graphic>
                         <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
                             <image>
@@ -168,7 +189,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="deletePatient" styleClass="danger-button">
+                <Button fx:id="deletePatient" styleClass="danger-button" onAction="#deleteSelectedPatient">
                     <graphic>
                         <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
                             <image>
@@ -188,7 +209,7 @@
               maxWidth="360"
               VBox.vgrow="ALWAYS">
             <padding>
-                <Insets top="30" right="35" bottom="20" left="0"/>
+                <Insets top="30" right="35" bottom="20"/>
             </padding>
 
             <Label text="Επισκέψεις Ασθενή" styleClass="section-title"/>
@@ -208,7 +229,7 @@
                     <Insets top="18" right="10" bottom="10" left="10"/>
                 </padding>
 
-                <Button fx:id="addVisit">
+                <Button fx:id="addVisit"  onAction="#openNewVisitForm">
                     <graphic>
                         <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
                             <image>
@@ -218,7 +239,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="editVisit">
+                <Button fx:id="editVisit" onAction="#openSelectedVisitForm">
                     <graphic>
                         <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
                             <image>
@@ -228,12 +249,10 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="deleteVisit" styleClass="danger-button">
+                <Button fx:id="deleteVisit" styleClass="danger-button" onAction="#deleteSelectedVisiit">
                     <graphic>
                         <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
-                            <image>
-                                <Image url="@../images/trash-solid.png"/>
-                            </image>
+                            <Image url="@../images/trash-solid.png"/>
                         </ImageView>
                     </graphic>
                 </Button>
