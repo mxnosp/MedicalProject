@@ -13,59 +13,71 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.layout.Region?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="gui.controllers.PatientDashboardController"
-            prefWidth="1100"
-            prefHeight="700"
+            prefWidth="1600"
+            prefHeight="900"
             stylesheets="@../styles/app.css">
 
     <!-- Top search bar -->
+    <!-- Top search bar with logo -->
     <top>
-        <HBox spacing="10" alignment="CENTER" prefHeight="70">
+        <HBox spacing="14" alignment="CENTER_LEFT" prefHeight="90" styleClass="top-bar">
             <padding>
-                <Insets top="10" right="15" bottom="10" left="15"/>
+                <Insets top="18" right="30" bottom="18" left="30"/>
             </padding>
 
-            <Label>
-                <graphic>
-                    <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
-                        <image>
-                            <Image url="@../images/lung.png"/>
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Label>
+            <!-- Top-left logo -->
+            <ImageView fx:id="topLeftLogo"
+                       fitWidth="150"
+                       fitHeight="70"
+                       preserveRatio="true"
+                       smooth="true"
+                       styleClass="top-left-logo">
+                <image>
+                    <Image url="@../images/doctorlogo2.png"/>
+                </image>
+            </ImageView>
+
+            <!-- Spacer pushes search area toward center/right -->
+            <Region HBox.hgrow="ALWAYS"/>
 
             <TextField fx:id="searchField"
                        promptText="Αναζήτηση με όνομα"
-                       prefWidth="500"/>
+                       prefWidth="750"
+                       maxWidth="900"/>
 
-            <Button fx:id="searchPatient">
+            <Button fx:id="searchPatient" styleClass="icon-button">
                 <graphic>
-                    <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                    <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
                         <image>
                             <Image url="@../images/searchbutton.png"/>
                         </image>
                     </ImageView>
                 </graphic>
             </Button>
+
+            <!-- Optional second spacer to keep search more centered -->
+            <Region HBox.hgrow="ALWAYS"/>
         </HBox>
     </top>
 
     <!-- Left selected patient info -->
     <left>
-        <VBox spacing="10" prefWidth="260" alignment="TOP_LEFT">
+        <VBox spacing="16" prefWidth="420" alignment="TOP_LEFT">
             <padding>
-                <Insets top="40" right="20" bottom="20" left="20"/>
+                <Insets top="45" right="30" bottom="25" left="35"/>
             </padding>
 
             <Label text="Επιλεγμένος Ασθενής" styleClass="section-title"/>
 
             <GridPane hgap="0"
                       vgap="0"
-                      prefWidth="220"
-                      prefHeight="250"
-                      maxHeight="250"
+                      prefWidth="350"
+                      maxWidth="350"
+                      prefHeight="320"
+                      maxHeight="320"
                       styleClass="info-table">
 
                 <Label text="ID:" styleClass="info-cell-label"
@@ -102,36 +114,43 @@
 
             <Button fx:id="morePatientInfoButton"
                     text="Επιπλέον Πληροφορίες"
-                    prefWidth="220"/>
+                    prefWidth="350"/>
         </VBox>
     </left>
 
     <!-- Center patient table -->
     <center>
-        <VBox prefWidth="700" maxWidth="700" prefHeight="500">
+        <VBox spacing="10"
+              prefWidth="900"
+              maxWidth="Infinity"
+              VBox.vgrow="ALWAYS">
             <padding>
-                <Insets top="20" right="15" bottom="10" left="0"/>
+                <Insets top="30" right="30" bottom="20" left="0"/>
             </padding>
 
             <Label text="Λίστα Ασθενών" styleClass="section-title"/>
 
-            <TableView fx:id="patientTable" prefHeight="430">
+            <TableView fx:id="patientTable"
+                       prefWidth="900"
+                       VBox.vgrow="ALWAYS"
+                       maxWidth="Infinity"
+                       maxHeight="Infinity">
                 <columns>
-                    <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
-                    <TableColumn fx:id="firstNameColumn" text="Όνομα" prefWidth="220"/>
-                    <TableColumn fx:id="lastNameColumn" text="Επίθετο" prefWidth="220"/>
-                    <TableColumn fx:id="amkaColumn" text="ΑΜΚΑ" prefWidth="170"/>
+                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="firstNameColumn" text="Όνομα" prefWidth="250"/>
+                    <TableColumn fx:id="lastNameColumn" text="Επίθετο" prefWidth="250"/>
+                    <TableColumn fx:id="amkaColumn" text="ΑΜΚΑ" prefWidth="250"/>
                 </columns>
             </TableView>
 
-            <HBox alignment="CENTER" spacing="20">
+            <HBox alignment="CENTER" spacing="28" prefHeight="80">
                 <padding>
                     <Insets top="18" right="10" bottom="10" left="10"/>
                 </padding>
 
                 <Button fx:id="addPatient">
                     <graphic>
-                        <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
                             <image>
                                 <Image url="@../images/user-plus-solid.png"/>
                             </image>
@@ -141,7 +160,7 @@
 
                 <Button fx:id="editPatient">
                     <graphic>
-                        <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
                             <image>
                                 <Image url="@../images/user-pen-solid.png"/>
                             </image>
@@ -151,7 +170,7 @@
 
                 <Button fx:id="deletePatient" styleClass="danger-button">
                     <graphic>
-                        <ImageView fitWidth="18" fitHeight="18" preserveRatio="true">
+                        <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
                             <image>
                                 <Image url="@../images/trash-solid.png"/>
                             </image>
@@ -164,31 +183,34 @@
 
     <!-- Right patient visits -->
     <right>
-        <VBox prefHeight="500" prefWidth="230">
+        <VBox spacing="10"
+              prefWidth="360"
+              maxWidth="360"
+              VBox.vgrow="ALWAYS">
             <padding>
-                <Insets top="20" right="15" bottom="10" left="0"/>
+                <Insets top="30" right="35" bottom="20" left="0"/>
             </padding>
 
             <Label text="Επισκέψεις Ασθενή" styleClass="section-title"/>
 
             <TableView fx:id="visitTable"
-                       prefWidth="220"
-                       maxWidth="220"
-                       prefHeight="430">
+                       prefWidth="320"
+                       maxWidth="320"
+                       VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="visitDateColumn" text="Ημερομηνία" prefWidth="160"/>
-                    <TableColumn fx:id="viewVisitColumn" text="" prefWidth="58"/>
+                    <TableColumn fx:id="visitDateColumn" text="Ημερομηνία" prefWidth="230"/>
+                    <TableColumn fx:id="viewVisitColumn"  prefWidth="88"/>
                 </columns>
             </TableView>
 
-            <HBox alignment="CENTER" spacing="16">
+            <HBox alignment="CENTER" spacing="24" prefHeight="80">
                 <padding>
                     <Insets top="18" right="10" bottom="10" left="10"/>
                 </padding>
 
                 <Button fx:id="addVisit">
                     <graphic>
-                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
                             <image>
                                 <Image url="@../images/visit-add.png"/>
                             </image>
@@ -198,7 +220,7 @@
 
                 <Button fx:id="editVisit">
                     <graphic>
-                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
                             <image>
                                 <Image url="@../images/edit-visit.png"/>
                             </image>
@@ -208,7 +230,7 @@
 
                 <Button fx:id="deleteVisit" styleClass="danger-button">
                     <graphic>
-                        <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
                             <image>
                                 <Image url="@../images/trash-solid.png"/>
                             </image>

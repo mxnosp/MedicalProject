@@ -11,7 +11,7 @@ public class Main extends Application {
                 Main.class.getResource("/views/entryscene.fxml")
         );
 
-        Scene scene = new Scene(loader.load(), 800, 500);
+        Scene scene = new Scene(loader.load(), 1600, 900);
 
         stage.setTitle("Medical Project");
         stage.setScene(scene);

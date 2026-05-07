@@ -88,7 +88,7 @@
 }
 
 #morePatientInfoButton {
-    -fx-pref-width: 220;
+    -fx-pref-width: 350;
     -fx-padding: 9 12;
     -fx-font-weight: bold;
     -fx-background-color: #dbeafe;
@@ -155,19 +155,6 @@
     -fx-font-size: 15px;
 }
 
-/* Main patient table */
-#patientTable {
-    -fx-pref-width: 700;
-    -fx-max-width: 700;
-    -fx-pref-height: 430;
-}
-
-/* Visit table */
-#visitTable {
-    -fx-pref-width: 250;
-    -fx-max-width: 250;
-    -fx-pref-height: 430;
-}
 
 /* =========================
    SELECTED PATIENT INFO
@@ -181,22 +168,23 @@
 }
 
 .info-cell-label {
-    -fx-padding: 12 10;
+    -fx-padding: 12 14;
     -fx-font-weight: bold;
     -fx-border-color: #bdbdbd;
     -fx-border-width: 0 1 1 0;
-    -fx-min-width: 95;
+    -fx-min-width: 130;
     -fx-min-height: 48;
     -fx-alignment: center-left;
     -fx-text-fill: #111827;
 }
 
 .info-cell-value {
-    -fx-padding: 12 10;
+    -fx-padding: 12 14;
     -fx-border-color: #bdbdbd;
     -fx-border-width: 0 0 1 0;
-    -fx-min-width: 120;
+    -fx-min-width: 220;
     -fx-min-height: 48;
     -fx-alignment: center-left;
     -fx-text-fill: #111827;
 }
+

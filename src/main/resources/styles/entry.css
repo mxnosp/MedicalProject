@@ -1,0 +1,43 @@
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #f8fafc, #eef2f7);
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+/* Main center container */
+.entry-container {
+    -fx-padding: 40;
+    -fx-alignment: center;
+}
+
+/* Logo */
+.entry-logo {
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.18), 18, 0.25, 0, 6);
+}
+
+/* Enter button */
+.entry-button {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 36 10 36;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.28), 12, 0.25, 0, 4);
+}
+
+.entry-button:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.entry-button:pressed {
+    -fx-background-color: #1e40af;
+    -fx-translate-y: 1;
+}
+
+.entry-button:focused {
+    -fx-border-color: #93c5fd;
+    -fx-border-width: 2;
+}
+
