@@ -1,13 +1,29 @@
 package gui.controllers;
 
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Date;
 import model.Patient;
 import model.Visit;
+import service.PatientService;
+
+import java.io.IOException;
 
 public class PatientDashboardController {
+
+    private PatientService patientService;
 
     @FXML
     private TextField searchField;
@@ -49,7 +65,7 @@ public class PatientDashboardController {
     private TableView<Patient> patientTable;
 
     @FXML
-    private TableColumn<Patient,Integer> idColumn;
+    private TableColumn<Patient,Number> idColumn;
 
     @FXML
     private TableColumn<Patient,String> firstNameColumn;
@@ -58,7 +74,7 @@ public class PatientDashboardController {
     private TableColumn<Patient,String> lastNameColumn;
 
     @FXML
-    private TableColumn<Patient,Integer> amkaColumn;
+    private TableColumn<Patient,String> amkaColumn;
 
     @FXML
     private Button addPatient;
@@ -87,6 +103,45 @@ public class PatientDashboardController {
     @FXML
     private Button deleteVisit;
 
+    private final ObservableList<Patient> patients = FXCollections.observableArrayList();
+
+    public PatientDashboardController(){
+        patientService=new PatientService();
+    }
+
+    /**
+     * initializes the tables
+     */
+    @FXML
+    private void initialize(){
+        patientTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        initializeTableColumns();
+        loadPatients();
+    }
+
+    private void initializeTableColumns() {
+        idColumn.setCellValueFactory(
+                cellData -> new SimpleIntegerProperty(cellData.getValue().getPatientId())
+        );
+
+        firstNameColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getPatientFirstName())
+        );
+
+        lastNameColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getPatientLastName())
+        );
+
+        amkaColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getPatientAmka())
+        );
+    }
+
+    private void loadPatients(){
+        patientTable.setItems(patients);
+        patients.clear();
+        patients.addAll(patientService.getAllPatients());
+    }
 
     /**
      * Searches the Patient table
@@ -107,10 +162,37 @@ public class PatientDashboardController {
 
     /**
      * opens a subwindow that has a form with the new patient's info
-     * and a save button to to save the new patient to the table
+     * and a save button  to save the new patient to the table
      */
     @FXML
-    void openNewPatientForm(){
+    private void openNewPatientForm(ActionEvent event){
+         try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/patientscreen.fxml")
+            );
+
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root, 700, 950);
+
+            Stage patientStage = new Stage();
+            patientStage.setTitle("Κάρτα Ασθενή");
+            patientStage.setScene(scene);
+
+            Stage ownerStage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            patientStage.initOwner(ownerStage);
+            patientStage.initModality(Modality.WINDOW_MODAL);
+
+            patientStage.showAndWait();
+
+            loadPatients();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load patient form", e);
+        }
 
     }
 

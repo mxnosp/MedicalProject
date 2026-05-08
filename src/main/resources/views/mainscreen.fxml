@@ -72,9 +72,7 @@
 
             <Label text="Επιλεγμένος Ασθενής" styleClass="section-title"/>
 
-            <GridPane hgap="0"
-                      vgap="0"
-                      prefWidth="350"
+            <GridPane prefWidth="350"
                       maxWidth="350"
                       prefHeight="320"
                       maxHeight="320"
@@ -155,12 +153,31 @@
                        prefWidth="900"
                        VBox.vgrow="ALWAYS"
                        maxWidth="Infinity"
-                       maxHeight="Infinity">
+                       maxHeight="Infinity"
+                      >
+
                 <columns>
-                    <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="firstNameColumn" text="Όνομα" prefWidth="250"/>
-                    <TableColumn fx:id="lastNameColumn" text="Επίθετο" prefWidth="250"/>
-                    <TableColumn fx:id="amkaColumn" text="ΑΜΚΑ" prefWidth="250"/>
+                    <TableColumn fx:id="idColumn"
+                                 text="ID"
+                                 prefWidth="60"
+                                 minWidth="50"
+                                 maxWidth="70"/>
+
+                    <TableColumn fx:id="firstNameColumn"
+                                 text="Όνομα"
+                                 prefWidth="230"
+                                 minWidth="140"/>
+
+                    <TableColumn fx:id="lastNameColumn"
+                                 text="Επίθετο"
+                                 prefWidth="230"
+                                 minWidth="140"/>
+
+                    <TableColumn fx:id="amkaColumn"
+                                 text="ΑΜΚΑ"
+                                 prefWidth="140"
+                                 minWidth="120"
+                                 maxWidth="160"/>
                 </columns>
             </TableView>
 

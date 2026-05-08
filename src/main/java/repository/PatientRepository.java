@@ -40,6 +40,7 @@ public class PatientRepository {
                 throw new DBAccessException("Insert failed: no rows affected");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DBAccessException("Failed to insert patient "+patient.getPatientFirstName()+" "+patient.getPatientLastName());
         }
 

@@ -1,0 +1,218 @@
+/* =========================
+   PATIENT FORM ROOT
+   ========================= */
+
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #f3f4f6;
+    -fx-font-size: 14px;
+}
+
+/* =========================
+   SCROLL PANE
+   ========================= */
+
+.form-scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.form-scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.form-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.form-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 8;
+}
+
+.form-scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+/* =========================
+   TEXT
+   ========================= */
+
+.label {
+    -fx-text-fill: #1f2937;
+}
+
+.page-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.section-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+    -fx-padding: 0 0 4 0;
+}
+
+/* Labels inside form rows */
+.grid-pane .label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+
+/* =========================
+   ERROR LABEL
+   ========================= */
+
+.form-error-label {
+    -fx-text-fill: #991b1b;
+    -fx-background-color: #fee2e2;
+    -fx-border-color: #ef4444;
+    -fx-border-width: 1;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 7 12;
+    -fx-min-height: 34px;
+
+    -fx-alignment: center-left;
+}
+
+/* =========================
+   SEPARATORS
+   ========================= */
+
+.separator .line {
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* =========================
+   INPUTS
+   ========================= */
+
+.text-field,
+.text-area,
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #cbd5e1;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-font-size: 14px;
+}
+
+.text-field,
+.combo-box {
+    -fx-pref-height: 38px;
+    -fx-min-height: 38px;
+    -fx-padding: 0 10;
+}
+
+.text-area {
+    -fx-padding: 8;
+    -fx-min-height: 120px;
+}
+
+.text-area .content {
+    -fx-background-color: white;
+    -fx-background-radius: 6;
+}
+
+/* Focus state */
+.text-field:focused,
+.text-area:focused,
+.combo-box:focused {
+    -fx-border-color: #0ea5e9;
+    -fx-border-width: 2;
+}
+
+/* Prompt text */
+.text-input {
+    -fx-prompt-text-fill: #9ca3af;
+}
+
+/* ComboBox arrow */
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/* =========================
+   READ-ONLY FIELD
+   Used for BMI
+   ========================= */
+
+.readonly-field {
+    -fx-background-color: #f9fafb;
+    -fx-text-fill: #374151;
+    -fx-border-color: #d1d5db;
+    -fx-opacity: 1.0;
+}
+
+.readonly-field:focused {
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1;
+}
+
+/* =========================
+   BUTTONS
+   ========================= */
+
+.button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 22;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+    -fx-cursor: hand;
+}
+
+.primary-button {
+    -fx-background-color: #0ea5e9;
+    -fx-text-fill: white;
+    -fx-border-color: #0284c7;
+    -fx-border-width: 1;
+}
+
+.primary-button:hover {
+    -fx-background-color: #0284c7;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #0369a1;
+}
+
+.secondary-button {
+    -fx-background-color: #e5e7eb;
+    -fx-text-fill: #111827;
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #d1d5db;
+}
+
+.secondary-button:pressed {
+    -fx-background-color: #9ca3af;
+}
+
+/* =========================
+   VALIDATION STATES
+   Add/remove these classes from controller
+   ========================= */
+
+.input-error {
+    -fx-border-color: #ef4444;
+    -fx-border-width: 2;
+}
+
+.input-success {
+    -fx-border-color: #22c55e;
+    -fx-border-width: 2;
+}
