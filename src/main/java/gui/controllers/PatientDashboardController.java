@@ -20,6 +20,7 @@ import model.Visit;
 import service.PatientService;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class PatientDashboardController {
     @FXML
@@ -119,6 +120,53 @@ public class PatientDashboardController {
         patientTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         initializeTableColumns();
         loadPatients();
+        initializePatientSelection();
+    }
+
+    private void initializePatientSelection(){
+        patientTable.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable,oldPatient, newPatient) -> {
+                    if (newPatient == null) {
+                        clearSelectedPatientLabels();
+                        return;
+                    }
+
+                    showSelectedPatient(newPatient);
+                });
+    }
+
+    /**
+     * clears the selected patients info on the left
+     */
+    private void clearSelectedPatientLabels(){
+        selectedPatientIdLabel.setText("-");
+        selectedAmkaLabel.setText("-");
+        selectedPhoneLabel.setText("-");
+        selectedBMILabel.setText("-");
+        selectedSmokerLabel.setText("-");
+        selectedWeightLabel.setText("-");
+        selectedHeightLabel.setText("-");
+        selectedFirstNameLabel.setText("-");
+        selectedLastNameLabel.setText("-");
+    }
+
+    /**
+     * shows the info of the selected patient in the left of the screen
+     * @param selectedPatient
+     */
+    private void showSelectedPatient(Patient selectedPatient){
+        selectedPatientIdLabel.setText(String.valueOf(selectedPatient.getPatientId()));
+        selectedAmkaLabel.setText(selectedPatient.getPatientAmka());
+        if(selectedPatient.getPatientPhone()!=null && !selectedPatient.getPatientPhone().isEmpty()){
+            selectedPhoneLabel.setText(selectedPatient.getPatientPhone());
+        }else selectedPhoneLabel.setText("-");
+        selectedFirstNameLabel.setText(selectedPatient.getPatientFirstName());
+        selectedLastNameLabel.setText(selectedPatient.getPatientLastName());
+        selectedBMILabel.setText("-");
+        selectedSmokerLabel.setText("-");
+        selectedWeightLabel.setText("-");
+        selectedHeightLabel.setText("-");
     }
 
     private void initializeTableColumns() {
@@ -203,6 +251,12 @@ public class PatientDashboardController {
      */
     @FXML
     void deleteSelectedPatient(){
+        if(Objects.equals(selectedPatientIdLabel.getText(), "-")){
+            return;
+        }
+        patientService.deletePatient(Integer.parseInt(selectedPatientIdLabel.getText()));
+        clearSelectedPatientLabels();
+        loadPatients();
 
     }
 
@@ -235,7 +289,7 @@ public class PatientDashboardController {
      * deletes the selected visit form the visit table of the selected patient
      */
     @FXML
-    void deleteSelectedVisiit(){
+    void deleteSelectedVisit(){
 
     }
 

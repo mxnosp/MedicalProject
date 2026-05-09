@@ -270,7 +270,7 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="deleteVisit" styleClass="danger-button" onAction="#deleteSelectedVisiit">
+                <Button fx:id="deleteVisit" styleClass="danger-button" onAction="#deleteSelectedVisit">
                     <graphic>
                         <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
                             <Image url="@../images/trash-solid.png"/>

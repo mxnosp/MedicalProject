@@ -194,13 +194,15 @@
 .table-view .column-header .label {
     -fx-text-fill: #111827;
     -fx-font-weight: bold;
-    -fx-font-size: 15px;
+    -fx-font-size: 19px;
     -fx-alignment: center;
     -fx-text-alignment: center;
 }
 
 .table-row-cell {
     -fx-background-color: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
     -fx-border-color: #e5e7eb;
     -fx-border-width: 0 0 1 0;
     -fx-cell-size: 36;
@@ -259,7 +261,7 @@
 
 /* Left column labels: ID, Όνομα, Επίθετο, etc. */
 .info-cell-label {
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-text-fill: #475569;
     -fx-min-width: 135;
@@ -269,8 +271,8 @@
 
 /* Right column values */
 .info-cell-value {
-    -fx-font-size: 14px;
-    -fx-font-weight: normal;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
     -fx-text-fill: #0f172a;
     -fx-min-width: 170;
     -fx-pref-width: 170;
