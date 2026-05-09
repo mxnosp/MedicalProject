@@ -22,6 +22,8 @@ import service.PatientService;
 import java.io.IOException;
 
 public class PatientDashboardController {
+    @FXML
+    private Label searchErrorLabel;
 
     private PatientService patientService;
 

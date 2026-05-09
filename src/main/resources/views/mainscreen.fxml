@@ -18,7 +18,7 @@
             fx:controller="gui.controllers.PatientDashboardController"
             prefWidth="1600"
             prefHeight="900"
-            stylesheets="@../styles/app.css">
+            stylesheets="@../styles/mainscreen.css">
 
     <!-- Top search bar -->
     <!-- Top search bar with logo -->
@@ -57,6 +57,10 @@
                     </ImageView>
                 </graphic>
             </Button>
+            <Label fx:id="searchErrorLabel"
+                   visible="false"
+                   managed="false"
+                   styleClass="search-error-label"/>
 
             <!-- Optional second spacer to keep search more centered -->
             <Region HBox.hgrow="ALWAYS"/>

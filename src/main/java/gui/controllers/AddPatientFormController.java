@@ -95,6 +95,11 @@ public class AddPatientFormController {
             amkaField.getStyleClass().add("input-error");
             allfilled=false;
         }else amkaField.getStyleClass().remove("input-error");
+        if(!allfilled){
+            formErrorLabel.setText("Συμπληρώστε τα υποχρεωτικά πεδία!");
+            formErrorLabel.setVisible(true);
+            formErrorLabel.setManaged(true);
+        }
         return allfilled;
     }
 

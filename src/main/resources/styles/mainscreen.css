@@ -307,3 +307,20 @@
     -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.20), 6, 0.16, 0, 2);
     -fx-translate-y: 1;
 }
+
+.search-error-label {
+    -fx-text-fill: #991b1b;
+    -fx-background-color: #fee2e2;
+    -fx-border-color: #ef4444;
+    -fx-border-width: 1;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+
+    -fx-padding: 7 12;
+    -fx-min-height: 34px;
+
+    -fx-alignment: center-left;
+}

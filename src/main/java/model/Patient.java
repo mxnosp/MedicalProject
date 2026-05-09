@@ -30,15 +30,15 @@ public class Patient {
      * @param phone
      */
     public Patient(int id, String firstname, String lastname, String phone, String amka) throws ValidationException {
-        if(firstname==null) throw new InvalidNameException("Λάθος Όνομα!");
-        if(lastname==null) throw new InvalidNameException("Λάθος Επίθετο!");
+        if(firstname==null) throw new InvalidNameException("Invalid first name!");
+        if(lastname==null) throw new InvalidNameException("Invalid last name!");
         if(amka==null||!amka.matches("\\d{11}")){
-            throw new InvalidAmkaException("Λάθος ΑΜΚΑ!");
+            throw new InvalidAmkaException("Invalid AMKA given!");
         }
         if(phone!=null){
             if(!phone.isEmpty()){
                 if(!phone.matches("\\d{10}")){
-                    throw new InvalidPhoneException("Λάθος τηλέφωνο!");
+                    throw new InvalidPhoneException("Invalid phone number!");
                 }
             }
         }

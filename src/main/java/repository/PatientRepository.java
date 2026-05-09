@@ -3,6 +3,8 @@ package repository;
 import db.DBConnector;
 import model.Patient;
 import model.exceptions.DBAccessException;
+import model.exceptions.PatientExistsException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +26,11 @@ public class PatientRepository {
      * inserts the patient given as a parameter to the db
      * @param patient
      */
-    public void insertPatient(Patient patient) throws DBAccessException{
+    public void insertPatient(Patient patient) throws DBAccessException,PatientExistsException{
+
+        if(searchPatientsByAMKA(patient.getPatientAmka())!=null){
+            throw new PatientExistsException("Patient with the given AMKA already exists!");
+        }
 
         String sql = "INSERT INTO patients(first_name,last_name,phone,amka,search_text) VALUES(?,?,?,?,?)";
 
@@ -178,6 +184,47 @@ public class PatientRepository {
                 rs.getString("phone"),
                 rs.getString("amka")
         );
+    }
+
+    /**
+     * searches the db for a patient with the given amka if the patient doesn't exist returns null
+     * @param amka
+     * @return
+     * @throws DBAccessException
+     */
+    public Patient searchPatientsByAMKA(String amka) throws DBAccessException{
+        if (amka == null || amka.isBlank()) {
+            return null;
+        }
+
+        String sql = """
+            SELECT id, first_name, last_name, phone
+            FROM patients
+            WHERE amka LIKE ?
+            """;
+
+        Patient patient=null;
+        try (
+                Connection conn = DBConnector.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1,amka);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if(rs.next()){
+                    patient=new Patient(
+                            rs.getInt("id"),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("phone"),
+                            amka
+                    );
+                }
+
+            }
+            return patient;
+        } catch (SQLException e) {
+            throw new DBAccessException("Failed searching patients", e);
+        }
     }
 }
 

@@ -76,7 +76,8 @@
                                    GridPane.columnIndex="0"/>
 
                             <TextField fx:id="amkaField"
-                                       maxWidth="Infinity"
+                                       prefWidth="200"
+                                       maxWidth="200"
                                        GridPane.hgrow="ALWAYS"
                                        GridPane.rowIndex="2"
                                        GridPane.columnIndex="1"/>
@@ -86,8 +87,9 @@
                                    GridPane.columnIndex="0"/>
 
                             <TextField fx:id="phoneField"
-                                       maxWidth="Infinity"
                                        GridPane.hgrow="ALWAYS"
+                                       prefWidth="170"
+                                       maxWidth="170"
                                        GridPane.rowIndex="3"
                                        GridPane.columnIndex="1"/>
 
@@ -96,13 +98,13 @@
                                    GridPane.columnIndex="0"/>
 
                             <ComboBox fx:id="smokingComboBox"
-                                      maxWidth="Infinity"
                                       promptText="Επιλογή"
+                                      prefWidth="150"
+                                      maxWidth="150"
                                       GridPane.hgrow="ALWAYS"
                                       GridPane.rowIndex="4"
                                       GridPane.columnIndex="1"/>
 
-                            <!-- Body measurements in one compact row -->
                             <Label text="Σωματικά Στοιχεία:"
                                    GridPane.rowIndex="5"
                                    GridPane.columnIndex="0"/>
@@ -136,7 +138,6 @@
 
                     <Separator/>
 
-                    <!-- Medical Info -->
                     <VBox spacing="12">
                         <Label text="Ιατρικές Πληροφορίες" styleClass="section-title"/>
 
@@ -166,7 +167,6 @@
 
                         </HBox>
 
-                        <!-- Notes -->
                         <VBox spacing="8">
                             <Label text="Σημειώσεις:"/>
 
@@ -184,7 +184,6 @@
         </ScrollPane>
     </center>
 
-    <!-- Bottom error label + buttons -->
     <bottom>
         <HBox spacing="12" alignment="CENTER">
             <padding>
@@ -192,7 +191,6 @@
             </padding>
 
             <Label fx:id="formErrorLabel"
-                   text=""
                    visible="false"
                    managed="false"
                    styleClass="form-error-label"/>
