@@ -1,44 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="gui.controllers.EntryController"
+            prefWidth="1000"
+            prefHeight="650"
             stylesheets="@../styles/entry.css">
 
     <center>
-        <StackPane>
+        <StackPane fx:id="rootStackPane"
+                   styleClass="main-background">
 
             <!-- Background image -->
             <ImageView fx:id="backgroundImage"
-                       fitWidth="900"
-                       fitHeight="600"
                        preserveRatio="false"
-                       smooth="true">
+                       smooth="true"
+                       opacity="0.82">
                 <Image url="@../images/background.png"/>
             </ImageView>
 
-            <!-- Center content -->
-            <VBox spacing="20"
-                  alignment="CENTER"
-                  styleClass="entry-container">
+            <!-- Lighter overlay so the background shows more -->
+            <StackPane styleClass="background-overlay"/>
 
-                <ImageView fitWidth="220"
+            <!-- Main card -->
+            <VBox spacing="24"
+                  alignment="CENTER"
+                  maxWidth="420"
+                  maxHeight="360"
+                  styleClass="entry-card">
+
+                <padding>
+                    <Insets top="42" right="48" bottom="42" left="48"/>
+                </padding>
+
+                <ImageView fitWidth="230"
                            preserveRatio="true"
+                           smooth="true"
                            styleClass="entry-logo">
-                    <Image url="@../images/doctorlogo.png"/>
+                    <Image url="@../images/doctorlogo2.png"/>
                 </ImageView>
+
+                <Label text="Σύστημα διαχείρισης ασθενών"
+                       styleClass="entry-title"/>
 
                 <Button text="Είσοδος"
                         onAction="#handleEnter"
+                        maxWidth="220"
                         styleClass="entry-button"/>
 
             </VBox>
+
+            <!-- Credit label inside the same StackPane, bottom-right over the background -->
+            <Label text="made by Manos Pirounakis"
+                   StackPane.alignment="BOTTOM_RIGHT"
+                   styleClass="credit-label"/>
 
         </StackPane>
     </center>

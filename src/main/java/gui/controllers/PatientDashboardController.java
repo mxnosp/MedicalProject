@@ -18,8 +18,10 @@ import model.Date;
 import model.Patient;
 import model.Visit;
 import service.PatientService;
+import service.VisitService;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class PatientDashboardController {
@@ -27,6 +29,8 @@ public class PatientDashboardController {
     private Label searchErrorLabel;
 
     private PatientService patientService;
+
+    private VisitService visitService;
 
     @FXML
     private TextField searchField;
@@ -110,6 +114,7 @@ public class PatientDashboardController {
 
     public PatientDashboardController(){
         patientService=new PatientService();
+        visitService=new VisitService();
     }
 
     /**
@@ -198,7 +203,10 @@ public class PatientDashboardController {
      */
     @FXML
     void searchPatient(){
-
+        List<Patient> results=patientService.searchPatientsByName(searchField.getText());
+        patientTable.setItems(patients);
+        patients.clear();
+        patients.setAll(results);
     }
 
 
@@ -247,7 +255,7 @@ public class PatientDashboardController {
     }
 
     /**
-     * deletes the selected patient from the patient list
+     * deletes the selected patient from the patient list and his visits
      */
     @FXML
     void deleteSelectedPatient(){
@@ -255,8 +263,17 @@ public class PatientDashboardController {
             return;
         }
         patientService.deletePatient(Integer.parseInt(selectedPatientIdLabel.getText()));
+        visitService.deletePatientVisits(Integer.parseInt(selectedPatientIdLabel.getText()));
         clearSelectedPatientLabels();
         loadPatients();
+        clearVisits();
+    }
+
+    private void clearVisits(){
+
+    }
+    private void loadVisits(){
+
 
     }
 

@@ -5,6 +5,7 @@ import model.exceptions.DBAccessException;
 import model.exceptions.ValidationException;
 import repository.VisitRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VisitService {
@@ -66,5 +67,17 @@ public class VisitService {
      */
     public List<Visit> getPatientVisits(int patient_id) throws DBAccessException{
         return repo.getPatientVisits(patient_id);
+    }
+
+    /**
+     * deletes all the visits of the patient with the given id
+     * @param patient_id
+     */
+    public void deletePatientVisits(int patient_id) throws DBAccessException{
+        List<Visit> visits=repo.getPatientVisits(patient_id);
+        while(!visits.isEmpty()){
+            repo.deleteVisit(visits.getFirst().getId());
+            visits.removeFirst();
+        }
     }
 }

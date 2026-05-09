@@ -107,18 +107,38 @@ public class PatientRepository {
     }
 
     /**
-     * Searches the db to find if the input given exists inside the search_text of a patient or more and then returns a list containing the matching patients or patient
+     * Searches the db to find if the input given exists inside the search_text of a patient or more and then returns a list containing the matching patients or patient if
+     * the input is blank or null returns a list containing all the patients
      * @param searchInput
      * @return
      */
     public List<Patient> searchPatientsByName(String searchInput) throws DBAccessException{
+        String sql;
         if (searchInput == null || searchInput.isBlank()) {
-            return List.of();
+            sql="""
+            SELECT id, first_name, last_name, phone, amka
+            FROM patients
+            """;
+            List<Patient> patients = new ArrayList<>();
+
+            try (
+                    Connection conn = DBConnector.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(sql)
+            ) {
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        patients.add(mapPatient(rs));
+                    }
+                }
+                return patients;
+            } catch (SQLException e) {
+                throw new DBAccessException("Failed searching patients", e);
+            }
         }
 
         String normalizedInput = normalizeGreekSearchText(searchInput);
 
-        String sql = """
+        sql = """
             SELECT id, first_name, last_name, phone, amka
             FROM patients
             WHERE search_text LIKE ?
