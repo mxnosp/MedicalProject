@@ -44,7 +44,7 @@
             <Region HBox.hgrow="ALWAYS"/>
 
             <TextField fx:id="searchField"
-                       promptText="Αναζήτηση με όνομα"
+                       promptText="Αναζήτηση με όνομα ή ΑΜΚΑ"
                        prefWidth="750"
                        maxWidth="900"/>
 
