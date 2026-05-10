@@ -3,13 +3,11 @@ package gui.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Patient;
 import model.SmokingStatus;
 import service.PatientService;
 
-/**
- * controls the actions of the buttons in the add patient form screen
- */
-public class AddPatientFormController {
+public class EditPatientFormController {
 
     private PatientService patientService;
 
@@ -59,6 +57,19 @@ public class AddPatientFormController {
     private void initialize(){
         patientService=new PatientService();
         smokingComboBox.getItems().setAll(SmokingStatus.values());
+        Patient selectedPatient=PatientDashboardController.selectedPatient;
+        lastNameField.setText(selectedPatient.getPatientLastName());
+        firstNameField.setText(selectedPatient.getPatientFirstName());
+        phoneField.setText(selectedPatient.getPatientPhone());
+        amkaField.setText(selectedPatient.getPatientAmka());
+        smokingComboBox.setValue(selectedPatient.getPatientSmokingStatus());
+        heightField.setText(Integer.toString(selectedPatient.getPatientHeight()));
+        weightField.setText(Integer.toString(selectedPatient.getPatientWeight()));
+        bmiField.setText(Double.toString(selectedPatient.getPatientBMI()));
+        medicalHistoryArea.setText(selectedPatient.getPatientMedicalHistory());
+        chronicMedicationArea.setText(selectedPatient.getPatientChronicMedication());
+        notesArea.setText(selectedPatient.getPatientNotes());
+
     }
 
     /**
@@ -120,8 +131,9 @@ public class AddPatientFormController {
         String chronicMedication=chronicMedicationArea.getText();
         String notes=notesArea.getText();
 
+
         try{
-            patientService.insertPatient(firstname,lastname,phone,amka,smokingStatus,height,weight,medicalHistory,chronicMedication,notes);
+            patientService.updatePatient(firstname,lastname,phone,amka,smokingStatus,height,weight,medicalHistory,chronicMedication,notes,PatientDashboardController.selectedPatient.getPatientId());
             formErrorLabel.setText("");
             formErrorLabel.setVisible(false);
             formErrorLabel.setManaged(false);
@@ -135,6 +147,4 @@ public class AddPatientFormController {
 
 
     }
-
-
 }

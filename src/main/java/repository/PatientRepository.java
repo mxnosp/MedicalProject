@@ -31,8 +31,7 @@ public class PatientRepository {
         if(searchPatientsByAMKA(patient.getPatientAmka())!=null){
             throw new PatientExistsException("Patient with the given AMKA already exists!");
         }
-
-        String sql = "INSERT INTO patients(first_name,last_name,phone,amka,search_text) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO patients(first_name,last_name,phone,amka,smoking,height,weight,medical_history,chronic_medication,notes,search_text) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
         try (Connection conn = DBConnector.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             String searchtext=normalizeGreekSearchText(patient.getPatientFirstName()+" "+patient.getPatientLastName());
@@ -40,7 +39,13 @@ public class PatientRepository {
             stmt.setString(2, patient.getPatientLastName());
             stmt.setString(3, patient.getPatientPhone());
             stmt.setString(4, patient.getPatientAmka());
-            stmt.setString(5,searchtext);
+            stmt.setInt(5, patient.getPatientSmokingStatus().ordinal());
+            stmt.setInt(6, patient.getPatientHeight());
+            stmt.setInt(7, patient.getPatientWeight());
+            stmt.setString(8,patient.getPatientMedicalHistory());
+            stmt.setString(9,patient.getPatientChronicMedication());
+            stmt.setString(10,patient.getPatientNotes());
+            stmt.setString(11,searchtext);
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
                 throw new DBAccessException("Insert failed: no rows affected");
@@ -79,10 +84,13 @@ public class PatientRepository {
     public void updatePatient(Patient updatedPatient, int id) throws DBAccessException{
         String sql = """
             UPDATE patients
-            SET first_name = ?, last_name = ?, phone = ?, amka = ?, search_text = ?
+            SET first_name = ?, last_name = ?, phone = ?, amka = ?,  smoking = ? ,height = ?,weight =?,medical_history = ?,chronic_medication = ?,notes = ?,search_text = ?
             WHERE id = ?
             """;
-
+        Patient patientExists=searchPatientsByAMKA(updatedPatient.getPatientAmka());
+        if(patientExists!=null && patientExists.getPatientId()!=id ){
+            throw new PatientExistsException("Patient with the given AMKA already exists!");
+        }
         String searchText = normalizeGreekSearchText(
                 updatedPatient.getPatientFirstName() + " " + updatedPatient.getPatientLastName()
         );
@@ -95,8 +103,14 @@ public class PatientRepository {
             stmt.setString(2, updatedPatient.getPatientLastName());
             stmt.setString(3, updatedPatient.getPatientPhone());
             stmt.setString(4, updatedPatient.getPatientAmka());
-            stmt.setString(5, searchText);
-            stmt.setInt(6, id);
+            stmt.setInt(5,updatedPatient.getPatientSmokingStatus().ordinal());
+            stmt.setInt(6,updatedPatient.getPatientHeight());
+            stmt.setInt(7,updatedPatient.getPatientWeight());
+            stmt.setString(8,updatedPatient.getPatientMedicalHistory());
+            stmt.setString(9,updatedPatient.getPatientChronicMedication());
+            stmt.setString(10,updatedPatient.getPatientNotes());
+            stmt.setString(11, searchText);
+            stmt.setInt(12, id);
             int affectedRows = stmt.executeUpdate();
             if (affectedRows == 0) {
                 throw new DBAccessException("Update failed: no patient found with id " + id);
@@ -116,7 +130,7 @@ public class PatientRepository {
         String sql;
         if (searchInput == null || searchInput.isBlank()) {
             sql="""
-            SELECT id, first_name, last_name, phone, amka
+            SELECT id, first_name, last_name, phone, amka,smoking,height,weight,medical_history,chronic_medication,notes
             FROM patients
             """;
             List<Patient> patients = new ArrayList<>();
@@ -139,7 +153,7 @@ public class PatientRepository {
         String normalizedInput = normalizeGreekSearchText(searchInput);
 
         sql = """
-            SELECT id, first_name, last_name, phone, amka
+            SELECT id, first_name, last_name, phone,amka,smoking,height,weight,medical_history,chronic_medication,notes
             FROM patients
             WHERE search_text LIKE ?
             """;
@@ -169,7 +183,7 @@ public class PatientRepository {
      */
     public List<Patient> findAllPatients() throws DBAccessException{
         String sql = """
-            SELECT id, first_name, last_name, phone, amka
+            SELECT id, first_name, last_name, phone, amka,smoking,height,weight,medical_history,chronic_medication,notes
             FROM patients
             """;
 
@@ -202,7 +216,13 @@ public class PatientRepository {
                 rs.getString("first_name"),
                 rs.getString("last_name"),
                 rs.getString("phone"),
-                rs.getString("amka")
+                rs.getString("amka"),
+                rs.getInt("smoking"),
+                rs.getInt("height"),
+                rs.getInt("weight"),
+                rs.getString("medical_history"),
+                rs.getString("chronic_medication"),
+                rs.getString("notes")
         );
     }
 
@@ -213,12 +233,12 @@ public class PatientRepository {
      * @throws DBAccessException
      */
     public Patient searchPatientsByAMKA(String amka) throws DBAccessException{
-        if (amka == null || amka.isBlank()) {
+        if (amka == null || amka.isBlank() ||!amka.matches("\\d{11}")){
             return null;
         }
 
         String sql = """
-            SELECT id, first_name, last_name, phone
+            SELECT id, first_name, last_name, phone, amka,smoking,height,weight,medical_history,chronic_medication,notes
             FROM patients
             WHERE amka LIKE ?
             """;
@@ -228,7 +248,7 @@ public class PatientRepository {
                 Connection conn = DBConnector.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setString(1,amka);
+            stmt.setString(1,amka );
             try (ResultSet rs = stmt.executeQuery()) {
                 if(rs.next()){
                     patient=new Patient(
@@ -236,7 +256,13 @@ public class PatientRepository {
                             rs.getString("first_name"),
                             rs.getString("last_name"),
                             rs.getString("phone"),
-                            amka
+                            amka,
+                            rs.getInt("smoking"),
+                            rs.getInt("height"),
+                            rs.getInt("weight"),
+                            rs.getString("medical_history"),
+                            rs.getString("chronic_medication"),
+                            rs.getString("notes")
                     );
                 }
 

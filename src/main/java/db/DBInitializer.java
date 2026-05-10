@@ -29,6 +29,12 @@ public final class DBInitializer {
                     last_name TEXT NOT NULL,
                     phone TEXT ,
                     amka TEXT NOT NULL,
+                    smoking INTEGER,
+                    height INTEGER,
+                    weight INTEGER,
+                    medical_history TEXT,
+                    chronic_medication TEXT,
+                    notes TEXT,
                     search_text TEXT NOT NULL
                 );
                 """;

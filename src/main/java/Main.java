@@ -16,7 +16,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(loader.load(), 1600, 900);
 
-        stage.setTitle("Medical Project");
+        stage.setTitle("Σύστημα Διαχείρισης Ασθενών");
         stage.setScene(scene);
         stage.show();
     }

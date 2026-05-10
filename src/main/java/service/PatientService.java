@@ -1,6 +1,7 @@
 package service;
 
 import model.Patient;
+import model.SmokingStatus;
 import model.exceptions.DBAccessException;
 import model.exceptions.ValidationException;
 import repository.PatientRepository;
@@ -24,8 +25,8 @@ public class PatientService {
      * @throws ValidationException
      * @throws DBAccessException
      */
-    public void insertPatient(String firstname,String lastname,String phone,String amka) throws ValidationException, DBAccessException {
-            Patient p=new Patient(-1,firstname,lastname,phone,amka);
+    public void insertPatient(String firstname, String lastname, String phone, String amka, SmokingStatus smokingStatus,int height,int weight,String medicalHistory,String chronicMedication,String notes) throws ValidationException, DBAccessException {
+            Patient p=new Patient(-1,firstname,lastname,phone,amka,smokingStatus.ordinal(),height,weight,medicalHistory,chronicMedication,notes);
             repo.insertPatient(p);
     }
 
@@ -52,8 +53,8 @@ public class PatientService {
      * @throws ValidationException
      * @throws DBAccessException
      */
-    public void updatePatient(String firstname,String lastname,String phone,String amka,int id) throws ValidationException ,DBAccessException{
-        Patient p=new Patient(-1,firstname,lastname,phone,amka);
+    public void updatePatient(String firstname,String lastname,String phone,String amka,SmokingStatus smokingStatus,int height,int weight,String medicalHistory,String chronicMedication,String notes,int id) throws ValidationException ,DBAccessException{
+        Patient p=new Patient(-1,firstname,lastname,phone,amka,smokingStatus.ordinal(),height,weight,medicalHistory,chronicMedication,notes);
         repo.updatePatient(p,id);
     }
 
@@ -77,6 +78,15 @@ public class PatientService {
      */
     public List<Patient> getAllPatients() throws DBAccessException{
         return repo.findAllPatients();
+    }
+
+    /**
+     * searches the db for a patient with the given amka
+     * @param amka
+     * @return
+     */
+    public Patient searchPatientByAmka(String amka){
+        return repo.searchPatientsByAMKA(amka);
     }
 
 }
