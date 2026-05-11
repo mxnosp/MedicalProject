@@ -54,11 +54,20 @@ public final class DBInitializer {
                 CREATE TABLE IF NOT EXISTS visits (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     patient_id INTEGER NOT NULL,
-                    notes TEXT NOT NULL,
-                    paid INTEGER NOT NULL ,
-                    day INTEGER NOT NULL,
-                    month INTEGER NOT NULL,
-                    year INTEGER NOT NULL
+                    notes TEXT ,
+                    paid TEXT  ,
+                    date TEXT NOT NULL,
+                    fev1 TEXT,
+                    fvc TEXT,
+                    pef TEXT,
+                    fef2575 TEXT,
+                    heartrate TEXT,
+                    spo2 TEXT,
+                    physicalcheck TEXT,
+                    functionalcheck TEXT,
+                    medication TEXT,
+                    reason TEXT,
+                    recheckdate TEXT
                 );
                 """;
 

@@ -6,9 +6,10 @@ import javafx.stage.Stage;
 import model.Patient;
 import model.SmokingStatus;
 import service.PatientService;
+import utils.NumberInputHelpers;
 
 public class EditPatientFormController {
-
+    private Patient selectedPatient;
     private PatientService patientService;
 
     @FXML
@@ -56,20 +57,6 @@ public class EditPatientFormController {
     @FXML
     private void initialize(){
         patientService=new PatientService();
-        smokingComboBox.getItems().setAll(SmokingStatus.values());
-        Patient selectedPatient=PatientDashboardController.selectedPatient;
-        lastNameField.setText(selectedPatient.getPatientLastName());
-        firstNameField.setText(selectedPatient.getPatientFirstName());
-        phoneField.setText(selectedPatient.getPatientPhone());
-        amkaField.setText(selectedPatient.getPatientAmka());
-        smokingComboBox.setValue(selectedPatient.getPatientSmokingStatus());
-        heightField.setText(Integer.toString(selectedPatient.getPatientHeight()));
-        weightField.setText(Integer.toString(selectedPatient.getPatientWeight()));
-        bmiField.setText(Double.toString(selectedPatient.getPatientBMI()));
-        medicalHistoryArea.setText(selectedPatient.getPatientMedicalHistory());
-        chronicMedicationArea.setText(selectedPatient.getPatientChronicMedication());
-        notesArea.setText(selectedPatient.getPatientNotes());
-
     }
 
     /**
@@ -120,20 +107,18 @@ public class EditPatientFormController {
      * if any errors occur it updates the error label
      */
     private void saveForm() {
-        String firstname=firstNameField.getText();
-        String lastname=lastNameField.getText();
-        String amka=amkaField.getText();
-        String phone=phoneField.getText();
-        SmokingStatus smokingStatus=smokingComboBox.getValue();
-        int height=Integer.parseInt(heightField.getText());
-        int weight=Integer.parseInt(weightField.getText());
-        String medicalHistory=medicalHistoryArea.getText();
-        String chronicMedication=chronicMedicationArea.getText();
-        String notes=notesArea.getText();
-
-
         try{
-            patientService.updatePatient(firstname,lastname,phone,amka,smokingStatus,height,weight,medicalHistory,chronicMedication,notes,PatientDashboardController.selectedPatient.getPatientId());
+            String firstname=firstNameField.getText();
+            String lastname=lastNameField.getText();
+            String amka=amkaField.getText();
+            String phone=phoneField.getText();
+            SmokingStatus smokingStatus=smokingComboBox.getValue();
+            int height=Integer.parseInt(heightField.getText());
+            int weight=Integer.parseInt(weightField.getText());
+            String medicalHistory=medicalHistoryArea.getText();
+            String chronicMedication=chronicMedicationArea.getText();
+            String notes=notesArea.getText();
+            patientService.updatePatient(firstname,lastname,phone,amka,smokingStatus,height,weight,medicalHistory,chronicMedication,notes,selectedPatient.getPatientId());
             formErrorLabel.setText("");
             formErrorLabel.setVisible(false);
             formErrorLabel.setManaged(false);
@@ -146,5 +131,21 @@ public class EditPatientFormController {
         }
 
 
+    }
+
+    public void setSelectedPatient(Patient selectedPatient) {
+        this.selectedPatient = selectedPatient;
+        smokingComboBox.getItems().setAll(SmokingStatus.values());
+        lastNameField.setText(selectedPatient.getPatientLastName());
+        firstNameField.setText(selectedPatient.getPatientFirstName());
+        phoneField.setText(selectedPatient.getPatientPhone());
+        amkaField.setText(selectedPatient.getPatientAmka());
+        smokingComboBox.setValue(selectedPatient.getPatientSmokingStatus());
+        heightField.setText(NumberInputHelpers.StringFromInteger(selectedPatient.getPatientHeight()));
+        weightField.setText(NumberInputHelpers.StringFromInteger(selectedPatient.getPatientWeight()));
+        bmiField.setText(NumberInputHelpers.StringFromDouble(selectedPatient.getPatientBMI()));
+        medicalHistoryArea.setText(selectedPatient.getPatientMedicalHistory());
+        chronicMedicationArea.setText(selectedPatient.getPatientChronicMedication());
+        notesArea.setText(selectedPatient.getPatientNotes());
     }
 }

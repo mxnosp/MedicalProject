@@ -12,8 +12,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.layout.Region?>
+
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="gui.controllers.PatientDashboardController"
             prefWidth="1600"
@@ -21,7 +21,6 @@
             stylesheets="@../styles/mainscreen.css">
 
     <!-- Top search bar -->
-    <!-- Top search bar with logo -->
     <top>
         <HBox spacing="14" alignment="CENTER_LEFT" prefHeight="90" styleClass="top-bar">
             <padding>
@@ -29,8 +28,7 @@
             </padding>
 
             <!-- Top-left logo -->
-            <ImageView
-                       fitWidth="150"
+            <ImageView fitWidth="150"
                        fitHeight="70"
                        preserveRatio="true"
                        smooth="true"
@@ -48,15 +46,20 @@
                        prefWidth="750"
                        maxWidth="900"/>
 
-            <Button fx:id="searchPatient" styleClass="icon-button" onAction="#searchPatient">
+            <Button fx:id="searchPatient"
+                    styleClass="icon-button"
+                    onAction="#searchPatient">
                 <graphic>
-                    <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
+                    <ImageView fitWidth="22"
+                               fitHeight="22"
+                               preserveRatio="true">
                         <image>
                             <Image url="@../images/searchbutton.png"/>
                         </image>
                     </ImageView>
                 </graphic>
             </Button>
+
             <Label fx:id="searchErrorLabel"
                    visible="false"
                    managed="false"
@@ -82,55 +85,104 @@
                       maxHeight="320"
                       styleClass="info-table">
 
-                <Label text="ID:" styleClass="info-cell-label"
-                       GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedPatientIdLabel" text="-"
-                       styleClass="info-cell-value"
-                       GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="ID:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="0"
+                       GridPane.columnIndex="0"/>
 
-                <Label text="Όνομα:" styleClass="info-cell-label"
-                       GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedFirstNameLabel" text="-"
+                <Label fx:id="selectedPatientIdLabel"
+                       text="-"
                        styleClass="info-cell-value"
-                       GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                       GridPane.rowIndex="0"
+                       GridPane.columnIndex="1"/>
 
-                <Label text="Επίθετο:" styleClass="info-cell-label"
-                       GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedLastNameLabel" text="-"
-                       styleClass="info-cell-value"
-                       GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label text="Όνομα:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="1"
+                       GridPane.columnIndex="0"/>
 
-                <Label text="Τηλέφωνο:" styleClass="info-cell-label"
-                       GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedPhoneLabel" text="-"
+                <Label fx:id="selectedFirstNameLabel"
+                       text="-"
                        styleClass="info-cell-value"
-                       GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                       GridPane.rowIndex="1"
+                       GridPane.columnIndex="1"/>
 
-                <Label text="ΑΜΚΑ:" styleClass="info-cell-label"
-                       GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedAmkaLabel" text="-"
+                <Label text="Επίθετο:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="2"
+                       GridPane.columnIndex="0"/>
+
+                <Label fx:id="selectedLastNameLabel"
+                       text="-"
                        styleClass="info-cell-value"
-                       GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-                <Label text="Ύψος:" styleClass="info-cell-label"
-                       GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedHeightLabel" text="-"
+                       GridPane.rowIndex="2"
+                       GridPane.columnIndex="1"/>
+
+                <Label text="Τηλέφωνο:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="3"
+                       GridPane.columnIndex="0"/>
+
+                <Label fx:id="selectedPhoneLabel"
+                       text="-"
                        styleClass="info-cell-value"
-                       GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-                <Label text="Βάρος:" styleClass="info-cell-label"
-                       GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedWeightLabel" text="-"
+                       GridPane.rowIndex="3"
+                       GridPane.columnIndex="1"/>
+
+                <Label text="ΑΜΚΑ:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="4"
+                       GridPane.columnIndex="0"/>
+
+                <Label fx:id="selectedAmkaLabel"
+                       text="-"
                        styleClass="info-cell-value"
-                       GridPane.rowIndex="6" GridPane.columnIndex="1"/>
-                <Label text="BMI:" styleClass="info-cell-label"
-                       GridPane.rowIndex="7" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedBMILabel" text="-"
+                       GridPane.rowIndex="4"
+                       GridPane.columnIndex="1"/>
+
+                <Label text="Ύψος:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="5"
+                       GridPane.columnIndex="0"/>
+
+                <Label fx:id="selectedHeightLabel"
+                       text="-"
                        styleClass="info-cell-value"
-                       GridPane.rowIndex="7" GridPane.columnIndex="1"/>
-                <Label text="Καπνιστής:" styleClass="info-cell-label"
-                       GridPane.rowIndex="8" GridPane.columnIndex="0"/>
-                <Label fx:id="selectedSmokerLabel" text="-"
+                       GridPane.rowIndex="5"
+                       GridPane.columnIndex="1"/>
+
+                <Label text="Βάρος:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="6"
+                       GridPane.columnIndex="0"/>
+
+                <Label fx:id="selectedWeightLabel"
+                       text="-"
                        styleClass="info-cell-value"
-                       GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+                       GridPane.rowIndex="6"
+                       GridPane.columnIndex="1"/>
+
+                <Label text="BMI:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="7"
+                       GridPane.columnIndex="0"/>
+
+                <Label fx:id="selectedBMILabel"
+                       text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="7"
+                       GridPane.columnIndex="1"/>
+
+                <Label text="Καπνιστής:"
+                       styleClass="info-cell-label"
+                       GridPane.rowIndex="8"
+                       GridPane.columnIndex="0"/>
+
+                <Label fx:id="selectedSmokerLabel"
+                       text="-"
+                       styleClass="info-cell-value"
+                       GridPane.rowIndex="8"
+                       GridPane.columnIndex="1"/>
 
             </GridPane>
 
@@ -148,7 +200,7 @@
               maxWidth="Infinity"
               VBox.vgrow="ALWAYS">
             <padding>
-                <Insets top="30" right="30" bottom="20" />
+                <Insets top="30" right="30" bottom="20"/>
             </padding>
 
             <Label text="Λίστα Ασθενών" styleClass="section-title"/>
@@ -157,8 +209,7 @@
                        prefWidth="900"
                        VBox.vgrow="ALWAYS"
                        maxWidth="Infinity"
-                       maxHeight="Infinity"
-                      >
+                       maxHeight="Infinity">
 
                 <columns>
                     <TableColumn fx:id="idColumn"
@@ -192,7 +243,9 @@
 
                 <Button fx:id="addPatient" onAction="#openNewPatientForm">
                     <graphic>
-                        <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
+                        <ImageView fitWidth="22"
+                                   fitHeight="22"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../images/user-plus-solid.png"/>
                             </image>
@@ -202,7 +255,9 @@
 
                 <Button fx:id="editPatient" onAction="#openSelectedPatientForm">
                     <graphic>
-                        <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
+                        <ImageView fitWidth="22"
+                                   fitHeight="22"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../images/user-pen-solid.png"/>
                             </image>
@@ -210,9 +265,13 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="deletePatient" styleClass="danger-button" onAction="#deleteSelectedPatient">
+                <Button fx:id="deletePatient"
+                        styleClass="danger-button"
+                        onAction="#deleteSelectedPatient">
                     <graphic>
-                        <ImageView fitWidth="22" fitHeight="22" preserveRatio="true">
+                        <ImageView fitWidth="22"
+                                   fitHeight="22"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../images/trash-solid.png"/>
                             </image>
@@ -240,8 +299,19 @@
                        maxWidth="320"
                        VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="visitDateColumn" text="Ημερομηνία" prefWidth="230"/>
-                    <TableColumn fx:id="viewVisitColumn"  prefWidth="88"/>
+                    <TableColumn fx:id="visitIdColumn"
+                                 text="ID"
+                                 prefWidth="45"
+                                 minWidth="40"
+                                 maxWidth="50"
+                                 resizable="false"/>
+
+                    <TableColumn fx:id="visitDateColumn"
+                                 text="Ημερομηνία"
+                                 prefWidth="185"/>
+
+                    <TableColumn fx:id="viewVisitColumn"
+                                 prefWidth="88"/>
                 </columns>
             </TableView>
 
@@ -250,9 +320,11 @@
                     <Insets top="18" right="10" bottom="10" left="10"/>
                 </padding>
 
-                <Button fx:id="addVisit"  onAction="#openNewVisitForm">
+                <Button fx:id="addVisit" onAction="#openNewVisitForm">
                     <graphic>
-                        <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
+                        <ImageView fitWidth="24"
+                                   fitHeight="24"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../images/visit-add.png"/>
                             </image>
@@ -262,7 +334,9 @@
 
                 <Button fx:id="editVisit" onAction="#openSelectedVisitForm">
                     <graphic>
-                        <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
+                        <ImageView fitWidth="24"
+                                   fitHeight="24"
+                                   preserveRatio="true">
                             <image>
                                 <Image url="@../images/edit-visit.png"/>
                             </image>
@@ -270,10 +344,16 @@
                     </graphic>
                 </Button>
 
-                <Button fx:id="deleteVisit" styleClass="danger-button" onAction="#deleteSelectedVisit">
+                <Button fx:id="deleteVisit"
+                        styleClass="danger-button"
+                        onAction="#deleteSelectedVisit">
                     <graphic>
-                        <ImageView fitWidth="24" fitHeight="24" preserveRatio="true">
-                            <Image url="@../images/trash-solid.png"/>
+                        <ImageView fitWidth="24"
+                                   fitHeight="24"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../images/trash-solid.png"/>
+                            </image>
                         </ImageView>
                     </graphic>
                 </Button>

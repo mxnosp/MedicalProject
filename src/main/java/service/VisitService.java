@@ -1,11 +1,13 @@
 package service;
 
+import model.Spirometry;
 import model.Visit;
 import model.exceptions.DBAccessException;
 import model.exceptions.ValidationException;
 import repository.VisitRepository;
+import utils.DateParser;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 public class VisitService {
@@ -19,16 +21,24 @@ public class VisitService {
      * Creates a visit object with the given credentials and inserts it to the repository
      * it can throw ValidationException if the credentials were not valid or DBAccessException if the repository throws it
      * @param notes
-     * @param paid
-     * @param day
-     * @param month
-     * @param year
+     * @param payment
      * @param patient_id
+     * @param fef2575
+     * @param fev1
+     * @param functionalCheck
+     * @param fvc
+     * @param heartrate
+     * @param medication
+     * @param pef
+     * @param physicalCheck
+     * @param reason
+     * @param spo2
      * @throws DBAccessException
      * @throws ValidationException
      */
-    public void insertVisit(String notes,boolean paid,int day,int month,int year,int patient_id) throws DBAccessException, ValidationException {
-        Visit visit=new Visit(-1,notes,paid,day,month,year,patient_id);
+    public void insertVisit(String notes, Integer payment, LocalDate date, int patient_id, Double fev1, Double fvc, Double pef, Double fef2575, Integer heartrate, Integer spo2, String physicalCheck, String functionalCheck, String medication, String reason, LocalDate recheckdate) throws DBAccessException, ValidationException {
+        Spirometry spirometry=new Spirometry(fev1,fvc,pef,fef2575);
+        Visit visit=new Visit(-1,notes,payment,date,patient_id,spirometry, heartrate, spo2,physicalCheck,functionalCheck,medication, reason, recheckdate);
         repo.insertVisit(visit);
     }
 
@@ -45,17 +55,27 @@ public class VisitService {
      *Updates the visit with the given id with the given credentials it can throw DBAccessException if repo throws it
      * or ValidationException if the credentials were not valid
      * @param notes
-     * @param paid
-     * @param day
-     * @param month
-     * @param year
+     * @param payment
+     * @param medication
+     * @param functionalCheck
+     * @param reason
+     * @param date
+     * @param fef2575
+     * @param fev1
+     * @param fvc
+     * @param heartrate
+     * @param pef
+     * @param physicalCheck
+     * @param recheckdate
+     * @param spo2
      * @param patient_id
      * @param visitid
      * @throws DBAccessException
      * @throws ValidationException
      */
-    public void updateVisit(String notes,boolean paid,int day,int month,int year,int patient_id,int visitid) throws ValidationException,DBAccessException{
-        Visit updatedVisit=new Visit(visitid,notes,paid,day,month,year,patient_id);
+    public void updateVisit(String notes,Integer payment,LocalDate date,int patient_id,Double fev1,Double fvc,Double pef,Double fef2575,Integer heartrate,Integer spo2, String physicalCheck, String functionalCheck, String medication, String reason,LocalDate recheckdate,int visitid) throws ValidationException,DBAccessException{
+        Spirometry spirometry=new Spirometry(fev1,fvc,pef,fef2575);
+        Visit updatedVisit=new Visit(visitid,notes,payment, date,patient_id,spirometry, heartrate, spo2,physicalCheck,functionalCheck,medication, reason, recheckdate);
         repo.updateVisit(updatedVisit,visitid);
     }
 

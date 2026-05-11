@@ -17,8 +17,8 @@ public class Patient {
     private final String  phone;
     private final int id;
     private final SmokingStatus smokingStatus;
-    private final int height;
-    private final int weight;
+    private final Integer height;
+    private final Integer weight;
     private final String medicalHistory;
     private final String chronicMedication;
     private final String notes;
@@ -44,7 +44,7 @@ public class Patient {
      * @param notes
      * @param id
      */
-    public Patient(int id, String firstname, String lastname, String phone, String amka,int smokingStatus,int height,int weight,String medicalHistory,String chronicMedication,String notes) throws ValidationException {
+    public Patient(int id, String firstname, String lastname, String phone, String amka,Integer smokingStatus,Integer height,Integer weight,String medicalHistory,String chronicMedication,String notes) throws ValidationException {
         if(firstname==null) throw new InvalidNameException("Invalid first name!");
         if(lastname==null) throw new InvalidNameException("Invalid last name!");
         if(amka==null||!amka.matches("\\d{11}")){
@@ -62,7 +62,8 @@ public class Patient {
         this.phone=phone;
         this.amka=amka;
         this.id=id;
-        this.smokingStatus=SmokingStatus.values()[smokingStatus];
+        if(smokingStatus!=null)this.smokingStatus=SmokingStatus.values()[smokingStatus];
+        else this.smokingStatus=null;
         this.height=height;
         this.weight=weight;
         this.medicalHistory=medicalHistory;
@@ -100,7 +101,7 @@ public class Patient {
     /**
      * @return the patient's id
      */
-    public int  getPatientId(){return id;}
+    public Integer  getPatientId(){return id;}
     /**
      * @return the patient's smoking status
      */
@@ -110,13 +111,13 @@ public class Patient {
     /**
      * @return the patient's height
      */
-    public int getPatientHeight() {
+    public Integer getPatientHeight() {
         return height;
     }
     /**
      * @return the patient's weight
      */
-    public int getPatientWeight() {
+    public Integer getPatientWeight() {
         return weight;
     }
     /**
@@ -141,7 +142,8 @@ public class Patient {
     /**
      * @return the patient's BMI
      */
-    public double getPatientBMI(){
+    public Double getPatientBMI(){
+        if(height==null) return null;
         double heightInMeters=height/100.0;
         double bmi=(weight/(heightInMeters*heightInMeters));
         return  Math.round(bmi * 100.0) / 100.0;

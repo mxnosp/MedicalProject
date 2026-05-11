@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gui.controllers.ViewVisitController"
+            prefWidth="900"
+            prefHeight="750"
+            stylesheets="@../styles/viewvisit.css">
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    fitToHeight="false"
+                    pannable="true"
+                    hbarPolicy="NEVER"
+                    vbarPolicy="AS_NEEDED"
+                    styleClass="view-scroll-pane">
+
+            <content>
+                <VBox spacing="22" alignment="TOP_LEFT" styleClass="view-root">
+                    <padding>
+                        <Insets top="30" right="40" bottom="30" left="40"/>
+                    </padding>
+
+                    <Label text="Προβολή Επίσκεψης" styleClass="page-title"/>
+
+                    <Separator/>
+
+                    <!-- Visit Info -->
+                    <VBox spacing="12">
+                        <Label text="Στοιχεία Επίσκεψης" styleClass="section-title"/>
+
+                        <GridPane hgap="18" vgap="14" maxWidth="Infinity" styleClass="info-card">
+
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="170" prefWidth="190"/>
+                                <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+                            </columnConstraints>
+
+                            <Label text="Ημερομηνία:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="visitDateLabel"
+                                   text="-"
+                                   styleClass="field-value"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="1"/>
+
+                            <Label text="Αιτία Επίσκεψης:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="1"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="reasonLabel"
+                                   text="-"
+                                   wrapText="true"
+                                   maxWidth="Infinity"
+                                   styleClass="field-value"
+                                   GridPane.rowIndex="1"
+                                   GridPane.columnIndex="1"/>
+
+                            <Label text="Πληρωμή:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="2"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="paymentLabel"
+                                   text="-"
+                                   styleClass="field-value"
+                                   GridPane.rowIndex="2"
+                                   GridPane.columnIndex="1"/>
+
+                        </GridPane>
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Measurements -->
+                    <VBox spacing="12">
+                        <Label text="Μετρήσεις" styleClass="section-title"/>
+
+                        <GridPane hgap="18" vgap="18" maxWidth="Infinity" styleClass="info-card">
+
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="170" prefWidth="190"/>
+                                <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+                            </columnConstraints>
+
+                            <Label text="Βασικές Μετρήσεις:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0"/>
+
+                            <HBox spacing="14"
+                                  GridPane.rowIndex="0"
+                                  GridPane.columnIndex="1">
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="SpO₂" styleClass="metric-title"/>
+                                    <Label fx:id="spo2Label" text="-" styleClass="metric-value"/>
+                                </VBox>
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="Σφύξεις" styleClass="metric-title"/>
+                                    <Label fx:id="pulseLabel" text="-" styleClass="metric-value"/>
+                                </VBox>
+
+                            </HBox>
+
+                            <Label text="Σπιρομέτρηση:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="1"
+                                   GridPane.columnIndex="0"/>
+
+                            <HBox spacing="14"
+                                  GridPane.rowIndex="1"
+                                  GridPane.columnIndex="1">
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="FEV1" styleClass="metric-title"/>
+                                    <Label fx:id="fev1Label" text="-" styleClass="metric-value"/>
+                                </VBox>
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="FVC" styleClass="metric-title"/>
+                                    <Label fx:id="fvcLabel" text="-" styleClass="metric-value"/>
+                                </VBox>
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="PEF" styleClass="metric-title"/>
+                                    <Label fx:id="pefLabel" text="-" styleClass="metric-value"/>
+                                </VBox>
+
+                            </HBox>
+
+                            <HBox spacing="14"
+                                  GridPane.rowIndex="2"
+                                  GridPane.columnIndex="1">
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="FEV1/FVC" styleClass="metric-title"/>
+                                    <Label fx:id="fev1FvcLabel" text="-" styleClass="metric-value"/>
+                                </VBox>
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="FEF25-75" styleClass="metric-title"/>
+                                    <Label fx:id="fef2575Label" text="-" styleClass="metric-value"/>
+                                </VBox>
+
+                            </HBox>
+
+                        </GridPane>
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Clinical Examination -->
+                    <VBox spacing="12">
+                        <Label text="Κλινικός Έλεγχος" styleClass="section-title"/>
+
+                        <HBox spacing="18">
+
+                            <VBox spacing="8" HBox.hgrow="ALWAYS" styleClass="text-card">
+                                <Label text="Φυσικός Έλεγχος:" styleClass="field-name"/>
+
+                                <Label fx:id="physicalExamLabel"
+                                       text="-"
+                                       wrapText="true"
+                                       maxWidth="Infinity"
+                                       styleClass="paragraph-value"/>
+                            </VBox>
+
+                            <VBox spacing="8" HBox.hgrow="ALWAYS" styleClass="text-card">
+                                <Label text="Λειτουργικός Έλεγχος:" styleClass="field-name"/>
+
+                                <Label fx:id="functionalExamLabel"
+                                       text="-"
+                                       wrapText="true"
+                                       maxWidth="Infinity"
+                                       styleClass="paragraph-value"/>
+                            </VBox>
+
+                        </HBox>
+
+                        <VBox spacing="8" styleClass="text-card">
+                            <Label text="Φαρμακευτική Αγωγή / Οδηγίες:" styleClass="field-name"/>
+
+                            <Label fx:id="treatmentLabel"
+                                   text="-"
+                                   wrapText="true"
+                                   maxWidth="Infinity"
+                                   styleClass="paragraph-value"/>
+                        </VBox>
+
+                        <VBox spacing="8" styleClass="text-card">
+                            <Label text="Σημειώσεις:" styleClass="field-name"/>
+
+                            <Label fx:id="notesLabel"
+                                   text="-"
+                                   wrapText="true"
+                                   maxWidth="Infinity"
+                                   styleClass="paragraph-value"/>
+                        </VBox>
+
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Recheck -->
+                    <VBox spacing="12">
+                        <Label text="Επανεξέταση" styleClass="section-title"/>
+
+                        <GridPane hgap="18" vgap="14" maxWidth="Infinity" styleClass="info-card">
+
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="170" prefWidth="190"/>
+                                <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+                            </columnConstraints>
+
+                            <Label text="Ημερομηνία Επανεξέτασης:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="recheckDateLabel"
+                                   text="-"
+                                   styleClass="field-value"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="1"/>
+
+                        </GridPane>
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="12" alignment="CENTER" styleClass="bottom-bar">
+            <padding>
+                <Insets top="15" right="40" bottom="25" left="40"/>
+            </padding>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button text="Κλείσιμο"
+                    fx:id="closeButton"
+                    onAction="#closeWindow"
+                    styleClass="secondary-button"/>
+
+        </HBox>
+    </bottom>
+
+</BorderPane>

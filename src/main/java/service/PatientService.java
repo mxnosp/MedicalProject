@@ -25,8 +25,11 @@ public class PatientService {
      * @throws ValidationException
      * @throws DBAccessException
      */
-    public void insertPatient(String firstname, String lastname, String phone, String amka, SmokingStatus smokingStatus,int height,int weight,String medicalHistory,String chronicMedication,String notes) throws ValidationException, DBAccessException {
-            Patient p=new Patient(-1,firstname,lastname,phone,amka,smokingStatus.ordinal(),height,weight,medicalHistory,chronicMedication,notes);
+    public void insertPatient(String firstname, String lastname, String phone, String amka, SmokingStatus smokingStatus,Integer height,Integer weight,String medicalHistory,String chronicMedication,String notes) throws ValidationException, DBAccessException {
+            Integer smoking;
+            if(smokingStatus==null) smoking=null;
+            else smoking=smokingStatus.ordinal();
+            Patient p=new Patient(-1,firstname,lastname,phone,amka,smoking,height,weight,medicalHistory,chronicMedication,notes);
             repo.insertPatient(p);
     }
 
@@ -53,8 +56,11 @@ public class PatientService {
      * @throws ValidationException
      * @throws DBAccessException
      */
-    public void updatePatient(String firstname,String lastname,String phone,String amka,SmokingStatus smokingStatus,int height,int weight,String medicalHistory,String chronicMedication,String notes,int id) throws ValidationException ,DBAccessException{
-        Patient p=new Patient(-1,firstname,lastname,phone,amka,smokingStatus.ordinal(),height,weight,medicalHistory,chronicMedication,notes);
+    public void updatePatient(String firstname,String lastname,String phone,String amka,SmokingStatus smokingStatus,Integer height,Integer weight,String medicalHistory,String chronicMedication,String notes,int id) throws ValidationException ,DBAccessException{
+        Integer smoking;
+        if(smokingStatus==null) smoking=null;
+        else smoking=smokingStatus.ordinal();
+        Patient p=new Patient(-1,firstname,lastname,phone,amka,smoking,height,weight,medicalHistory,chronicMedication,notes);
         repo.updatePatient(p,id);
     }
 

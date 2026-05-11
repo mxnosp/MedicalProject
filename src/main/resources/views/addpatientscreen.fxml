@@ -148,7 +148,6 @@
                                 <Label text="Ιστορικό:"/>
 
                                 <TextArea fx:id="medicalHistoryArea"
-                                          promptText="• Πάθηση / διάγνωση&#10;• Χειρουργείο&#10;• Αλλεργία"
                                           wrapText="true"
                                           prefRowCount="8"
                                           maxWidth="Infinity"/>
@@ -159,7 +158,6 @@
                                 <Label text="Χ. Φαρμακευτική Αγωγή:"/>
 
                                 <TextArea fx:id="chronicMedicationArea"
-                                          promptText="• Φάρμακο - δοσολογία&#10;• Φάρμακο - δοσολογία"
                                           wrapText="true"
                                           prefRowCount="8"
                                           maxWidth="Infinity"/>

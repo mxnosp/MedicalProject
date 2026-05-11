@@ -26,37 +26,74 @@ public class PatientRepository {
      * inserts the patient given as a parameter to the db
      * @param patient
      */
-    public void insertPatient(Patient patient) throws DBAccessException,PatientExistsException{
+    public void insertPatient(Patient patient) throws DBAccessException, PatientExistsException {
 
-        if(searchPatientsByAMKA(patient.getPatientAmka())!=null){
+        if (patient.getPatientAmka() != null && searchPatientsByAMKA(patient.getPatientAmka()) != null) {
             throw new PatientExistsException("Patient with the given AMKA already exists!");
         }
-        String sql = "INSERT INTO patients(first_name,last_name,phone,amka,smoking,height,weight,medical_history,chronic_medication,notes,search_text) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
-        try (Connection conn = DBConnector.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            String searchtext=normalizeGreekSearchText(patient.getPatientFirstName()+" "+patient.getPatientLastName());
-            stmt.setString(1, patient.getPatientFirstName());
-            stmt.setString(2, patient.getPatientLastName());
-            stmt.setString(3, patient.getPatientPhone());
-            stmt.setString(4, patient.getPatientAmka());
-            stmt.setInt(5, patient.getPatientSmokingStatus().ordinal());
-            stmt.setInt(6, patient.getPatientHeight());
-            stmt.setInt(7, patient.getPatientWeight());
-            stmt.setString(8,patient.getPatientMedicalHistory());
-            stmt.setString(9,patient.getPatientChronicMedication());
-            stmt.setString(10,patient.getPatientNotes());
-            stmt.setString(11,searchtext);
+        String sql = """
+            INSERT INTO patients (
+                first_name,
+                last_name,
+                phone,
+                amka,
+                smoking,
+                height,
+                weight,
+                medical_history,
+                chronic_medication,
+                notes,
+                search_text
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String firstName = patient.getPatientFirstName();
+            String lastName = patient.getPatientLastName();
+
+            String searchText = normalizeGreekSearchText(
+                    firstName + " " +lastName
+            );
+
+            setNullableString(stmt, 1, firstName);
+            setNullableString(stmt, 2, lastName);
+            setNullableString(stmt, 3, patient.getPatientPhone());
+            setNullableString(stmt, 4, patient.getPatientAmka());
+
+            if (patient.getPatientSmokingStatus() == null) {
+                stmt.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                stmt.setInt(5, patient.getPatientSmokingStatus().ordinal());
+            }
+
+            setNullableInteger(stmt, 6, patient.getPatientHeight());
+            setNullableInteger(stmt, 7, patient.getPatientWeight());
+
+            setNullableString(stmt, 8, patient.getPatientMedicalHistory());
+            setNullableString(stmt, 9, patient.getPatientChronicMedication());
+            setNullableString(stmt, 10, patient.getPatientNotes());
+            setNullableString(stmt, 11, searchText);
+
             int affectedRows = stmt.executeUpdate();
+
             if (affectedRows == 0) {
                 throw new DBAccessException("Insert failed: no rows affected");
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DBAccessException("Failed to insert patient "+patient.getPatientFirstName()+" "+patient.getPatientLastName());
+            throw new DBAccessException(
+                    "Failed to insert patient " +
+                            patient.getPatientFirstName() + " " +
+                            patient.getPatientLastName(),
+                    e
+            );
         }
-
     }
-
     /**
      * deletes the patient with the given id
      * @param id
@@ -81,40 +118,64 @@ public class PatientRepository {
      * @param updatedPatient
      * @param id
      */
-    public void updatePatient(Patient updatedPatient, int id) throws DBAccessException{
+    public void updatePatient(Patient updatedPatient, int id) throws DBAccessException {
         String sql = """
             UPDATE patients
-            SET first_name = ?, last_name = ?, phone = ?, amka = ?,  smoking = ? ,height = ?,weight =?,medical_history = ?,chronic_medication = ?,notes = ?,search_text = ?
+            SET first_name = ?,
+                last_name = ?,
+                phone = ?,
+                amka = ?,
+                smoking = ?,
+                height = ?,
+                weight = ?,
+                medical_history = ?,
+                chronic_medication = ?,
+                notes = ?,
+                search_text = ?
             WHERE id = ?
             """;
-        Patient patientExists=searchPatientsByAMKA(updatedPatient.getPatientAmka());
-        if(patientExists!=null && patientExists.getPatientId()!=id ){
+
+        Patient patientExists = searchPatientsByAMKA(updatedPatient.getPatientAmka());
+
+        if (patientExists != null && patientExists.getPatientId() != id) {
             throw new PatientExistsException("Patient with the given AMKA already exists!");
         }
+
         String searchText = normalizeGreekSearchText(
-                updatedPatient.getPatientFirstName() + " " + updatedPatient.getPatientLastName()
+                updatedPatient.getPatientFirstName()+ " " +
+                        updatedPatient.getPatientLastName()
         );
 
-        try (
-                Connection conn = DBConnector.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
-        ) {
-            stmt.setString(1, updatedPatient.getPatientFirstName());
-            stmt.setString(2, updatedPatient.getPatientLastName());
-            stmt.setString(3, updatedPatient.getPatientPhone());
-            stmt.setString(4, updatedPatient.getPatientAmka());
-            stmt.setInt(5,updatedPatient.getPatientSmokingStatus().ordinal());
-            stmt.setInt(6,updatedPatient.getPatientHeight());
-            stmt.setInt(7,updatedPatient.getPatientWeight());
-            stmt.setString(8,updatedPatient.getPatientMedicalHistory());
-            stmt.setString(9,updatedPatient.getPatientChronicMedication());
-            stmt.setString(10,updatedPatient.getPatientNotes());
-            stmt.setString(11, searchText);
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            setNullableString(stmt, 1, updatedPatient.getPatientFirstName());
+            setNullableString(stmt, 2, updatedPatient.getPatientLastName());
+            setNullableString(stmt, 3, updatedPatient.getPatientPhone());
+            setNullableString(stmt, 4, updatedPatient.getPatientAmka());
+
+            if (updatedPatient.getPatientSmokingStatus() == null) {
+                stmt.setNull(5, java.sql.Types.INTEGER);
+            } else {
+                stmt.setInt(5, updatedPatient.getPatientSmokingStatus().ordinal());
+            }
+
+            setNullableInteger(stmt, 6, updatedPatient.getPatientHeight());
+            setNullableInteger(stmt, 7, updatedPatient.getPatientWeight());
+
+            setNullableString(stmt, 8, updatedPatient.getPatientMedicalHistory());
+            setNullableString(stmt, 9, updatedPatient.getPatientChronicMedication());
+            setNullableString(stmt, 10, updatedPatient.getPatientNotes());
+            setNullableString(stmt, 11, searchText);
+
             stmt.setInt(12, id);
+
             int affectedRows = stmt.executeUpdate();
+
             if (affectedRows == 0) {
                 throw new DBAccessException("Update failed: no patient found with id " + id);
             }
+
         } catch (SQLException e) {
             throw new DBAccessException("Failed to update patient with id " + id, e);
         }
@@ -213,16 +274,16 @@ public class PatientRepository {
     private Patient mapPatient(ResultSet rs) throws SQLException {
         return new Patient(
                 rs.getInt("id"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getString("phone"),
-                rs.getString("amka"),
-                rs.getInt("smoking"),
-                rs.getInt("height"),
-                rs.getInt("weight"),
-                rs.getString("medical_history"),
-                rs.getString("chronic_medication"),
-                rs.getString("notes")
+                getNullableString(rs, "first_name"),
+                getNullableString(rs, "last_name"),
+                getNullableString(rs, "phone"),
+                getNullableString(rs, "amka"),
+                getNullableInteger(rs, "smoking"),
+                getNullableInteger(rs, "height"),
+                getNullableInteger(rs, "weight"),
+                getNullableString(rs, "medical_history"),
+                getNullableString(rs, "chronic_medication"),
+                getNullableString(rs, "notes")
         );
     }
 
@@ -232,45 +293,93 @@ public class PatientRepository {
      * @return
      * @throws DBAccessException
      */
-    public Patient searchPatientsByAMKA(String amka) throws DBAccessException{
-        if (amka == null || amka.isBlank() ||!amka.matches("\\d{11}")){
+    public Patient searchPatientsByAMKA(String amka) throws DBAccessException {
+        if (amka == null || amka.isBlank()) {
+            return null;
+        }
+
+        String normalizedAmka = amka.trim();
+
+        if (!normalizedAmka.matches("\\d{11}")) {
             return null;
         }
 
         String sql = """
-            SELECT id, first_name, last_name, phone, amka,smoking,height,weight,medical_history,chronic_medication,notes
+            SELECT id,
+                   first_name,
+                   last_name,
+                   phone,
+                   amka,
+                   smoking,
+                   height,
+                   weight,
+                   medical_history,
+                   chronic_medication,
+                   notes
             FROM patients
-            WHERE amka LIKE ?
+            WHERE amka = ?
             """;
 
-        Patient patient=null;
-        try (
-                Connection conn = DBConnector.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)
-        ) {
-            stmt.setString(1,amka );
-            try (ResultSet rs = stmt.executeQuery()) {
-                if(rs.next()){
-                    patient=new Patient(
-                            rs.getInt("id"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getString("phone"),
-                            amka,
-                            rs.getInt("smoking"),
-                            rs.getInt("height"),
-                            rs.getInt("weight"),
-                            rs.getString("medical_history"),
-                            rs.getString("chronic_medication"),
-                            rs.getString("notes")
-                    );
-                }
+        try (Connection conn = DBConnector.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            stmt.setString(1, normalizedAmka);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapPatient(rs);
+                }
             }
-            return patient;
+
+            return null;
+
         } catch (SQLException e) {
             throw new DBAccessException("Failed searching patients", e);
         }
+    }
+
+    private static void setNullableString(PreparedStatement stmt, int index, String value)
+            throws SQLException {
+
+        if (value == null || value.isBlank()) {
+            stmt.setNull(index, java.sql.Types.VARCHAR);
+        } else {
+            stmt.setString(index, value.trim());
+        }
+    }
+
+    private static void setNullableInteger(PreparedStatement stmt, int index, Integer value)
+            throws SQLException {
+
+        if (value == null) {
+            stmt.setNull(index, java.sql.Types.INTEGER);
+        } else {
+            stmt.setInt(index, value);
+        }
+    }
+
+    private static Integer getNullableInteger(ResultSet rs, String column)
+            throws SQLException {
+
+        int value = rs.getInt(column);
+
+        if (rs.wasNull()) {
+            return null;
+        }
+
+        return value;
+    }
+
+    private static String getNullableString(ResultSet rs, String column)
+            throws SQLException {
+
+        String value = rs.getString(column);
+
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+
+        return value;
     }
 }
 

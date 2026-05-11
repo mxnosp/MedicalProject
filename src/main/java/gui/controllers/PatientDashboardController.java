@@ -12,20 +12,23 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Date;
 import model.Patient;
 import model.Visit;
 import service.PatientService;
 import service.VisitService;
+import utils.DateParser;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
 public class PatientDashboardController {
-    public static Patient selectedPatient=null;
+    private  Patient selectedPatient = null;
+    private Visit selectedVisit = null;
     @FXML
     private Label searchErrorLabel;
 
@@ -73,34 +76,28 @@ public class PatientDashboardController {
     private TableView<Patient> patientTable;
 
     @FXML
-    private TableColumn<Patient,Number> idColumn;
+    private TableColumn<Patient, Number> idColumn;
 
     @FXML
-    private TableColumn<Patient,String> firstNameColumn;
+    private TableColumn<Patient, String> firstNameColumn;
 
     @FXML
-    private TableColumn<Patient,String> lastNameColumn;
+    private TableColumn<Patient, String> lastNameColumn;
 
     @FXML
-    private TableColumn<Patient,String> amkaColumn;
-
-    @FXML
-    private Button addPatient;
-
-    @FXML
-    private Button editPatient;
-
-    @FXML
-    private Button deletePatient;
+    private TableColumn<Patient, String> amkaColumn;
 
     @FXML
     private TableView<Visit> visitTable;
 
     @FXML
-    private TableColumn<Visit, Date> visitDateColumn;
+    private TableColumn<Visit, String> visitDateColumn;
 
     @FXML
-    private TableColumn<Visit,Button> viewVisitColumn;
+    private TableColumn<Visit, Void> viewVisitColumn;
+
+    @FXML
+    private TableColumn<Visit, Integer> visitIdColumn;
 
     @FXML
     private Button addVisit;
@@ -112,40 +109,61 @@ public class PatientDashboardController {
     private Button deleteVisit;
 
     private final ObservableList<Patient> patients = FXCollections.observableArrayList();
+    private final ObservableList<Visit> visits = FXCollections.observableArrayList();
 
-    public PatientDashboardController(){
-        patientService=new PatientService();
-        visitService=new VisitService();
+    public PatientDashboardController() {
+        patientService = new PatientService();
+        visitService = new VisitService();
     }
 
     /**
      * initializes the tables
      */
     @FXML
-    private void initialize(){
+    private void initialize() {
         patientTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        visitTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         initializeTableColumns();
         loadPatients();
         initializePatientSelection();
+        initializeVisitSelection();
     }
 
-    private void initializePatientSelection(){
+    /**
+     * sets the action that will be done when a row of the patient table is pressed
+     */
+    private void initializePatientSelection() {
         patientTable.getSelectionModel()
                 .selectedItemProperty()
-                .addListener((observable,oldPatient, newPatient) -> {
+                .addListener((observable, oldPatient, newPatient) -> {
                     if (newPatient == null) {
                         clearSelectedPatientLabels();
                         return;
                     }
 
                     showSelectedPatient(newPatient);
+                    loadVisits();
+                });
+    }
+
+    /**
+     * sets the action that will be done when a row of the visit table is pressed
+     */
+    private void initializeVisitSelection() {
+        visitTable.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldVisit, newVisit) -> {
+                    if (newVisit == null) {
+                        return;
+                    }
+                    selectedVisit = newVisit;
                 });
     }
 
     /**
      * clears the selected patients info on the left
      */
-    private void clearSelectedPatientLabels(){
+    private void clearSelectedPatientLabels() {
         selectedPatientIdLabel.setText("-");
         selectedAmkaLabel.setText("-");
         selectedPhoneLabel.setText("-");
@@ -155,28 +173,38 @@ public class PatientDashboardController {
         selectedHeightLabel.setText("-");
         selectedFirstNameLabel.setText("-");
         selectedLastNameLabel.setText("-");
-        selectedPatient=null;
+        selectedPatient = null;
     }
 
     /**
      * shows the info of the selected patient in the left of the screen
+     *
      * @param patientToShow
      */
-    private void showSelectedPatient(Patient patientToShow){
+    private void showSelectedPatient(Patient patientToShow) {
+        clearSelectedPatientLabels();
         selectedPatientIdLabel.setText(String.valueOf(patientToShow.getPatientId()));
         selectedAmkaLabel.setText(patientToShow.getPatientAmka());
-        if(patientToShow.getPatientPhone()!=null && !patientToShow.getPatientPhone().isEmpty()){
+        if (patientToShow.getPatientPhone() != null && !patientToShow.getPatientPhone().isEmpty()) {
             selectedPhoneLabel.setText(patientToShow.getPatientPhone());
-        }else selectedPhoneLabel.setText("-");
+        }
         selectedFirstNameLabel.setText(patientToShow.getPatientFirstName());
         selectedLastNameLabel.setText(patientToShow.getPatientLastName());
-        selectedBMILabel.setText(Double.toString(patientToShow.getPatientBMI()));
-        selectedSmokerLabel.setText(patientToShow.getPatientSmokingStatus().toString());
-        selectedWeightLabel.setText(Integer.toString(patientToShow.getPatientWeight())+"kg");
-        selectedHeightLabel.setText(Integer.toString(patientToShow.getPatientHeight())+"cm");
-        selectedPatient=new Patient(patientToShow.getPatientId(),patientToShow.getPatientFirstName(),patientToShow.getPatientLastName(),patientToShow.getPatientPhone(),patientToShow.getPatientAmka(),patientToShow.getPatientSmokingStatus().ordinal(),patientToShow.getPatientHeight(),patientToShow.getPatientWeight(),patientToShow.getPatientMedicalHistory(),patientToShow.getPatientChronicMedication(),patientToShow.getPatientNotes());
+        if (patientToShow.getPatientBMI() != null)
+            selectedBMILabel.setText(Double.toString(patientToShow.getPatientBMI()));
+        if (patientToShow.getPatientSmokingStatus() != null)
+            selectedSmokerLabel.setText(patientToShow.getPatientSmokingStatus().toString());
+        if (patientToShow.getPatientWeight() != null)
+            selectedWeightLabel.setText(Integer.toString(patientToShow.getPatientWeight()) + "kg");
+        if (patientToShow.getPatientHeight() != null)
+            selectedHeightLabel.setText(Integer.toString(patientToShow.getPatientHeight()) + "cm");
+        selectedPatient = new Patient(patientToShow.getPatientId(), patientToShow.getPatientFirstName(), patientToShow.getPatientLastName(), patientToShow.getPatientPhone(), patientToShow.getPatientAmka(), patientToShow.getPatientSmokingStatus() == null ? null : patientToShow.getPatientSmokingStatus().ordinal()
+                , patientToShow.getPatientHeight(), patientToShow.getPatientWeight(), patientToShow.getPatientMedicalHistory(), patientToShow.getPatientChronicMedication(), patientToShow.getPatientNotes());
     }
 
+    /**
+     * initializes the patient and the visit table's columns
+     */
     private void initializeTableColumns() {
         idColumn.setCellValueFactory(
                 cellData -> new SimpleIntegerProperty(cellData.getValue().getPatientId())
@@ -193,9 +221,47 @@ public class PatientDashboardController {
         amkaColumn.setCellValueFactory(
                 cellData -> new SimpleStringProperty(cellData.getValue().getPatientAmka())
         );
+
+        visitIdColumn.setCellValueFactory(cellData ->
+                new SimpleIntegerProperty(cellData.getValue().getId()).asObject()
+        );
+
+        visitDateColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(DateParser.getStringDate(cellData.getValue().getVisitDate()))
+        );
+
+        viewVisitColumn.setCellFactory(column -> new TableCell<Visit, Void>() {
+
+            private final Button viewButton = new Button();
+
+            {
+                viewButton.setOnAction(event -> {
+                    Visit visit = getTableView().getItems().get(getIndex());
+                    viewSelectedVisit(visit);
+                });
+                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/view.png")));
+                ImageView imageView = new ImageView(image);
+
+                imageView.setFitWidth(18);
+                imageView.setFitHeight(18);
+                imageView.setPreserveRatio(true);
+                viewButton.setGraphic(imageView);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(viewButton);
+                }
+            }
+        });
     }
 
-    private void loadPatients(){
+    private void loadPatients() {
         patientTable.setItems(patients);
         patients.clear();
         patients.addAll(patientService.getAllPatients());
@@ -205,13 +271,13 @@ public class PatientDashboardController {
      * Searches the Patient table
      */
     @FXML
-    void searchPatient(){
+    void searchPatient() {
         patientTable.setItems(patients);
         patients.clear();
-        Patient searchedByAmka=patientService.searchPatientByAmka(searchField.getText());
-        if(searchedByAmka!=null){
+        Patient searchedByAmka = patientService.searchPatientByAmka(searchField.getText());
+        if (searchedByAmka != null) {
             patients.setAll(searchedByAmka);
-        }else {
+        } else {
             List<Patient> results = patientService.searchPatientsByName(searchField.getText());
             patients.setAll(results);
         }
@@ -222,7 +288,7 @@ public class PatientDashboardController {
      * Called when the more info button is  pressed
      */
     @FXML
-    void showFUllPatientInfo(){
+    void showFUllPatientInfo() {
 
     }
 
@@ -231,13 +297,17 @@ public class PatientDashboardController {
      * and a save button  to save the new patient to the table
      */
     @FXML
-    private void openNewPatientForm(ActionEvent event){
-         try {
+    private void openNewPatientForm(ActionEvent event) {
+
+
+        try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/addpatientscreen.fxml")
             );
 
             Parent root = loader.load();
+            AddPatientFormController controller=loader.getController();
+            controller.setSelectedPatient(selectedPatient);
 
             Scene scene = new Scene(root, 700, 950);
 
@@ -263,13 +333,12 @@ public class PatientDashboardController {
     }
 
 
-
     /**
      * deletes the selected patient from the patient list and his visits
      */
     @FXML
-    void deleteSelectedPatient(){
-        if(Objects.equals(selectedPatientIdLabel.getText(), "-")){
+    void deleteSelectedPatient() {
+        if (selectedPatient == null) {
             return;
         }
         patientService.deletePatient(Integer.parseInt(selectedPatientIdLabel.getText()));
@@ -277,15 +346,21 @@ public class PatientDashboardController {
         clearSelectedPatientLabels();
         loadPatients();
         clearVisits();
-        selectedPatient=null;
+        selectedPatient = null;
     }
 
-    private void clearVisits(){
-
+    /**
+     * clears the visits table
+     */
+    private void clearVisits() {
+        visitTable.setItems(visits);
+        visits.clear();
     }
-    private void loadVisits(){
 
-
+    private void loadVisits() {
+        visitTable.setItems(visits);
+        visits.clear();
+        visits.addAll(visitService.getPatientVisits(selectedPatient.getPatientId()));
     }
 
     /**
@@ -293,14 +368,18 @@ public class PatientDashboardController {
      * info in order for the doctor to edit them
      */
     @FXML
-    void openSelectedPatientForm(ActionEvent event){
+    void openSelectedPatientForm(ActionEvent event) {
+        if (selectedPatient == null) {
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/views/editpatientscreen.fxml")
             );
 
             Parent root = loader.load();
-
+            EditPatientFormController controller=loader.getController();
+            controller.setSelectedPatient(selectedPatient);
             Scene scene = new Scene(root, 700, 950);
 
             Stage patientStage = new Stage();
@@ -325,11 +404,40 @@ public class PatientDashboardController {
 
     /**
      * opens a subwindow that has a form with the new visit's info
-     * and a save button to to save the new visit to the table
+     * and a save button  to save the new visit to the table
      */
     @FXML
-    void openNewVisitForm(){
+    private void openNewVisitForm(ActionEvent event) {
+        if (selectedPatient == null) return;
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/addvisitscreen.fxml")
+            );
 
+            Parent root = loader.load();
+            AddVisitFormController controller=loader.getController();
+            controller.setSelectedPatient(selectedPatient);
+
+            Scene scene = new Scene(root, 700, 950);
+
+            Stage visitStage = new Stage();
+            visitStage.setTitle("Προσθήκη Επίσκεψης");
+            visitStage.setScene(scene);
+
+            Stage ownerStage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            visitStage.initOwner(ownerStage);
+            visitStage.initModality(Modality.WINDOW_MODAL);
+
+            visitStage.showAndWait();
+
+            loadVisits();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load visit form", e);
+        }
     }
 
     /**
@@ -337,7 +445,7 @@ public class PatientDashboardController {
      * so the doctor can edit them
      */
     @FXML
-    void openSelectedVisitForm(){
+    private void openSelectedVisitForm(ActionEvent event) {
 
     }
 
@@ -345,9 +453,40 @@ public class PatientDashboardController {
      * deletes the selected visit form the visit table of the selected patient
      */
     @FXML
-    void deleteSelectedVisit(){
-
+    private void deleteSelectedVisit() {
+        visitService.deleteVisit(selectedVisit.getId());
+        loadVisits();
     }
 
+    private void viewSelectedVisit( Visit visit) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/viewvisitscreen.fxml")
+            );
 
+            Parent root = loader.load();
+
+            ViewVisitController controller = loader.getController();
+            controller.setVisit(visit);
+
+            Scene scene = new Scene(root, 700, 950);
+
+            Stage viewVisitStage = new Stage();
+            viewVisitStage.setTitle("Προβολή Επίσκεψης");
+            viewVisitStage.setScene(scene);
+
+            Stage ownerStage = (Stage) visitTable
+                    .getScene()
+                    .getWindow();
+
+            viewVisitStage.initOwner(ownerStage);
+            viewVisitStage.initModality(Modality.WINDOW_MODAL);
+
+            viewVisitStage.showAndWait();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load view visit form", e);
+        }
+
+    }
 }

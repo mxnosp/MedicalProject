@@ -1,14 +1,17 @@
 package repository;
 
 import db.DBConnector;
+import model.Spirometry;
 import model.Visit;
 import model.exceptions.DBAccessException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import utils.DateParser;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static utils.NumberInputHelpers.parseDouble;
+import static utils.NumberInputHelpers.parseInteger;
 
 public class VisitRepository {
     public VisitRepository(){}
@@ -22,17 +25,24 @@ public class VisitRepository {
      * @throws DBAccessException
      */
     public void insertVisit(Visit visit) throws DBAccessException{
-        String sql="INSERT INTO visits (patient_id,notes,paid,day,month,year) VALUES(?,?,?,?,?,?)";
+        String sql="INSERT INTO visits (patient_id,notes,paid,date,fev1,fvc,pef,fef2575,heartrate,spo2,physicalcheck,functionalcheck,medication,reason,recheckdate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try(Connection conn= DBConnector.getConnection();
             PreparedStatement stmt=conn.prepareStatement(sql)){
             stmt.setInt(1,visit.getPatientid());
             stmt.setString(2,visit.getVisitNotes());
-            int paid=0;
-            if(visit.isPaidVisit()) paid=1;
-            stmt.setInt(3,paid);
-            stmt.setInt(4,visit.getVisitDate().getDay());
-            stmt.setInt(5,visit.getVisitDate().getMonth());
-            stmt.setInt(6,visit.getVisitDate().getYear());
+            setNullableString(stmt,3,visit.getVisitPayment());
+            stmt.setString(4,DateParser.getStringDate(visit.getVisitDate()));
+            setNullableString(stmt,5,visit.getSpirometry().getFEV1());
+            setNullableString(stmt,6,visit.getSpirometry().getFVC());
+            setNullableString(stmt,7,visit.getSpirometry().getPEF());
+            setNullableString(stmt,8,visit.getSpirometry().getFEF2575());
+            setNullableString(stmt,9,visit.getHeartRate());
+            setNullableString(stmt,10,visit.getSpo2());
+            stmt.setString(11,visit.getPhysicalCheck());
+            stmt.setString(12,visit.getFunctionalCheck());
+            stmt.setString(13,visit.getMedication());
+            stmt.setString(14,visit.getReason());
+            stmt.setString(15,DateParser.getStringDate(visit.getReappoinment()));
             int affected=stmt.executeUpdate();
             if(affected==0) throw new DBAccessException("Failed to insert Visit");
         }catch (SQLException e){
@@ -67,17 +77,25 @@ public class VisitRepository {
      */
     public void updateVisit(Visit updatedvisit,int id)  throws DBAccessException{
 
-        String sql="UPDATE visits SET notes=?,paid=?,day=?,month=?,year=? WHERE id=?";
+        String sql="UPDATE visits SET notes=?,paid=?,date = ?,fev1=?,fvc=?,pef=?,fef2575=?,heartrate=?,spo2=?,physicalcheck=?,functionalcheck=?,medication=?,reason=?, recheckdate= ?" +
+                " WHERE id=?";
 
         try(Connection conn=DBConnector.getConnection();PreparedStatement stmt=conn.prepareStatement(sql)){
-            stmt.setString(1,updatedvisit.getVisitNotes());
-            int paid=0;
-            if(updatedvisit.isPaidVisit()) paid=1;
-            stmt.setInt(2,paid);
-            stmt.setInt(3,updatedvisit.getVisitDate().getDay());
-            stmt.setInt(4,updatedvisit.getVisitDate().getMonth());
-            stmt.setInt(5,updatedvisit.getVisitDate().getYear());
-            stmt.setInt(6,id);
+            stmt.setInt(1,updatedvisit.getPatientid());
+            stmt.setString(2,updatedvisit.getVisitNotes());
+            setNullableString(stmt,3,updatedvisit.getVisitPayment());
+            stmt.setString(4,DateParser.getStringDate(updatedvisit.getVisitDate()));
+            setNullableString(stmt,5,updatedvisit.getSpirometry().getFEV1());
+            setNullableString(stmt,6,updatedvisit.getSpirometry().getFVC());
+            setNullableString(stmt,7,updatedvisit.getSpirometry().getPEF());
+            setNullableString(stmt,8,updatedvisit.getSpirometry().getFEF2575());
+            setNullableString(stmt,9,updatedvisit.getHeartRate());
+            setNullableString(stmt,10,updatedvisit.getSpo2());
+            stmt.setString(11,updatedvisit.getPhysicalCheck());
+            stmt.setString(12,updatedvisit.getFunctionalCheck());
+            stmt.setString(13,updatedvisit.getMedication());
+            stmt.setString(14,updatedvisit.getReason());
+            stmt.setString(15,DateParser.getStringDate(updatedvisit.getReappoinment()));
             int affected=stmt.executeUpdate();
             if(affected==0) throw new DBAccessException("Visit with the given id not found!");
         }catch (SQLException e){
@@ -90,9 +108,10 @@ public class VisitRepository {
      * @param patient_id
      * @return
      */
+
     public List<Visit> getPatientVisits(int patient_id)throws DBAccessException{
 
-        String sql="SELECT id,notes,paid,day,month,year,patient_id FROM visits WHERE patient_id=?";
+        String sql="SELECT id,notes,paid,date,patient_id,fev1,fvc,pef,fef2575,heartrate,spo2,physicalcheck,functionalcheck,medication,reason,recheckdate FROM visits WHERE patient_id=?";
 
         try(Connection conn=DBConnector.getConnection();PreparedStatement stmt=conn.prepareStatement(sql)){
             stmt.setInt(1,patient_id);
@@ -114,9 +133,23 @@ public class VisitRepository {
      * @throws SQLException
      */
     private Visit mapVisit(ResultSet rs) throws SQLException{
+        Spirometry spirometry=new Spirometry(parseDouble(rs.getString("fev1")),parseDouble(rs.getString("fvc")),parseDouble(rs.getString("pef")),parseDouble(rs.getString("fef2575")));
         return new Visit(rs.getInt("id"),rs.getString("notes"),
-                rs.getInt("paid") == 1,rs.getInt("day"),rs.getInt("month"),
-                    rs.getInt("year"),rs.getInt("patient_id"));
+                parseInteger(rs.getString("paid")), DateParser.parseDateFromString(rs.getString("date"))
+                ,rs.getInt("patient_id"),spirometry,parseInteger(rs.getString("heartrate")),parseInteger(rs.getString("spo2")),
+                rs.getString("physicalcheck"),rs.getString("functionalcheck"),rs.getString("medication"),rs.getString("reason"),
+                DateParser.parseDateFromString(rs.getString("recheckdate")));
+
+    }
+
+    private static void setNullableString(PreparedStatement stmt, int index, Object value)
+            throws SQLException {
+
+        if (value == null) {
+            stmt.setNull(index, Types.VARCHAR);
+        } else {
+            stmt.setString(index, value.toString());
+        }
     }
 
 

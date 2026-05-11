@@ -3,13 +3,16 @@ package gui.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Patient;
 import model.SmokingStatus;
 import service.PatientService;
+import utils.NumberInputHelpers;
 
 /**
  * controls the actions of the buttons in the add patient form screen
  */
 public class AddPatientFormController {
+    private Patient selectedPatient;
 
     private PatientService patientService;
 
@@ -109,18 +112,17 @@ public class AddPatientFormController {
      * if any errors occur it updates the error label
      */
     private void saveForm() {
-        String firstname=firstNameField.getText();
-        String lastname=lastNameField.getText();
-        String amka=amkaField.getText();
-        String phone=phoneField.getText();
-        SmokingStatus smokingStatus=smokingComboBox.getValue();
-        int height=Integer.parseInt(heightField.getText());
-        int weight=Integer.parseInt(weightField.getText());
-        String medicalHistory=medicalHistoryArea.getText();
-        String chronicMedication=chronicMedicationArea.getText();
-        String notes=notesArea.getText();
-
         try{
+            String firstname=firstNameField.getText();
+            String lastname=lastNameField.getText();
+            String amka=amkaField.getText();
+            String phone=phoneField.getText();
+            SmokingStatus smokingStatus=smokingComboBox.getValue();
+            Integer height= NumberInputHelpers.parseInteger(heightField.getText());
+            Integer weight=NumberInputHelpers.parseInteger(weightField.getText());
+            String medicalHistory=medicalHistoryArea.getText();
+            String chronicMedication=chronicMedicationArea.getText();
+            String notes=notesArea.getText();
             patientService.insertPatient(firstname,lastname,phone,amka,smokingStatus,height,weight,medicalHistory,chronicMedication,notes);
             formErrorLabel.setText("");
             formErrorLabel.setVisible(false);
@@ -137,4 +139,7 @@ public class AddPatientFormController {
     }
 
 
+    public void setSelectedPatient(Patient selectedPatient) {
+        this.selectedPatient = selectedPatient;
+    }
 }
