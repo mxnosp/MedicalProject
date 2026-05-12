@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="gui.controllers.AddVisitFormController"
+            fx:controller="gui.controllers.EditVisitFormController"
             prefWidth="900"
             prefHeight="750"
             stylesheets="@../styles/visitform.css">
@@ -119,9 +119,9 @@
                                     <Label text="Σφύξεις" styleClass="field-mini-label"/>
                                     <HBox spacing="6" alignment="CENTER_LEFT">
                                         <TextField fx:id="pulseField"
-                                               styleClass="measurement-field"/>
+                                                   styleClass="measurement-field"/>
 
-                                         <Label text="/Λεπτο" styleClass="unit-label"/>
+                                        <Label text="/Λεπτο" styleClass="unit-label"/>
                                     </HBox>
                                 </VBox>
 

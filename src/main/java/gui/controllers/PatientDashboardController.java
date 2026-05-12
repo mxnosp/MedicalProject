@@ -261,10 +261,13 @@ public class PatientDashboardController {
         });
     }
 
+    /**
+     *loads the patients to the table
+     */
     private void loadPatients() {
-        patientTable.setItems(patients);
         patients.clear();
-        patients.addAll(patientService.getAllPatients());
+        patients.setAll(patientService.getAllPatients());
+        patientTable.setItems(patients);
     }
 
     /**
@@ -281,6 +284,7 @@ public class PatientDashboardController {
             List<Patient> results = patientService.searchPatientsByName(searchField.getText());
             patients.setAll(results);
         }
+        loadVisits();
     }
 
 
@@ -446,7 +450,36 @@ public class PatientDashboardController {
      */
     @FXML
     private void openSelectedVisitForm(ActionEvent event) {
+        if(selectedVisit==null) return;
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/editvisitscreen.fxml")
+            );
 
+            Parent root = loader.load();
+            EditVisitFormController controller=loader.getController();
+            controller.setSelectedVisit(selectedVisit);
+
+            Scene scene = new Scene(root, 700, 950);
+
+            Stage visitStage = new Stage();
+            visitStage.setTitle("Επεξεργασία Επίσκεψης");
+            visitStage.setScene(scene);
+
+            Stage ownerStage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            visitStage.initOwner(ownerStage);
+            visitStage.initModality(Modality.WINDOW_MODAL);
+
+            visitStage.showAndWait();
+            selectedVisit=null;
+            loadVisits();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load visit form", e);
+        }
     }
 
     /**
@@ -454,10 +487,15 @@ public class PatientDashboardController {
      */
     @FXML
     private void deleteSelectedVisit() {
+        if(selectedVisit==null) return;
         visitService.deleteVisit(selectedVisit.getId());
         loadVisits();
     }
 
+    /**
+     * opens the selected visit's info for the user to just see them
+     * @param visit
+     */
     private void viewSelectedVisit( Visit visit) {
         try {
             FXMLLoader loader = new FXMLLoader(

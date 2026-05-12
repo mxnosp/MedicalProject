@@ -81,21 +81,21 @@ public class VisitRepository {
                 " WHERE id=?";
 
         try(Connection conn=DBConnector.getConnection();PreparedStatement stmt=conn.prepareStatement(sql)){
-            stmt.setInt(1,updatedvisit.getPatientid());
-            stmt.setString(2,updatedvisit.getVisitNotes());
-            setNullableString(stmt,3,updatedvisit.getVisitPayment());
-            stmt.setString(4,DateParser.getStringDate(updatedvisit.getVisitDate()));
-            setNullableString(stmt,5,updatedvisit.getSpirometry().getFEV1());
-            setNullableString(stmt,6,updatedvisit.getSpirometry().getFVC());
-            setNullableString(stmt,7,updatedvisit.getSpirometry().getPEF());
-            setNullableString(stmt,8,updatedvisit.getSpirometry().getFEF2575());
-            setNullableString(stmt,9,updatedvisit.getHeartRate());
-            setNullableString(stmt,10,updatedvisit.getSpo2());
-            stmt.setString(11,updatedvisit.getPhysicalCheck());
-            stmt.setString(12,updatedvisit.getFunctionalCheck());
-            stmt.setString(13,updatedvisit.getMedication());
-            stmt.setString(14,updatedvisit.getReason());
-            stmt.setString(15,DateParser.getStringDate(updatedvisit.getReappoinment()));
+            stmt.setString(1,updatedvisit.getVisitNotes());
+            setNullableString(stmt,2,updatedvisit.getVisitPayment());
+            stmt.setString(3,DateParser.getStringDate(updatedvisit.getVisitDate()));
+            setNullableString(stmt,4,updatedvisit.getSpirometry().getFEV1());
+            setNullableString(stmt,5,updatedvisit.getSpirometry().getFVC());
+            setNullableString(stmt,6,updatedvisit.getSpirometry().getPEF());
+            setNullableString(stmt,7,updatedvisit.getSpirometry().getFEF2575());
+            setNullableString(stmt,8,updatedvisit.getHeartRate());
+            setNullableString(stmt,9,updatedvisit.getSpo2());
+            stmt.setString(10,updatedvisit.getPhysicalCheck());
+            stmt.setString(11,updatedvisit.getFunctionalCheck());
+            stmt.setString(12,updatedvisit.getMedication());
+            stmt.setString(13,updatedvisit.getReason());
+            stmt.setString(14,DateParser.getStringDate(updatedvisit.getReappoinment()));
+            stmt.setInt(15,id);
             int affected=stmt.executeUpdate();
             if(affected==0) throw new DBAccessException("Visit with the given id not found!");
         }catch (SQLException e){

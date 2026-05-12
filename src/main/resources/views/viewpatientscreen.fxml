@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gui.controllers.ViewPatientController"
+            prefWidth="900"
+            prefHeight="750"
+            stylesheets="@../styles/viewpatient.css">
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    fitToHeight="false"
+                    pannable="true"
+                    hbarPolicy="NEVER"
+                    vbarPolicy="AS_NEEDED"
+                    styleClass="view-scroll-pane">
+
+            <content>
+                <VBox spacing="22" alignment="TOP_LEFT" styleClass="view-root">
+                    <padding>
+                        <Insets top="30" right="40" bottom="30" left="40"/>
+                    </padding>
+
+                    <!-- Page title -->
+                    <Label text="Κάρτα Ασθενή" styleClass="page-title"/>
+
+                    <Separator/>
+
+                    <!-- Personal Info Card -->
+                    <VBox spacing="14" styleClass="info-card">
+                        <Label text="Προσωπικά Στοιχεία" styleClass="section-title"/>
+
+                        <GridPane hgap="15" vgap="14" maxWidth="Infinity">
+
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="160" prefWidth="190"/>
+                                <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
+                            </columnConstraints>
+
+                            <Label text="Όνομα:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="firstNameLabel"
+                                   text="-"
+                                   maxWidth="Infinity"
+                                   styleClass="field-value"
+                                   GridPane.hgrow="ALWAYS"
+                                   GridPane.rowIndex="0"
+                                   GridPane.columnIndex="1"/>
+
+                            <Label text="Επώνυμο:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="1"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="lastNameLabel"
+                                   text="-"
+                                   maxWidth="Infinity"
+                                   styleClass="field-value"
+                                   GridPane.hgrow="ALWAYS"
+                                   GridPane.rowIndex="1"
+                                   GridPane.columnIndex="1"/>
+
+                            <Label text="ΑΜΚΑ:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="2"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="amkaLabel"
+                                   text="-"
+                                   prefWidth="220"
+                                   maxWidth="220"
+                                   styleClass="field-value"
+                                   GridPane.rowIndex="2"
+                                   GridPane.columnIndex="1"/>
+
+                            <Label text="Τηλέφωνο:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="3"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="phoneLabel"
+                                   text="-"
+                                   prefWidth="220"
+                                   maxWidth="220"
+                                   styleClass="field-value"
+                                   GridPane.rowIndex="3"
+                                   GridPane.columnIndex="1"/>
+
+                            <Label text="Κάπνισμα:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="4"
+                                   GridPane.columnIndex="0"/>
+
+                            <Label fx:id="smokingLabel"
+                                   text="-"
+                                   prefWidth="220"
+                                   maxWidth="220"
+                                   styleClass="field-value"
+                                   GridPane.rowIndex="4"
+                                   GridPane.columnIndex="1"/>
+
+                            <Label text="Σωματικά Στοιχεία:"
+                                   styleClass="field-name"
+                                   GridPane.rowIndex="5"
+                                   GridPane.columnIndex="0"/>
+
+                            <HBox spacing="10"
+                                  GridPane.rowIndex="5"
+                                  GridPane.columnIndex="1">
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="Ύψος" styleClass="metric-title"/>
+                                    <Label fx:id="heightLabel"
+                                           text="-"
+                                           styleClass="metric-value"/>
+                                </VBox>
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="Βάρος" styleClass="metric-title"/>
+                                    <Label fx:id="weightLabel"
+                                           text="-"
+                                           styleClass="metric-value"/>
+                                </VBox>
+
+                                <VBox spacing="5" styleClass="metric-box">
+                                    <Label text="BMI" styleClass="metric-title"/>
+                                    <Label fx:id="bmiLabel"
+                                           text="-"
+                                           styleClass="metric-value"/>
+                                </VBox>
+
+                            </HBox>
+
+                        </GridPane>
+                    </VBox>
+
+                    <!-- Medical Info Card -->
+                    <VBox spacing="14" styleClass="text-card">
+                        <Label text="Ιατρικές Πληροφορίες" styleClass="section-title"/>
+
+                        <HBox spacing="18">
+
+                            <!-- Medical History -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                <Label text="Ιστορικό:" styleClass="field-name"/>
+
+                                <Label fx:id="medicalHistoryLabel"
+                                       text="-"
+                                       wrapText="true"
+                                       maxWidth="Infinity"
+                                       minHeight="140"
+                                       styleClass="paragraph-value"/>
+                            </VBox>
+
+                            <!-- Chronic Medication -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                <Label text="Χ. Φαρμακευτική Αγωγή:" styleClass="field-name"/>
+
+                                <Label fx:id="chronicMedicationLabel"
+                                       text="-"
+                                       wrapText="true"
+                                       maxWidth="Infinity"
+                                       minHeight="140"
+                                       styleClass="paragraph-value"/>
+                            </VBox>
+
+                        </HBox>
+
+                        <VBox spacing="8">
+                            <Label text="Σημειώσεις:" styleClass="field-name"/>
+
+                            <Label fx:id="notesLabel"
+                                   text="-"
+                                   wrapText="true"
+                                   maxWidth="Infinity"
+                                   minHeight="90"
+                                   styleClass="paragraph-value"/>
+                        </VBox>
+
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox spacing="12"
+              alignment="CENTER"
+              styleClass="bottom-bar">
+
+            <padding>
+                <Insets top="15" right="40" bottom="25" left="40"/>
+            </padding>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button text="Πίσω"
+                    fx:id="backButton"
+                    onAction="#cancelForm"
+                    styleClass="secondary-button"/>
+
+        </HBox>
+    </bottom>
+
+</BorderPane>
