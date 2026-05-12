@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import model.Patient;
+import model.SmokingStatus;
+import utils.NumberInputHelpers;
 
 public class ViewPatientController {
     private Patient selectedPatient;
@@ -21,4 +23,24 @@ public class ViewPatientController {
     @FXML private Label notesLabel;
 
     @FXML private Button backButton;
+
+    @FXML private void cancelForm(){
+
+    }
+
+    public void setSelectedPatient(Patient patient){
+        this.selectedPatient=patient;
+        lastNameLabel.setText(selectedPatient.getPatientLastName());
+        firstNameLabel.setText(selectedPatient.getPatientFirstName());
+        phoneLabel.setText(selectedPatient.getPatientPhone());
+        amkaLabel.setText(selectedPatient.getPatientAmka());
+        SmokingStatus status=selectedPatient.getPatientSmokingStatus();
+        smokingLabel.setText(status==null?"-":status.toString());
+        heightLabel.setText(NumberInputHelpers.StringFromInteger(selectedPatient.getPatientHeight()));
+        weightLabel.setText(NumberInputHelpers.StringFromInteger(selectedPatient.getPatientWeight()));
+        bmiLabel.setText(NumberInputHelpers.StringFromDouble(selectedPatient.getPatientBMI()));
+        medicalHistoryLabel.setText(selectedPatient.getPatientMedicalHistory());
+        chronicMedicationLabel.setText(selectedPatient.getPatientChronicMedication());
+        notesLabel.setText(selectedPatient.getPatientNotes());
+    }
 }

@@ -292,8 +292,35 @@ public class PatientDashboardController {
      * Called when the more info button is  pressed
      */
     @FXML
-    void showFUllPatientInfo() {
+    void showFUllPatientInfo(ActionEvent event) {
+        if(selectedPatient==null) return;
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/views/viewpatientscreen.fxml")
+            );
 
+            Parent root = loader.load();
+            ViewPatientController controller=loader.getController();
+            controller.setSelectedPatient(selectedPatient);
+
+            Scene scene = new Scene(root, 700, 950);
+
+            Stage patientStage = new Stage();
+            patientStage.setTitle("Κάρτα Ασθενή");
+            patientStage.setScene(scene);
+
+            Stage ownerStage = (Stage) ((Node) event.getSource())
+                    .getScene()
+                    .getWindow();
+
+            patientStage.initOwner(ownerStage);
+            patientStage.initModality(Modality.WINDOW_MODAL);
+
+            patientStage.showAndWait();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load patient form", e);
+        }
     }
 
     /**
@@ -364,7 +391,7 @@ public class PatientDashboardController {
     private void loadVisits() {
         visitTable.setItems(visits);
         visits.clear();
-        visits.addAll(visitService.getPatientVisits(selectedPatient.getPatientId()));
+        if(selectedPatient!=null)  visits.addAll(visitService.getPatientVisits(selectedPatient.getPatientId()));
     }
 
     /**
