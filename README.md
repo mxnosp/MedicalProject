@@ -173,73 +173,6 @@ MedicalProject/
 * JavaFX dependencies configured through Maven
 * SQLite JDBC dependency
 
-Check your Java version:
-
-```bash
-java -version
-```
-
-### Run with Maven
-
-From the project root:
-
-```bash
-mvn clean javafx:run
-```
-
-### Build JAR
-
-```bash
-mvn clean package
-```
-
-The generated files will be placed inside:
-
-```text
-target/
-```
-
-### Run JAR
-
-```bash
-java -jar target/MedicalProject.jar
-```
-
-If double-clicking the JAR does not work on Windows, run it from Command Prompt to see the real error:
-
-```bash
-cd target
-java -jar MedicalProject.jar
-```
-
-## Windows JAR Launch Note
-
-If the JAR works from Command Prompt but not by double-clicking, the issue is usually Windows `.jar` file association.
-
-Possible fixes:
-
-* use Jarfix
-* create a Windows shortcut to run the JAR
-* package the app properly as an `.exe` using `jpackage`
-
-## Git Notes
-
-Generated build files should not be committed.
-
-Recommended `.gitignore` entries:
-
-```gitignore
-target/
-*.class
-*.jar
-.idea/
-*.iml
-```
-
-If you want to distribute a JAR, use GitHub Releases instead of committing it directly to the repository.
-
-## Current Status
-
 The project currently includes:
 
 * patient creation, editing, deletion, and search
@@ -250,24 +183,6 @@ The project currently includes:
 * OneDrive database path detection
 * backup service support
 * JavaFX UI screens for patient and visit workflows
-
-## Future Improvements
-
-Planned or recommended improvements:
-
-* add stronger error messages in the UI
-* add restore-from-backup functionality
-* add backup retention policy, for example keeping only the latest 10 backups
-* add database encryption before storing medical data in cloud-synced folders
-* add user authentication
-* add audit logging for patient/visit changes
-* package the app as a proper Windows `.exe`
-* migrate to a central backend/database for real multi-user usage
-
-## Disclaimer
-
-This project is for educational and portfolio purposes.
-It should not be used as a production medical system without proper security, encryption, authentication, access control, audit logging, and legal compliance review.
 
 ## Author
 
