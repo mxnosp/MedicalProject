@@ -35,7 +35,7 @@ public class EntryController {
             Scene scene = new Scene(loader.load(), 1600, 900);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle("Patients Dashboard");
+            stage.setTitle("Πίνακας Διαχείρισης Ασθενών");
             stage.setScene(scene);
             stage.show();
 

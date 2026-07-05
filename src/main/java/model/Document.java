@@ -13,7 +13,7 @@ public class Document {
     public Document(int doc_id, String docpath, int patient_id) throws DocNotFoundException{
         this.doc_id=doc_id;
         this.patient_id=patient_id;
-        if(docpath==null) throw new DocNotFoundException("The selected document cannot be loaded!");
+        if(docpath==null) throw new DocNotFoundException("Δεν είναι δυνατή η φόρτωση του επιλεγμένου εγγράφου!");
         this.docpath=docpath;
     }
 

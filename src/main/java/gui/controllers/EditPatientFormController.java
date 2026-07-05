@@ -114,8 +114,8 @@ public class EditPatientFormController {
             String amka=amkaField.getText();
             String phone=phoneField.getText();
             SmokingStatus smokingStatus=smokingComboBox.getValue();
-            Integer height=NumberInputHelpers.parseInteger(heightField.getText());
-            Integer weight=NumberInputHelpers.parseInteger(weightField.getText());
+            Integer height=NumberInputHelpers.parseInteger(heightField.getText(), "Ύψος");
+            Integer weight=NumberInputHelpers.parseInteger(weightField.getText(), "Βάρος");
             String medicalHistory=medicalHistoryArea.getText();
             String chronicMedication=chronicMedicationArea.getText();
             String notes=notesArea.getText();

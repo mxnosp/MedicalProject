@@ -134,16 +134,26 @@ public class EditVisitFormController {
      */
     @FXML
     private void savePressed(){
+        // The visit cannot be saved without a date
+        if (visitDatePicker.getValue() == null) {
+            visitDatePicker.getStyleClass().add("input-error");
+            formErrorLabel.setText("Η ημερομηνία είναι υποχρεωτική!");
+            formErrorLabel.setVisible(true);
+            formErrorLabel.setManaged(true);
+            return;
+        }
+
+        visitDatePicker.getStyleClass().remove("input-error");
         try{
             LocalDate date=visitDatePicker.getValue();
             String reason=reasonField.getText();
-            Integer payment=NumberInputHelpers.parseInteger(paymentField.getText());
-            Integer spo2=NumberInputHelpers.parseInteger(spo2Field.getText());
-            Integer heartrate=NumberInputHelpers.parseInteger(pulseField.getText());
-            Double fev1=NumberInputHelpers.parseDouble(fev1Field.getText());
-            Double fvc=NumberInputHelpers.parseDouble(fvcField.getText());
-            Double pef=NumberInputHelpers.parseDouble(pefField.getText());
-            Double fef2575=NumberInputHelpers.parseDouble(fef2575Field.getText());
+            Integer payment=NumberInputHelpers.parseInteger(paymentField.getText(), "Πληρωμή");
+            Integer spo2=NumberInputHelpers.parseInteger(spo2Field.getText(), "SpO₂");
+            Integer heartrate=NumberInputHelpers.parseInteger(pulseField.getText(), "Σφύξεις");
+            Double fev1=NumberInputHelpers.parseDouble(fev1Field.getText(), "FEV1");
+            Double fvc=NumberInputHelpers.parseDouble(fvcField.getText(), "FVC");
+            Double pef=NumberInputHelpers.parseDouble(pefField.getText(), "PEF");
+            Double fef2575=NumberInputHelpers.parseDouble(fef2575Field.getText(), "FEF25-75");
             String physicalCheck=physicalExamArea.getText();
             String functionalCheck=functionalExamArea.getText();
             String notes=notesArea.getText();

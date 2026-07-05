@@ -1,6 +1,7 @@
 package db;
 
 import model.exceptions.DBCreationException;
+import utils.OneDriveLocator;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,42 +9,71 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
-
-/**
- * DBConnector class includes the static method connect that we will use in order to connect to the db
- * it also lets us use a custom path to place the db in
- */
 public final class DBConnector {
 
-    private static Path dbPath = Paths.get(System.getProperty("user.home"), "medical-app/data", "medical_app.db");
+    private static final String APP_FOLDER_NAME = "medical-app";
+    private static final String DATABASE_FILE_NAME = "medical_app.db";
 
-    private DBConnector() {}
+    private static Path appDirectoryPath;
+    private static Path dbPath;
 
-    public static void setDatabasePath(Path customPath) {
-        if (customPath == null) {
-            throw new DBCreationException("Database path cannot be null");
-        }
-        dbPath = customPath.toAbsolutePath();
+    private DBConnector() {
     }
 
     public static Connection getConnection() throws SQLException {
-        createParentDirectoryIfNeeded();
+        ensurePathsAreSet();
+        createAppDirectoryIfNeeded();
 
-        String url = "jdbc:sqlite:" + dbPath;
+        String url = "jdbc:sqlite:" + dbPath.toAbsolutePath();
         return DriverManager.getConnection(url);
     }
 
-    private static void createParentDirectoryIfNeeded() {
-        try {
-            Path parent = dbPath.getParent();
+    public static String getUrl() {
+        ensurePathsAreSet();
+        createAppDirectoryIfNeeded();
+        return "jdbc:sqlite:" + dbPath.toAbsolutePath();
+    }
 
-            if (parent != null) {
-                Files.createDirectories(parent);
-            }
+    public static Path getDatabasePath() {
+        ensurePathsAreSet();
+        return dbPath;
+    }
+
+    public static Path getAppDirectoryPath() {
+        ensurePathsAreSet();
+        return appDirectoryPath;
+    }
+
+    private static void ensurePathsAreSet() {
+        if (appDirectoryPath == null || dbPath == null) {
+            appDirectoryPath = resolveAppDirectoryPath();
+            dbPath = appDirectoryPath.resolve(DATABASE_FILE_NAME);
+        }
+    }
+
+    private static Path resolveAppDirectoryPath() {
+        List<Path> oneDriveDirectories = OneDriveLocator.findOneDriveDirectories();
+
+        if (!oneDriveDirectories.isEmpty()) {
+            return oneDriveDirectories.get(0)
+                    .resolve(APP_FOLDER_NAME);
+        }
+
+        return Paths.get(
+                System.getProperty("user.home"),
+                APP_FOLDER_NAME
+        );
+    }
+
+    private static void createAppDirectoryIfNeeded() {
+        try {
+            Files.createDirectories(appDirectoryPath);
         } catch (Exception e) {
             throw new DBCreationException(
-                    "Failed to create database directory for: " + dbPath, e
+                    "Failed to create app directory: " + appDirectoryPath,
+                    e
             );
         }
     }

@@ -15,7 +15,7 @@ public class DateParser{
         try {
             return LocalDate.parse(txt, formatter);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid date format. Expected d/M/yyyy", e);
+            throw new IllegalArgumentException("Μη έγκυρη μορφή ημερομηνίας. Αναμενόμενη μορφή: η/μ/εεεε", e);
         }
     }
 

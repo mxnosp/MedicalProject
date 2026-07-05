@@ -9,7 +9,7 @@ public class TextNormalizer {
             return "";
         }
 
-        String text = input.trim().toLowerCase(new Locale("el", "GR"));
+        String text = input.trim().toLowerCase(Locale.of("el", "GR"));
 
         // Break accented characters into base letter + combining mark
         text = Normalizer.normalize(text, Normalizer.Form.NFD);

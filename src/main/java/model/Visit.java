@@ -44,7 +44,7 @@ public class Visit {
         this.medication = medication;
         this.reason = reason;
         if(date==null){
-            throw new ValidationException("Visit's date is mandatory!");
+            throw new ValidationException("Η ημερομηνία επίσκεψης είναι υποχρεωτική!");
         }
         this.date=date;
         this.reappoinment=reappoinment;

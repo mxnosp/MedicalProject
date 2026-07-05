@@ -11,6 +11,9 @@ import model.exceptions.ValidationException;
  * doc's office
  */
 public class Patient {
+    // Allows letters, spaces, hyphens and apostrophes in Greek or Latin names
+    private static final String NAME_PATTERN = "[\\p{L}\\p{M}]+(?:[ '\\-’][\\p{L}\\p{M}]+)*";
+
     private final String firstname;
     private final String lastname;
     private final String amka;
@@ -45,15 +48,20 @@ public class Patient {
      * @param id
      */
     public Patient(int id, String firstname, String lastname, String phone, String amka,Integer smokingStatus,Integer height,Integer weight,String medicalHistory,String chronicMedication,String notes) throws ValidationException {
-        if(firstname==null||firstname.isBlank()) throw new InvalidNameException("Invalid first name!");
-        if(lastname==null||lastname.isBlank()) throw new InvalidNameException("Invalid last name!");
+        // Validates the fields that are required to create a patient
+        if(firstname==null || !firstname.trim().matches(NAME_PATTERN)) {
+            throw new InvalidNameException("Μη έγκυρο όνομα! Χρησιμοποιήστε μόνο γράμματα.");
+        }
+        if(lastname==null || !lastname.trim().matches(NAME_PATTERN)) {
+            throw new InvalidNameException("Μη έγκυρο επώνυμο! Χρησιμοποιήστε μόνο γράμματα.");
+        }
         if(amka==null||!amka.matches("\\d{11}")){
-            throw new InvalidAmkaException("Invalid AMKA given!");
+            throw new InvalidAmkaException("Μη έγκυρος ΑΜΚΑ! Ο ΑΜΚΑ πρέπει να αποτελείται από 11 ψηφία.");
         }
         if(phone!=null){
             if(!phone.isEmpty()){
                 if(!phone.matches("\\d{10}")){
-                    throw new InvalidPhoneException("Invalid phone number!");
+                    throw new InvalidPhoneException("Μη έγκυρος αριθμός τηλεφώνου! Το τηλέφωνο πρέπει να αποτελείται από 10 ψηφία.");
                 }
             }
         }

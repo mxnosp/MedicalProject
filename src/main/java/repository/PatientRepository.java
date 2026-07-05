@@ -29,7 +29,7 @@ public class PatientRepository {
     public void insertPatient(Patient patient) throws DBAccessException, PatientExistsException {
 
         if (patient.getPatientAmka() != null && searchPatientsByAMKA(patient.getPatientAmka()) != null) {
-            throw new PatientExistsException("Patient with the given AMKA already exists!");
+            throw new PatientExistsException("Υπάρχει ήδη ασθενής με αυτόν τον ΑΜΚΑ!");
         }
 
         String sql = """
@@ -138,7 +138,7 @@ public class PatientRepository {
         Patient patientExists = searchPatientsByAMKA(updatedPatient.getPatientAmka());
 
         if (patientExists != null && patientExists.getPatientId() != id) {
-            throw new PatientExistsException("Patient with the given AMKA already exists!");
+            throw new PatientExistsException("Υπάρχει ήδη ασθενής με αυτόν τον ΑΜΚΑ!");
         }
 
         String searchText = normalizeGreekSearchText(

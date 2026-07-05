@@ -272,6 +272,8 @@
             <Label fx:id="formErrorLabel"
                    visible="false"
                    managed="false"
+                   wrapText="true"
+                   maxWidth="320"
                    styleClass="form-error-label"/>
 
             <Region HBox.hgrow="ALWAYS"/>

@@ -121,8 +121,8 @@ public class PatientDashboardController {
      */
     @FXML
     private void initialize() {
-        patientTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        visitTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        patientTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        visitTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         initializeTableColumns();
         loadPatients();
         initializePatientSelection();

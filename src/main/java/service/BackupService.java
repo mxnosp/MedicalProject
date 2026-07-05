@@ -20,11 +20,11 @@ import static utils.DirectoryUtils.getOldestBackupFile;
  */
 public class BackupService {
 
-    private final String databaseUrl;
+    private final Path databasePath;
     private final Path backupDirectory;
 
-    public BackupService(String databaseUrl, Path backupDirectory) {
-        this.databaseUrl = databaseUrl;
+    public BackupService(Path databasePath, Path backupDirectory) {
+        this.databasePath = databasePath;
         this.backupDirectory = backupDirectory;
     }
 
@@ -38,6 +38,8 @@ public class BackupService {
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
 
         Path backupPath = backupDirectory.resolve( timestamp + ".db");
+
+        String databaseUrl = "jdbc:sqlite:" + databasePath.toAbsolutePath();
 
         try (Connection connection = DriverManager.getConnection(databaseUrl);
              Statement statement = connection.createStatement()) {
