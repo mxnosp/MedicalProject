@@ -191,7 +191,6 @@
                                 <Label text="Φυσικός Έλεγχος:"/>
 
                                 <TextArea fx:id="physicalExamArea"
-                                          promptText="• Ακρόαση&#10;• Κλινική εικόνα&#10;• Ευρήματα φυσικής εξέτασης"
                                           wrapText="true"
                                           prefRowCount="7"
                                           maxWidth="Infinity"
@@ -199,10 +198,9 @@
                             </VBox>
 
                             <VBox spacing="8" HBox.hgrow="ALWAYS">
-                                <Label text="Λειτουργικός Έλεγχος:"/>
+                                <Label text="Απεικονιστηκός Έλεγχος:"/>
 
                                 <TextArea fx:id="functionalExamArea"
-                                          promptText="• Σπιρομέτρηση&#10;• Αναπνευστική λειτουργία&#10;• Λειτουργικά ευρήματα"
                                           wrapText="true"
                                           prefRowCount="7"
                                           maxWidth="Infinity"
@@ -215,7 +213,6 @@
                             <Label text="Φαρμακευτική Αγωγή / Οδηγίες:"/>
 
                             <TextArea fx:id="treatmentArea"
-                                      promptText="• Φάρμακο - δοσολογία&#10;• Οδηγίες προς ασθενή&#10;• Επανέλεγχος"
                                       wrapText="true"
                                       prefRowCount="5"
                                       maxWidth="Infinity"
@@ -226,7 +223,6 @@
                             <Label text="Σημειώσεις:"/>
 
                             <TextArea fx:id="notesArea"
-                                      promptText="Προαιρετικές σημειώσεις επίσκεψης..."
                                       wrapText="true"
                                       prefRowCount="4"
                                       maxWidth="Infinity"
@@ -253,7 +249,6 @@
                                    GridPane.columnIndex="0"/>
 
                             <DatePicker fx:id="recheckDatePicker"
-                                        promptText="ηη/μμ/εεεε"
                                         prefWidth="170"
                                         maxWidth="170"
                                         GridPane.hgrow="ALWAYS"

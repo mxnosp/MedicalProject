@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Patient;
 import service.VisitService;
+import utils.DatabaseChangeTracker;
 import utils.NumberInputHelpers;
 
 import java.time.LocalDate;
@@ -90,7 +91,7 @@ public class AddVisitFormController {
         if(visitDatePicker.getValue()==null){
             visitDatePicker.getStyleClass().add("input-error");
             formErrorLabel.setText("Η ημερομηνία είναι υποχρεωτική!");
-            formErrorLabel.setVisible(false);
+            formErrorLabel.setVisible(true);
             formErrorLabel.setManaged(false);
             return false;
         }else visitDatePicker.getStyleClass().remove("input-error");
@@ -123,6 +124,7 @@ public class AddVisitFormController {
             formErrorLabel.setText("");
             formErrorLabel.setVisible(false);
             formErrorLabel.setManaged(false);
+            DatabaseChangeTracker.markChanged();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
         } catch (RuntimeException e){

@@ -3,6 +3,7 @@ package gui.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import model.Patient;
 import model.SmokingStatus;
 import utils.NumberInputHelpers;
@@ -25,9 +26,14 @@ public class ViewPatientController {
     @FXML private Button backButton;
 
     @FXML private void cancelForm(){
-
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.close();
     }
 
+    /**
+     * Sets the fields of the selected patient
+     * @param patient
+     */
     public void setSelectedPatient(Patient patient){
         this.selectedPatient=patient;
         lastNameLabel.setText(selectedPatient.getPatientLastName());

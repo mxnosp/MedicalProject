@@ -15,6 +15,7 @@
             prefHeight="650"
             stylesheets="@../styles/entry.css">
 
+
     <center>
         <StackPane fx:id="rootStackPane"
                    styleClass="main-background">

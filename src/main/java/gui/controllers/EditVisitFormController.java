@@ -7,6 +7,7 @@ import javafx.util.StringConverter;
 import model.Patient;
 import model.Visit;
 import service.VisitService;
+import utils.DatabaseChangeTracker;
 import utils.DateParser;
 import utils.NumberInputHelpers;
 
@@ -152,6 +153,7 @@ public class EditVisitFormController {
             formErrorLabel.setText("");
             formErrorLabel.setVisible(false);
             formErrorLabel.setManaged(false);
+            DatabaseChangeTracker.markChanged();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
         } catch (RuntimeException e){

@@ -304,8 +304,9 @@ public class PatientDashboardController {
             controller.setSelectedPatient(selectedPatient);
 
             Scene scene = new Scene(root, 700, 950);
-
             Stage patientStage = new Stage();
+            Image icon = new Image(getClass().getResourceAsStream("/images/doctorlogo.png"));
+            patientStage.getIcons().add(icon);
             patientStage.setTitle("Κάρτα Ασθενή");
             patientStage.setScene(scene);
 
@@ -343,6 +344,8 @@ public class PatientDashboardController {
             Scene scene = new Scene(root, 700, 950);
 
             Stage patientStage = new Stage();
+            Image icon = new Image(getClass().getResourceAsStream("/images/doctorlogo.png"));
+            patientStage.getIcons().add(icon);
             patientStage.setTitle("Κάρτα Ασθενή");
             patientStage.setScene(scene);
 
@@ -414,6 +417,8 @@ public class PatientDashboardController {
             Scene scene = new Scene(root, 700, 950);
 
             Stage patientStage = new Stage();
+            Image icon = new Image(getClass().getResourceAsStream("/images/doctorlogo.png"));
+            patientStage.getIcons().add(icon);
             patientStage.setTitle("Επεξεργασία Ασθενή");
             patientStage.setScene(scene);
 
@@ -452,6 +457,8 @@ public class PatientDashboardController {
             Scene scene = new Scene(root, 700, 950);
 
             Stage visitStage = new Stage();
+            Image icon = new Image(getClass().getResourceAsStream("/images/doctorlogo.png"));
+            visitStage.getIcons().add(icon);
             visitStage.setTitle("Προσθήκη Επίσκεψης");
             visitStage.setScene(scene);
 
@@ -490,6 +497,8 @@ public class PatientDashboardController {
             Scene scene = new Scene(root, 700, 950);
 
             Stage visitStage = new Stage();
+            Image icon = new Image(getClass().getResourceAsStream("/images/doctorlogo.png"));
+            visitStage.getIcons().add(icon);
             visitStage.setTitle("Επεξεργασία Επίσκεψης");
             visitStage.setScene(scene);
 
@@ -537,6 +546,8 @@ public class PatientDashboardController {
             Scene scene = new Scene(root, 700, 950);
 
             Stage viewVisitStage = new Stage();
+            Image icon = new Image(getClass().getResourceAsStream("/images/doctorlogo.png"));
+            viewVisitStage.getIcons().add(icon);
             viewVisitStage.setTitle("Προβολή Επίσκεψης");
             viewVisitStage.setScene(scene);
 

@@ -8,7 +8,7 @@ import model.Visit;
 import utils.DateParser;
 import utils.NumberInputHelpers;
 
-public class ViewVisitController {
+public class   ViewVisitController {
     @FXML private Label visitDateLabel;
     @FXML private Label reasonLabel;
     @FXML private Label paymentLabel;

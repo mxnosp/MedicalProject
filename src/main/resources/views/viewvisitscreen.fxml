@@ -183,7 +183,7 @@
                             </VBox>
 
                             <VBox spacing="8" HBox.hgrow="ALWAYS" styleClass="text-card">
-                                <Label text="Λειτουργικός Έλεγχος:" styleClass="field-name"/>
+                                <Label text="Απεικονιστηκός Έλεγχος:" styleClass="field-name"/>
 
                                 <Label fx:id="functionalExamLabel"
                                        text="-"

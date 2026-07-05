@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public final class DBConnector {
 
-    private static Path dbPath = Paths.get(System.getProperty("user.home"), "medical-app", "medical_app.db");
+    private static Path dbPath = Paths.get(System.getProperty("user.home"), "medical-app/data", "medical_app.db");
 
     private DBConnector() {}
 

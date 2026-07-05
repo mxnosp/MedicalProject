@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import model.Patient;
 import model.SmokingStatus;
 import service.PatientService;
+import utils.DatabaseChangeTracker;
 import utils.NumberInputHelpers;
 
 /**
@@ -75,7 +76,10 @@ public class AddPatientFormController {
 
     @FXML
     private void savePressed(){
-        if(checkNeccesaryFieldsFilled()) saveForm();
+        if(checkNeccesaryFieldsFilled()){
+            DatabaseChangeTracker.markChanged();
+            saveForm();
+        }
     }
 
     /**

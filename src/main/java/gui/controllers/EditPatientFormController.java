@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import model.Patient;
 import model.SmokingStatus;
 import service.PatientService;
+import utils.DatabaseChangeTracker;
 import utils.NumberInputHelpers;
 
 public class EditPatientFormController {
@@ -122,6 +123,7 @@ public class EditPatientFormController {
             formErrorLabel.setText("");
             formErrorLabel.setVisible(false);
             formErrorLabel.setManaged(false);
+            DatabaseChangeTracker.markChanged();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
         } catch (RuntimeException e){

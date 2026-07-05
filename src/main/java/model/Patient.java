@@ -45,8 +45,8 @@ public class Patient {
      * @param id
      */
     public Patient(int id, String firstname, String lastname, String phone, String amka,Integer smokingStatus,Integer height,Integer weight,String medicalHistory,String chronicMedication,String notes) throws ValidationException {
-        if(firstname==null) throw new InvalidNameException("Invalid first name!");
-        if(lastname==null) throw new InvalidNameException("Invalid last name!");
+        if(firstname==null||firstname.isBlank()) throw new InvalidNameException("Invalid first name!");
+        if(lastname==null||lastname.isBlank()) throw new InvalidNameException("Invalid last name!");
         if(amka==null||!amka.matches("\\d{11}")){
             throw new InvalidAmkaException("Invalid AMKA given!");
         }
@@ -143,7 +143,7 @@ public class Patient {
      * @return the patient's BMI
      */
     public Double getPatientBMI(){
-        if(height==null) return null;
+        if(height==null||weight==null) return null;
         double heightInMeters=height/100.0;
         double bmi=(weight/(heightInMeters*heightInMeters));
         return  Math.round(bmi * 100.0) / 100.0;

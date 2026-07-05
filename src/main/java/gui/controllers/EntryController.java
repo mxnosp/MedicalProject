@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -17,6 +16,7 @@ public class EntryController {
 
     @FXML
     private void initialize() {
+
         backgroundImage.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {
                 backgroundImage.fitWidthProperty().bind(newScene.widthProperty());
