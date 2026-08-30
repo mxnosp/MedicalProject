@@ -30,7 +30,7 @@ public class NumberInputHelpers {
      * Parses an optional integer field and returns a field-specific error
      */
     public static Integer parseInteger(String text, String fieldName) {
-        if (text == null || text.isBlank()) {
+        if (text == null || text.isBlank() || text.equals("-")) {
             return null;
         }
 
@@ -50,7 +50,7 @@ public class NumberInputHelpers {
      * Parses an optional decimal field accepting a comma or a dot
      */
     public static Double parseDouble(String text, String fieldName) {
-        if (text == null || text.isBlank()) {
+        if (text == null || text.isBlank() || text.equals("-")) {
             return null;
         }
 
