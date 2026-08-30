@@ -183,6 +183,102 @@
 
 
 /* =========================
+   VACCINE TABLE
+   ========================= */
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #cbd5e1;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-size: 14px;
+    -fx-padding: 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-text-fill: #475569;
+    -fx-padding: 12 10;
+    -fx-alignment: CENTER;
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #475569;
+    -fx-alignment: CENTER;
+    -fx-font-size: 14px;
+}
+
+.table-view .table-cell {
+    -fx-padding: 10 10;
+    -fx-text-fill: #1f2937;
+    -fx-border-color: transparent;
+    -fx-alignment: CENTER-LEFT;
+    -fx-font-size: 14px;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f8fafc;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #f1f5f9;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e0f2fe;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #0369a1;
+}
+
+/* Scrollbar in table */
+.table-view .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 8;
+}
+
+.table-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+
+/* =========================
+   SUMMARY LABELS
+   ========================= */
+
+.summary-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #475569;
+    -fx-font-size: 14px;
+}
+
+.summary-value {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2563eb;
+    -fx-font-size: 16px;
+}
+
+
+/* =========================
    BOTTOM BAR
    ========================= */
 

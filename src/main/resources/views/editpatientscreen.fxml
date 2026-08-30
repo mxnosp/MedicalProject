@@ -3,9 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
@@ -175,6 +178,79 @@
                                       maxWidth="Infinity"/>
                         </VBox>
 
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Vaccines Section -->
+                    <VBox spacing="12">
+                        <Label text="Εμβόλια" styleClass="section-title"/>
+
+                        <!-- Add New Vaccine -->
+                        <VBox spacing="8" styleClass="injection-add-box">
+                            <HBox spacing="15" alignment="CENTER_LEFT">
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="Τύπος Εμβολίου" styleClass="field-label-centered" maxWidth="Infinity"/>
+                                    <TextField fx:id="vaccineTypeField"
+                                               maxWidth="Infinity"
+                                               HBox.hgrow="ALWAYS"/>
+                                </VBox>
+
+                                <VBox spacing="4">
+                                    <Label text="Ημερομηνία" styleClass="field-label-centered" maxWidth="Infinity"/>
+                                    <DatePicker fx:id="vaccineDatePicker"
+                                                prefWidth="150"
+                                                styleClass="date-picker-clean"/>
+                                </VBox>
+
+                                <VBox spacing="4">
+                                    <Label text="Δόση" styleClass="field-label-centered" maxWidth="Infinity"/>
+                                    <TextField fx:id="vaccineDoseField"
+                                               prefWidth="70"
+                                               maxWidth="70"/>
+                                </VBox>
+
+                                <VBox spacing="4" alignment="BOTTOM_LEFT">
+                                    <Button text="+ Προσθήκη"
+                                            fx:id="addVaccineButton"
+                                            styleClass="add-button"/>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                        <!-- Vaccines Table -->
+                        <VBox spacing="8">
+                            <Label text="Ιστορικό Εμβολίων:"/>
+
+                            <TableView fx:id="vaccinesTable"
+                                       prefHeight="150"
+                                       minHeight="120"
+                                       maxWidth="Infinity"
+                                       VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="vaccineTypeColumn"
+                                                 text="Τύπος Εμβολίου"
+                                                 prefWidth="240"/>
+                                    <TableColumn fx:id="vaccineDateColumn"
+                                                 text="Ημερομηνία"
+                                                 prefWidth="100"/>
+                                    <TableColumn fx:id="vaccineDoseColumn"
+                                                 text="Δόση"
+                                                 prefWidth="60"/>
+                                    <TableColumn fx:id="vaccineTotalDosesColumn"
+                                                 text="Συνολικές Δόσεις"
+                                                 prefWidth="220"/>
+                                </columns>
+                            </TableView>
+
+                            <!-- Summary -->
+                            <HBox spacing="10" alignment="CENTER_RIGHT">
+                                <Label text="Συνολικά Εμβόλια:" styleClass="summary-label"/>
+                                <Label fx:id="totalVaccinesLabel"
+                                       text="0"
+                                       styleClass="summary-value"/>
+                            </HBox>
+                        </VBox>
                     </VBox>
 
                 </VBox>
