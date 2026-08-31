@@ -20,22 +20,22 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="gui.controllers.AddPatientFormController"
-            prefWidth="850"
-            prefHeight="700"
+            prefWidth="900"
+            prefHeight="750"
             stylesheets="@../styles/patientform.css">
 
     <center>
         <ScrollPane fitToWidth="true"
-                    fitToHeight="true"
+                    fitToHeight="false"
                     pannable="true"
                     hbarPolicy="NEVER"
                     vbarPolicy="AS_NEEDED"
                     styleClass="form-scroll-pane">
 
             <content>
-                <VBox spacing="16" alignment="TOP_LEFT">
+                <VBox spacing="22" alignment="TOP_LEFT">
                     <padding>
-                        <Insets top="20" right="30" bottom="20" left="30"/>
+                        <Insets top="30" right="40" bottom="30" left="40"/>
                     </padding>
 
                     <!-- Page title -->
@@ -44,13 +44,13 @@
                     <Separator/>
 
                     <!-- Personal Info -->
-                    <VBox spacing="10">
+                    <VBox spacing="12">
                         <Label text="Προσωπικά Στοιχεία" styleClass="section-title"/>
 
-                        <GridPane hgap="12" vgap="10" maxWidth="Infinity">
+                        <GridPane hgap="15" vgap="14" maxWidth="Infinity">
 
                             <columnConstraints>
-                                <ColumnConstraints minWidth="140" prefWidth="160"/>
+                                <ColumnConstraints minWidth="160" prefWidth="190"/>
                                 <ColumnConstraints hgrow="ALWAYS" fillWidth="true"/>
                             </columnConstraints>
 
@@ -112,23 +112,23 @@
                                    GridPane.rowIndex="5"
                                    GridPane.columnIndex="0"/>
 
-                            <HBox spacing="8"
+                            <HBox spacing="10"
                                   GridPane.rowIndex="5"
                                   GridPane.columnIndex="1">
 
                                 <TextField fx:id="heightField"
-                                           prefWidth="100"
-                                           maxWidth="100"
+                                           prefWidth="115"
+                                           maxWidth="115"
                                            promptText="Ύψος cm"/>
 
                                 <TextField fx:id="weightField"
-                                           prefWidth="100"
-                                           maxWidth="100"
+                                           prefWidth="115"
+                                           maxWidth="115"
                                            promptText="Βάρος kg"/>
 
                                 <TextField fx:id="bmiField"
-                                           prefWidth="100"
-                                           maxWidth="100"
+                                           prefWidth="115"
+                                           maxWidth="115"
                                            editable="false"
                                            focusTraversable="false"
                                            promptText="BMI"
@@ -141,39 +141,40 @@
 
                     <Separator/>
 
-                    <VBox spacing="10">
+                    <VBox spacing="12">
                         <Label text="Ιατρικές Πληροφορίες" styleClass="section-title"/>
 
-                        <HBox spacing="14">
+                        <HBox spacing="18">
 
                             <!-- Medical History -->
-                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <VBox spacing="8" HBox.hgrow="ALWAYS">
                                 <Label text="Ιστορικό:"/>
 
                                 <TextArea fx:id="medicalHistoryArea"
                                           wrapText="true"
-                                          prefRowCount="6"
+                                          prefRowCount="8"
                                           maxWidth="Infinity"/>
                             </VBox>
 
                             <!-- Chronic Medication -->
-                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <VBox spacing="8" HBox.hgrow="ALWAYS">
                                 <Label text="Χ. Φαρμακευτική Αγωγή:"/>
 
                                 <TextArea fx:id="chronicMedicationArea"
                                           wrapText="true"
-                                          prefRowCount="6"
+                                          prefRowCount="8"
                                           maxWidth="Infinity"/>
                             </VBox>
 
                         </HBox>
 
-                        <VBox spacing="6">
+                        <VBox spacing="8">
                             <Label text="Σημειώσεις:"/>
 
                             <TextArea fx:id="notesArea"
+                                      promptText="Προαιρετικές σημειώσεις..."
                                       wrapText="true"
-                                      prefRowCount="3"
+                                      prefRowCount="4"
                                       maxWidth="Infinity"/>
                         </VBox>
 
@@ -182,11 +183,11 @@
                     <Separator/>
 
                     <!-- Vaccines Section -->
-                    <VBox spacing="10">
+                    <VBox spacing="12">
                         <Label text="Εμβόλια" styleClass="section-title"/>
 
                         <!-- Add New Vaccine -->
-                        <VBox spacing="6" styleClass="injection-add-box">
+                        <VBox spacing="8" styleClass="injection-add-box">
                             <HBox spacing="15" alignment="CENTER_LEFT">
                                 <VBox spacing="4" HBox.hgrow="ALWAYS">
                                     <Label text="Τύπος Εμβολίου" styleClass="field-label-centered" maxWidth="Infinity"/>
@@ -217,39 +218,31 @@
                             </HBox>
                         </VBox>
 
-                        <!-- Vaccines Table -->
-                        <VBox spacing="6">
-                            <Label text="Ιστορικό Εμβολίων:"/>
+                        <TableView fx:id="vaccinesTable"
+                                   prefHeight="150"
+                                   minHeight="120"
+                                   maxWidth="Infinity"
+                                   VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="vaccineTypeColumn"
+                                             text="Τύπος Εμβολίου"
+                                             prefWidth="380"/>
+                                <TableColumn fx:id="vaccineDateColumn"
+                                             text="Ημερομηνία"
+                                             prefWidth="130"/>
+                                <TableColumn fx:id="vaccineDoseColumn"
+                                             text="Δόση"
+                                             prefWidth="90"/>
+                            </columns>
+                        </TableView>
 
-                            <TableView fx:id="vaccinesTable"
-                                       prefHeight="130"
-                                       minHeight="100"
-                                       maxWidth="Infinity"
-                                       VBox.vgrow="ALWAYS">
-                                <columns>
-                                    <TableColumn fx:id="vaccineTypeColumn"
-                                                 text="Τύπος Εμβολίου"
-                                                 prefWidth="250"/>
-                                    <TableColumn fx:id="vaccineDateColumn"
-                                                 text="Ημερομηνία"
-                                                 prefWidth="110"/>
-                                    <TableColumn fx:id="vaccineDoseColumn"
-                                                 text="Δόση"
-                                                 prefWidth="70"/>
-                                    <TableColumn fx:id="vaccineTotalDosesColumn"
-                                                 text="Συνολικές Δόσεις"
-                                                 prefWidth="190"/>
-                                </columns>
-                            </TableView>
-
-                            <!-- Summary -->
-                            <HBox spacing="10" alignment="CENTER_RIGHT">
-                                <Label text="Συνολικά Εμβόλια:" styleClass="summary-label"/>
-                                <Label fx:id="totalVaccinesLabel"
-                                       text="0"
-                                       styleClass="summary-value"/>
-                            </HBox>
-                        </VBox>
+                        <!-- Summary -->
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Label text="Συνολικά Εμβόλια:" styleClass="summary-label"/>
+                            <Label fx:id="totalVaccinesLabel"
+                                   text="0"
+                                   styleClass="summary-value"/>
+                        </HBox>
                     </VBox>
 
                 </VBox>
@@ -258,16 +251,16 @@
     </center>
 
     <bottom>
-        <HBox spacing="10" alignment="CENTER">
+        <HBox spacing="12" alignment="CENTER">
             <padding>
-                <Insets top="10" right="30" bottom="15" left="30"/>
+                <Insets top="15" right="40" bottom="25" left="40"/>
             </padding>
 
             <Label fx:id="formErrorLabel"
                    visible="false"
                    managed="false"
                    wrapText="true"
-                   maxWidth="280"
+                   maxWidth="320"
                    styleClass="form-error-label"/>
 
             <Region HBox.hgrow="ALWAYS"/>

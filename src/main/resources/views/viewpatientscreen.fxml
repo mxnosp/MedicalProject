@@ -207,16 +207,13 @@
                             <columns>
                                 <TableColumn fx:id="vaccineTypeColumn"
                                              text="Τύπος Εμβολίου"
-                                             prefWidth="190"/>
+                                             prefWidth="360"/>
                                 <TableColumn fx:id="vaccineDateColumn"
                                              text="Ημερομηνία"
-                                             prefWidth="110"/>
+                                             prefWidth="130"/>
                                 <TableColumn fx:id="vaccineDoseColumn"
                                              text="Δόση"
                                              prefWidth="70"/>
-                                <TableColumn fx:id="vaccineTotalDosesColumn"
-                                             text="Συνολικές Δόσεις"
-                                             prefWidth="190"/>
                             </columns>
                         </TableView>
 

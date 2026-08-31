@@ -218,39 +218,31 @@
                             </HBox>
                         </VBox>
 
-                        <!-- Vaccines Table -->
-                        <VBox spacing="8">
-                            <Label text="Ιστορικό Εμβολίων:"/>
+                        <TableView fx:id="vaccinesTable"
+                                   prefHeight="150"
+                                   minHeight="120"
+                                   maxWidth="Infinity"
+                                   VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="vaccineTypeColumn"
+                                             text="Τύπος Εμβολίου"
+                                             prefWidth="380"/>
+                                <TableColumn fx:id="vaccineDateColumn"
+                                             text="Ημερομηνία"
+                                             prefWidth="130"/>
+                                <TableColumn fx:id="vaccineDoseColumn"
+                                             text="Δόση"
+                                             prefWidth="90"/>
+                            </columns>
+                        </TableView>
 
-                            <TableView fx:id="vaccinesTable"
-                                       prefHeight="150"
-                                       minHeight="120"
-                                       maxWidth="Infinity"
-                                       VBox.vgrow="ALWAYS">
-                                <columns>
-                                    <TableColumn fx:id="vaccineTypeColumn"
-                                                 text="Τύπος Εμβολίου"
-                                                 prefWidth="240"/>
-                                    <TableColumn fx:id="vaccineDateColumn"
-                                                 text="Ημερομηνία"
-                                                 prefWidth="100"/>
-                                    <TableColumn fx:id="vaccineDoseColumn"
-                                                 text="Δόση"
-                                                 prefWidth="60"/>
-                                    <TableColumn fx:id="vaccineTotalDosesColumn"
-                                                 text="Συνολικές Δόσεις"
-                                                 prefWidth="220"/>
-                                </columns>
-                            </TableView>
-
-                            <!-- Summary -->
-                            <HBox spacing="10" alignment="CENTER_RIGHT">
-                                <Label text="Συνολικά Εμβόλια:" styleClass="summary-label"/>
-                                <Label fx:id="totalVaccinesLabel"
-                                       text="0"
-                                       styleClass="summary-value"/>
-                            </HBox>
-                        </VBox>
+                        <!-- Summary -->
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Label text="Συνολικά Εμβόλια:" styleClass="summary-label"/>
+                            <Label fx:id="totalVaccinesLabel"
+                                   text="0"
+                                   styleClass="summary-value"/>
+                        </HBox>
                     </VBox>
 
                 </VBox>
