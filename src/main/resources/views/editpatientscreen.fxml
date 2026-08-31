@@ -226,13 +226,18 @@
                             <columns>
                                 <TableColumn fx:id="vaccineTypeColumn"
                                              text="Τύπος Εμβολίου"
-                                             prefWidth="380"/>
+                                             prefWidth="340"/>
                                 <TableColumn fx:id="vaccineDateColumn"
                                              text="Ημερομηνία"
-                                             prefWidth="130"/>
+                                             prefWidth="120"/>
                                 <TableColumn fx:id="vaccineDoseColumn"
                                              text="Δόση"
-                                             prefWidth="90"/>
+                                             prefWidth="70"/>
+                                <TableColumn fx:id="deleteVaccineColumn"
+                                             prefWidth="65"
+                                             minWidth="50"
+                                             maxWidth="65"
+                                             resizable="false"/>
                             </columns>
                         </TableView>
 
