@@ -207,7 +207,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: #475569;
     -fx-padding: 12 10;
-    -fx-alignment: CENTER;
+    -fx-alignment: CENTER; /* Centers Header Text */
 }
 
 .table-view .column-header .label {
@@ -221,7 +221,7 @@
     -fx-padding: 10 10;
     -fx-text-fill: #1f2937;
     -fx-border-color: transparent;
-    -fx-alignment: CENTER-LEFT;
+    -fx-alignment: CENTER; /* UPDATED: Changed from CENTER-LEFT to CENTER */
     -fx-font-size: 14px;
 }
 

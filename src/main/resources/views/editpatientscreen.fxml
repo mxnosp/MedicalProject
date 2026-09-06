@@ -213,6 +213,7 @@
                                 <VBox spacing="4" alignment="BOTTOM_LEFT">
                                     <Button text="+ Προσθήκη"
                                             fx:id="addVaccineButton"
+                                            onAction="#addVaccine"
                                             styleClass="add-button"/>
                                 </VBox>
                             </HBox>
@@ -224,19 +225,25 @@
                                    maxWidth="Infinity"
                                    VBox.vgrow="ALWAYS">
                             <columns>
+                                <TableColumn fx:id="vaccineIdColumn"
+                                             text="ID"
+                                             prefWidth="50"
+                                             minWidth="50"
+                                             maxWidth="50"
+                                             resizable="false"/>
                                 <TableColumn fx:id="vaccineTypeColumn"
                                              text="Τύπος Εμβολίου"
-                                             prefWidth="340"/>
+                                             prefWidth="305"/>
                                 <TableColumn fx:id="vaccineDateColumn"
                                              text="Ημερομηνία"
                                              prefWidth="120"/>
                                 <TableColumn fx:id="vaccineDoseColumn"
                                              text="Δόση"
-                                             prefWidth="70"/>
+                                             prefWidth="60"/>
                                 <TableColumn fx:id="deleteVaccineColumn"
-                                             prefWidth="65"
-                                             minWidth="50"
-                                             maxWidth="65"
+                                             prefWidth="60"
+                                             minWidth="60"
+                                             maxWidth="60"
                                              resizable="false"/>
                             </columns>
                         </TableView>
