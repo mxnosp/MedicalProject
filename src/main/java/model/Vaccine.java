@@ -10,6 +10,7 @@ import java.time.LocalDate;
  */
 public class Vaccine{
     private final Integer id;
+    private int pseudoId;
     private final LocalDate date;
     private final Integer patient_id;
     private final Integer shotnumber;
@@ -71,4 +72,8 @@ public class Vaccine{
     public String getName(){
         return name;
     }
+
+    public int getPseudoId(){return pseudoId;}
+
+    public void setPseudoId(int pseudoId){this.pseudoId=pseudoId;}
 }

@@ -41,6 +41,8 @@ public class VaccineRepository {
         }
     }
 
+
+
     /**
      * Deletes the vaccine with the given id can throw DBAccessException if it can't find the vaccine ,or it fails to connect
      * to the db
@@ -56,6 +58,78 @@ public class VaccineRepository {
             if(affected==0) throw new DBAccessException("Vaccine not found!");
         }catch(SQLException e){
             throw new DBAccessException("Failed to delete vaccine with id "+id,e );
+        }
+    }
+
+
+    public void applyVaccineChanges(
+            List<Vaccine> newVaccines,
+            List<Vaccine> deletedVaccines
+    ) throws DBAccessException {
+
+        String insertSql =
+                "INSERT INTO vaccines (patient_id, date, shotnumber, name) VALUES (?, ?, ?, ?)";
+
+        String deleteSql =
+                "DELETE FROM vaccines WHERE id = ?";
+
+        try (Connection conn = DBConnector.getConnection()) {
+
+            conn.setAutoCommit(false);
+
+            try (
+                    PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+                    PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)
+            ) {
+
+                // Delete existing vaccines
+                for (Vaccine vaccine : deletedVaccines) {
+                    deleteStmt.setInt(1, vaccine.getId());
+
+                    int affected = deleteStmt.executeUpdate();
+
+                    if (affected == 0) {
+                        throw new SQLException(
+                                "Vaccine with id " + vaccine.getId() + " not found"
+                        );
+                    }
+                }
+
+                // Insert new vaccines
+                for (Vaccine vaccine : newVaccines) {
+                    insertStmt.setInt(1, vaccine.getPatientId());
+                    insertStmt.setString(
+                            2,
+                            DateParser.getStringDate(vaccine.getDate())
+                    );
+                    insertStmt.setInt(3, vaccine.getShotnumber());
+                    insertStmt.setString(4, vaccine.getName());
+
+                    int affected = insertStmt.executeUpdate();
+
+                    if (affected == 0) {
+                        throw new SQLException("Failed to insert vaccine");
+                    }
+                }
+
+                conn.commit();
+
+            } catch (SQLException e) {
+
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackException) {
+                    e.addSuppressed(rollbackException);
+                }
+
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new DBAccessException(
+                    "Failed to apply vaccine changes",
+                    e
+            );
         }
     }
 

@@ -205,15 +205,19 @@
                                    maxWidth="Infinity"
                                    VBox.vgrow="ALWAYS">
                             <columns>
+                                <TableColumn fx:id="vaccineIdColumn"
+                                             text="ID"
+                                             prefWidth="55"
+                                             resizable="false"/>
                                 <TableColumn fx:id="vaccineTypeColumn"
                                              text="Τύπος Εμβολίου"
-                                             prefWidth="360"/>
+                                             prefWidth="305"/>
                                 <TableColumn fx:id="vaccineDateColumn"
                                              text="Ημερομηνία"
-                                             prefWidth="130"/>
+                                             prefWidth="120"/>
                                 <TableColumn fx:id="vaccineDoseColumn"
                                              text="Δόση"
-                                             prefWidth="70"/>
+                                             prefWidth="80"/>
                             </columns>
                         </TableView>
 

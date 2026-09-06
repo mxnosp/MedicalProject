@@ -31,6 +31,9 @@ public class VaccineService {
         repo.insertVaccine(vaccine);
     }
 
+    public void saveVaccineBuffer(List<Vaccine> newVaccines,List<Vaccine> delVaccines){
+        repo.applyVaccineChanges(newVaccines,delVaccines);
+    }
 
     /**
      * Deletes the vaccine with the given id from the repo ,can throw DBAccessException if repo throws it

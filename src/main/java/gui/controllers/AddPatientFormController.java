@@ -20,39 +20,49 @@ import utils.NumberInputHelpers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
-/**
- * controls the actions of the buttons in the add patient form screen
- */
 public class AddPatientFormController {
+
+    private static final double VACCINE_TABLE_HEIGHT = 150;
+
     private Patient selectedPatient;
 
     private VaccineService vaccineService;
-
     private PatientService patientService;
 
-    private final ObservableList<Vaccine> vaccines = FXCollections.observableArrayList();
+    private final ObservableList<Vaccine> vaccines =
+            FXCollections.observableArrayList();
 
-    private final ArrayList<Vaccine> vaccineBuffer=new ArrayList<>();
+    // pseudoId -> Vaccine
+    private final Map<Integer, Vaccine> vaccineBuffer =
+            new LinkedHashMap<>();
+
+    private int vaccineBufferCounter;
 
     @FXML
     private TableView<Vaccine> vaccinesTable;
 
     @FXML
-    private TableColumn<Vaccine,String> vaccineTypeColumn;
+    private TableColumn<Vaccine, String> vaccineTypeColumn;
 
     @FXML
-    private TableColumn<Vaccine,String> vaccineDateColumn;
+    private TableColumn<Vaccine, String> vaccineDateColumn;
 
     @FXML
-    private TableColumn<Vaccine,Number> vaccineDoseColumn;
+    private TableColumn<Vaccine, Number> vaccineDoseColumn;
 
     @FXML
-    private TableColumn<Vaccine,Void> deleteVaccineColumn;
+    private TableColumn<Vaccine, Void> deleteVaccineColumn;
 
     @FXML
-    private TableColumn<Vaccine,Number> vaccineIdColumn;
+    private TableColumn<Vaccine, Number> vaccineIdColumn;
+
+    @FXML
+    private Label totalVaccinesLabel;
 
     @FXML
     private Label formErrorLabel;
@@ -108,180 +118,387 @@ public class AddPatientFormController {
     @FXML
     private Button addVaccineButton;
 
-    private int vaccineBufferCounter;
 
     @FXML
-    private void initialize(){
-        vaccineBufferCounter =0;
-        vaccineBuffer.clear();
-        vaccineService=new VaccineService();
-        patientService=new PatientService();
+    private void initialize() {
+
+        vaccineBufferCounter = 0;
+
+        vaccineService = new VaccineService();
+        patientService = new PatientService();
+
         initializeTableColumns();
+        configureVaccineTable();
+
         smokingComboBox.getItems().setAll(SmokingStatus.values());
     }
 
-    /**
-     * closes the patient form window
-     */
+
+    private void configureVaccineTable() {
+
+        // Set items ONCE
+        vaccinesTable.setItems(vaccines);
+
+        // Force identical table height in Add/Edit
+        vaccinesTable.setMinHeight(VACCINE_TABLE_HEIGHT);
+        vaccinesTable.setPrefHeight(VACCINE_TABLE_HEIGHT);
+        vaccinesTable.setMaxHeight(VACCINE_TABLE_HEIGHT);
+
+        // Disable sorting
+        vaccineIdColumn.setSortable(false);
+        vaccineTypeColumn.setSortable(false);
+        vaccineDateColumn.setSortable(false);
+        vaccineDoseColumn.setSortable(false);
+        deleteVaccineColumn.setSortable(false);
+
+        // Disable column dragging/reordering
+        vaccineIdColumn.setReorderable(false);
+        vaccineTypeColumn.setReorderable(false);
+        vaccineDateColumn.setReorderable(false);
+        vaccineDoseColumn.setReorderable(false);
+        deleteVaccineColumn.setReorderable(false);
+
+        vaccinesTable.getSortOrder().clear();
+    }
+
+
     @FXML
-    private void cancelForm(){
+    private void cancelForm() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+
     @FXML
-    private void savePressed(){
-        if(checkNeccesaryFieldsFilled()){
-            DatabaseChangeTracker.markChanged();
+    private void savePressed() {
+        if (checkNeccesaryFieldsFilled()) {
             saveForm();
         }
     }
 
-    /**
-     * checks and returns true if all the necessary fields have been field if they haven't  paints
-     * them red
-     * @return
-     */
-    private boolean checkNeccesaryFieldsFilled() {
-        boolean allfilled=true;
-        if(firstNameField.getText().isEmpty()){
-            firstNameField.getStyleClass().add("input-error");
-            allfilled=false;
-        }else firstNameField.getStyleClass().remove("input-error");
 
-        if(lastNameField.getText().isEmpty()){
+    private boolean checkNeccesaryFieldsFilled() {
+
+        boolean allfilled = true;
+
+        if (firstNameField.getText().isEmpty()) {
+            firstNameField.getStyleClass().add("input-error");
+            allfilled = false;
+        } else {
+            firstNameField.getStyleClass().remove("input-error");
+        }
+
+        if (lastNameField.getText().isEmpty()) {
             lastNameField.getStyleClass().add("input-error");
-            allfilled=false;
-        }else lastNameField.getStyleClass().remove("input-error");
-        if(amkaField.getText().isEmpty()){
+            allfilled = false;
+        } else {
+            lastNameField.getStyleClass().remove("input-error");
+        }
+
+        if (amkaField.getText().isEmpty()) {
             amkaField.getStyleClass().add("input-error");
-            allfilled=false;
-        }else amkaField.getStyleClass().remove("input-error");
-        if(!allfilled){
-            formErrorLabel.setText("Συμπληρώστε τα υποχρεωτικά πεδία!");
+            allfilled = false;
+        } else {
+            amkaField.getStyleClass().remove("input-error");
+        }
+
+        if (!allfilled) {
+            formErrorLabel.setText(
+                    "Συμπληρώστε τα υποχρεωτικά πεδία!"
+            );
+
             formErrorLabel.setVisible(true);
             formErrorLabel.setManaged(true);
         }
+
         return allfilled;
     }
 
 
-    /**
-     * Save form function creates a patient with the information given by the user
-     * if any errors occur it updates the error label
-     */
     private void saveForm() {
-        try{
-            String firstname=firstNameField.getText();
-            String lastname=lastNameField.getText();
-            String amka=amkaField.getText();
-            String phone=phoneField.getText();
-            SmokingStatus smokingStatus=smokingComboBox.getValue();
-            Integer height= NumberInputHelpers.parseInteger(heightField.getText(), "Ύψος");
-            Integer weight=NumberInputHelpers.parseInteger(weightField.getText(), "Βάρος");
-            String medicalHistory=medicalHistoryArea.getText();
-            String chronicMedication=chronicMedicationArea.getText();
-            String notes=notesArea.getText();
-            long newPatientId=patientService.insertPatient(firstname,lastname,phone,amka,smokingStatus,height,weight,medicalHistory,chronicMedication,notes);
+
+        try {
+
+            String firstname = firstNameField.getText();
+            String lastname = lastNameField.getText();
+            String amka = amkaField.getText();
+            String phone = phoneField.getText();
+
+            SmokingStatus smokingStatus =
+                    smokingComboBox.getValue();
+
+            Integer height =
+                    NumberInputHelpers.parseInteger(
+                            heightField.getText(),
+                            "Ύψος"
+                    );
+
+            Integer weight =
+                    NumberInputHelpers.parseInteger(
+                            weightField.getText(),
+                            "Βάρος"
+                    );
+
+            String medicalHistory =
+                    medicalHistoryArea.getText();
+
+            String chronicMedication =
+                    chronicMedicationArea.getText();
+
+            String notes =
+                    notesArea.getText();
+
+            long newPatientId =
+                    patientService.insertPatient(
+                            firstname,
+                            lastname,
+                            phone,
+                            amka,
+                            smokingStatus,
+                            height,
+                            weight,
+                            medicalHistory,
+                            chronicMedication,
+                            notes
+                    );
+
             flushVaccines(newPatientId);
+
+            DatabaseChangeTracker.markChanged();
+
             formErrorLabel.setText("");
             formErrorLabel.setVisible(false);
             formErrorLabel.setManaged(false);
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
+
+            Stage stage =
+                    (Stage) cancelButton.getScene().getWindow();
+
             stage.close();
-        } catch (RuntimeException e){
+
+        } catch (RuntimeException e) {
+
             formErrorLabel.setText(e.getMessage());
             formErrorLabel.setVisible(true);
             formErrorLabel.setManaged(true);
         }
-
-
     }
 
-    private void flushVaccines(long patient_id){
-        for(Vaccine v : vaccineBuffer){
-            vaccineService.insertVaccine(v.getName(),v.getShotnumber(),v.getDate(), (int) patient_id);
+
+    private void flushVaccines(long patientId) {
+
+        List<Vaccine> newVaccines = new ArrayList<>();
+
+        for (Vaccine vaccine : vaccineBuffer.values()) {
+
+            newVaccines.add(
+                    new Vaccine(
+                            vaccine.getName(),
+                            -1,
+                            vaccine.getDate(),
+                            (int) patientId,
+                            vaccine.getShotnumber()
+                    )
+            );
         }
+
+        vaccineService.saveVaccineBuffer(
+                newVaccines,
+                new ArrayList<>()
+        );
     }
-    public void addVaccine(){
-        try{
-            String vaccinetype=vaccineTypeField.getText();
-            Integer shotnumber=NumberInputHelpers.parseInteger(vaccineDoseField.getText(),"Δόση");
-            LocalDate vaccinationDate=vaccineDatePicker.getValue();
-            vaccineBuffer.add(new Vaccine(vaccinetype, vaccineBufferCounter++,vaccinationDate,-1,shotnumber));
+
+
+    @FXML
+    public void addVaccine() {
+
+        try {
+
+            String vaccineType =
+                    vaccineTypeField.getText();
+
+            Integer shotNumber =
+                    NumberInputHelpers.parseInteger(
+                            vaccineDoseField.getText(),
+                            "Δόση"
+                    );
+
+            LocalDate vaccinationDate =
+                    vaccineDatePicker.getValue();
+
+            Vaccine vaccine =
+                    new Vaccine(
+                            vaccineType,
+                            -1,
+                            vaccinationDate,
+                            -1,
+                            shotNumber
+                    );
+
+            int pseudoId = vaccineBufferCounter++;
+
+            vaccine.setPseudoId(pseudoId);
+
+            vaccineBuffer.put(
+                    pseudoId,
+                    vaccine
+            );
+
             vaccineTypeField.setText("");
             vaccineDoseField.setText("");
             vaccineDatePicker.setValue(null);
+
             loadVaccines();
+
             formErrorLabel.setText("");
             formErrorLabel.setVisible(false);
             formErrorLabel.setManaged(false);
-        }catch (RuntimeException e){
+
+        } catch (RuntimeException e) {
+
             formErrorLabel.setText(e.getMessage());
             formErrorLabel.setVisible(true);
             formErrorLabel.setManaged(true);
         }
-
     }
 
 
-    /**
-     * initializes the vaccine table's columns
-     */
     private void initializeTableColumns() {
+
         vaccineTypeColumn.setCellValueFactory(
-                cellData -> new SimpleStringProperty(cellData.getValue().getName())
+                cellData ->
+                        new SimpleStringProperty(
+                                cellData.getValue().getName()
+                        )
         );
 
-        vaccineIdColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()));
+        vaccineIdColumn.setCellValueFactory(
+                cellData ->
+                        new SimpleIntegerProperty(
+                                cellData.getValue().getPseudoId()
+                        )
+        );
 
-
-        vaccineDoseColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getShotnumber()));
+        vaccineDoseColumn.setCellValueFactory(
+                cellData ->
+                        new SimpleIntegerProperty(
+                                cellData.getValue().getShotnumber()
+                        )
+        );
 
         vaccineDateColumn.setCellValueFactory(
-                cellData -> new SimpleStringProperty(DateParser.getStringDate(cellData.getValue().getDate()))
+                cellData ->
+                        new SimpleStringProperty(
+                                DateParser.getStringDate(
+                                        cellData.getValue().getDate()
+                                )
+                        )
         );
 
-        deleteVaccineColumn.setCellFactory(column -> new TableCell<Vaccine, Void>() {
+        deleteVaccineColumn.setCellFactory(
+                column -> new TableCell<>() {
 
-            private final Button delButton = new Button();
+                    private final Button delButton = new Button();
 
-            {
-                delButton.setOnAction(event -> {
-                    Vaccine vaccine = getTableView().getItems().get(getIndex());
-                    vaccineBuffer.remove(vaccine);
-                    loadVaccines();
-                });
-                Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/trash-solid.png")));
-                ImageView imageView = new ImageView(image);
-                delButton.setPadding(new javafx.geometry.Insets(0));
-                delButton.setStyle("-fx-background-radius: 5;");
-                delButton.setMinSize(30, 30);
-                delButton.setPrefSize(30, 30);
-                imageView.setFitWidth(14);
-                imageView.setFitHeight(14);
-                imageView.setPreserveRatio(true);
-                delButton.setGraphic(imageView);
-            }
+                    {
+                        Image image =
+                                new Image(
+                                        Objects.requireNonNull(
+                                                getClass().getResourceAsStream(
+                                                        "/images/trash-solid.png"
+                                                )
+                                        )
+                                );
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
+                        ImageView imageView = new ImageView(image);
 
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(delButton);
+                        imageView.setFitWidth(14);
+                        imageView.setFitHeight(14);
+                        imageView.setPreserveRatio(true);
+
+                        delButton.setPadding(
+                                new javafx.geometry.Insets(0)
+                        );
+
+                        delButton.setStyle(
+                                "-fx-background-radius: 5;"
+                        );
+
+                        delButton.setMinSize(30, 30);
+                        delButton.setPrefSize(30, 30);
+
+                        delButton.setGraphic(imageView);
+
+                        delButton.setOnAction(event -> {
+
+                            /*
+                             * More reliable than getIndex() when
+                             * TableView virtualizes/recycles cells.
+                             */
+                            Vaccine vaccine = getTableRow().getItem();
+
+                            if (vaccine == null) {
+                                return;
+                            }
+
+                            vaccineBuffer.remove(
+                                    vaccine.getPseudoId()
+                            );
+
+                            loadVaccines();
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(
+                            Void item,
+                            boolean empty
+                    ) {
+
+                        super.updateItem(item, empty);
+
+                        setText(null);
+
+                        if (empty || getTableRow().getItem() == null) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(delButton);
+                        }
+                    }
                 }
-            }
-        });
+        );
+
+        vaccineTypeColumn.setStyle(
+                "-fx-alignment: CENTER;"
+        );
+
+        vaccineDateColumn.setStyle(
+                "-fx-alignment: CENTER;"
+        );
+
+        vaccineDoseColumn.setStyle(
+                "-fx-alignment: CENTER;"
+        );
+
+        vaccineIdColumn.setStyle(
+                "-fx-alignment: CENTER;"
+        );
     }
 
 
-    private void loadVaccines(){
-        vaccines.clear();
-        vaccines.setAll(vaccineBuffer);
-        vaccinesTable.setItems(vaccines);
+    private void loadVaccines() {
+
+        /*
+         * No clear()
+         * No setItems()
+         * No refresh()
+         */
+        vaccines.setAll(
+                vaccineBuffer.values()
+        );
+
+        totalVaccinesLabel.setText(
+                Integer.toString(vaccines.size())
+        );
     }
 
 

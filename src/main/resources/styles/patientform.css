@@ -342,6 +342,18 @@
     -fx-border-color: transparent;
 }
 
+/* Disable horizontal scrollbar completely */
+.table-view .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+
 .table-row-cell:odd {
     -fx-background-color: #f9fafb;
 }

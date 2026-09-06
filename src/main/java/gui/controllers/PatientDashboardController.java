@@ -348,6 +348,7 @@ public class PatientDashboardController {
             patientStage.getIcons().add(icon);
             patientStage.setTitle("Κάρτα Ασθενή");
             patientStage.setScene(scene);
+            patientStage.setResizable(false);
 
             Stage ownerStage = (Stage) ((Node) event.getSource())
                     .getScene()
@@ -421,6 +422,7 @@ public class PatientDashboardController {
             patientStage.getIcons().add(icon);
             patientStage.setTitle("Επεξεργασία Ασθενή");
             patientStage.setScene(scene);
+            patientStage.setResizable(false);
 
             Stage ownerStage = (Stage) ((Node) event.getSource())
                     .getScene()

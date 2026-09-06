@@ -85,21 +85,43 @@
 .info-card {
     -fx-background-color: #ffffff;
     -fx-background-radius: 16;
+
     -fx-border-radius: 16;
     -fx-border-color: #dbe3ec;
     -fx-border-width: 1;
+
     -fx-padding: 18;
-    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.08), 14, 0.18, 0, 5);
+
+    -fx-effect:
+        dropshadow(
+            gaussian,
+            rgba(15, 23, 42, 0.08),
+            14,
+            0.18,
+            0,
+            5
+        );
 }
 
 .text-card {
     -fx-background-color: #ffffff;
     -fx-background-radius: 16;
+
     -fx-border-radius: 16;
     -fx-border-color: #dbe3ec;
     -fx-border-width: 1;
+
     -fx-padding: 18;
-    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.08), 14, 0.18, 0, 5);
+
+    -fx-effect:
+        dropshadow(
+            gaussian,
+            rgba(15, 23, 42, 0.08),
+            14,
+            0.18,
+            0,
+            5
+        );
 }
 
 
@@ -165,6 +187,7 @@
     -fx-border-width: 1;
 
     -fx-padding: 10 14;
+
     -fx-min-width: 95;
     -fx-pref-width: 105;
 }
@@ -188,13 +211,20 @@
 
 .table-view {
     -fx-background-color: white;
+
     -fx-border-color: #cbd5e1;
     -fx-border-width: 1;
+
     -fx-border-radius: 10;
     -fx-background-radius: 10;
+
     -fx-font-size: 14px;
+
     -fx-padding: 0;
 }
+
+
+/* Header background */
 
 .table-view .column-header-background {
     -fx-background-color: #f1f5f9;
@@ -202,51 +232,116 @@
     -fx-padding: 0;
 }
 
+
+/*
+ * IMPORTANT:
+ * Removes the grey area that appears after
+ * the last TableColumn when there is unused space.
+ */
+
+.table-view .column-header-background .filler {
+    -fx-background-color: #f1f5f9;
+    -fx-border-color: transparent;
+}
+
+.table-view .filler {
+    -fx-background-color: #f1f5f9;
+    -fx-border-color: transparent;
+}
+
+
+/* Column headers */
+
 .table-view .column-header {
     -fx-background-color: transparent;
+
     -fx-font-weight: bold;
     -fx-text-fill: #475569;
+
     -fx-padding: 12 10;
-    -fx-alignment: CENTER; /* Centers Header Text */
+
+    -fx-alignment: CENTER;
 }
+
+
+/* Header text */
 
 .table-view .column-header .label {
     -fx-font-weight: bold;
     -fx-text-fill: #475569;
+
     -fx-alignment: CENTER;
+
     -fx-font-size: 14px;
 }
 
+
+/* Table cells */
+
 .table-view .table-cell {
     -fx-padding: 10 10;
+
     -fx-text-fill: #1f2937;
+
     -fx-border-color: transparent;
-    -fx-alignment: CENTER; /* UPDATED: Changed from CENTER-LEFT to CENTER */
+
+    -fx-alignment: CENTER;
+
     -fx-font-size: 14px;
 }
+
+
+/* Default rows */
 
 .table-row-cell {
     -fx-background-color: white;
     -fx-border-color: transparent;
 }
 
+/* Disable horizontal scrollbar completely */
+.table-view .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+
+/* Alternating row */
+
 .table-row-cell:odd {
     -fx-background-color: #f8fafc;
 }
+
+
+/* Hover */
 
 .table-row-cell:hover {
     -fx-background-color: #f1f5f9;
 }
 
+
+/* Selected row */
+
 .table-row-cell:selected {
     -fx-background-color: #e0f2fe;
 }
+
+
+/* Selected text */
 
 .table-row-cell:selected .table-cell {
     -fx-text-fill: #0369a1;
 }
 
-/* Scrollbar in table */
+
+/* =========================
+   TABLE SCROLLBAR
+   ========================= */
+
 .table-view .scroll-bar:vertical {
     -fx-background-color: transparent;
 }
@@ -257,6 +352,22 @@
 }
 
 .table-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+
+/* Horizontal scrollbar */
+
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 8;
+}
+
+.table-view .scroll-bar:horizontal .thumb:hover {
     -fx-background-color: #94a3b8;
 }
 
@@ -294,47 +405,118 @@
 .button {
     -fx-background-radius: 10;
     -fx-border-radius: 10;
+
     -fx-padding: 9 18;
+
     -fx-cursor: hand;
+
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
+
+/* =========================
+   PRIMARY BUTTON
+   ========================= */
+
 .primary-button {
-    -fx-background-color: linear-gradient(to bottom, #2563eb, #1d4ed8);
+    -fx-background-color:
+        linear-gradient(
+            to bottom,
+            #2563eb,
+            #1d4ed8
+        );
+
     -fx-border-color: #1e40af;
     -fx-border-width: 1;
+
     -fx-text-fill: white;
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.28), 10, 0.22, 0, 4);
+
+    -fx-effect:
+        dropshadow(
+            gaussian,
+            rgba(37, 99, 235, 0.28),
+            10,
+            0.22,
+            0,
+            4
+        );
 }
 
 .primary-button:hover {
-    -fx-background-color: linear-gradient(to bottom, #3b82f6, #2563eb);
+    -fx-background-color:
+        linear-gradient(
+            to bottom,
+            #3b82f6,
+            #2563eb
+        );
+
     -fx-border-color: #1d4ed8;
+
     -fx-translate-y: -1;
 }
 
 .primary-button:pressed {
-    -fx-background-color: linear-gradient(to bottom, #1d4ed8, #1e40af);
+    -fx-background-color:
+        linear-gradient(
+            to bottom,
+            #1d4ed8,
+            #1e40af
+        );
+
     -fx-translate-y: 1;
 }
 
+
+/* =========================
+   SECONDARY BUTTON
+   ========================= */
+
 .secondary-button {
-    -fx-background-color: linear-gradient(to bottom, #ffffff, #e5e7eb);
+    -fx-background-color:
+        linear-gradient(
+            to bottom,
+            #ffffff,
+            #e5e7eb
+        );
+
     -fx-border-color: #cbd5e1;
     -fx-border-width: 1;
+
     -fx-text-fill: #1f2937;
-    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.14), 8, 0.18, 0, 3);
+
+    -fx-effect:
+        dropshadow(
+            gaussian,
+            rgba(15, 23, 42, 0.14),
+            8,
+            0.18,
+            0,
+            3
+        );
 }
 
 .secondary-button:hover {
-    -fx-background-color: linear-gradient(to bottom, #f8fafc, #dbeafe);
+    -fx-background-color:
+        linear-gradient(
+            to bottom,
+            #f8fafc,
+            #dbeafe
+        );
+
     -fx-border-color: #60a5fa;
     -fx-text-fill: #1e3a8a;
+
     -fx-translate-y: -1;
 }
 
 .secondary-button:pressed {
-    -fx-background-color: linear-gradient(to bottom, #bfdbfe, #93c5fd);
+    -fx-background-color:
+        linear-gradient(
+            to bottom,
+            #bfdbfe,
+            #93a5fd
+        );
+
     -fx-translate-y: 1;
 }

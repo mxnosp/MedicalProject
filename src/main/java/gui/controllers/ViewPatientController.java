@@ -16,6 +16,8 @@ import service.VaccineService;
 import utils.DateParser;
 import utils.NumberInputHelpers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ViewPatientController {
@@ -48,12 +50,14 @@ public class ViewPatientController {
     private TableColumn<Vaccine,Number> vaccineDoseColumn;
 
     @FXML
-    private TableColumn<Vaccine,Void> deleteVaccineColumn;
-
-    @FXML
     private TableColumn<Vaccine,Number> vaccineIdColumn;
 
+    @FXML
+    private Label totalVaccinesLabel;
+
     @FXML private Button backButton;
+
+    private int pseudoId;
 
     @FXML private void initialize(){
         vaccineService=new VaccineService();
@@ -74,9 +78,15 @@ public class ViewPatientController {
 
         vaccineDoseColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getShotnumber()));
 
+        vaccineIdColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPseudoId()));
+
         vaccineDateColumn.setCellValueFactory(
                 cellData -> new SimpleStringProperty(DateParser.getStringDate(cellData.getValue().getDate()))
         );
+        vaccineIdColumn.setSortable(false);
+        vaccineTypeColumn.setSortable(false);
+        vaccineDateColumn.setSortable(false);
+        vaccineDoseColumn.setSortable(false);
 
     }
 
@@ -99,11 +109,18 @@ public class ViewPatientController {
         chronicMedicationLabel.setText(selectedPatient.getPatientChronicMedication());
         notesLabel.setText(selectedPatient.getPatientNotes());
         loadVaccines();
+        totalVaccinesLabel.setText(((Integer) pseudoId).toString());
     }
 
     private void loadVaccines(){
         vaccines.clear();
-        vaccines.setAll(vaccineService.getPatientVaccines(this.selectedPatient.getPatientId()));
+        List<Vaccine> patientVaccines=new ArrayList<>(vaccineService.getPatientVaccines(this.selectedPatient.getPatientId()));
+        List<Vaccine> tmp=new ArrayList<>();
+        for(Vaccine v : patientVaccines){
+            v.setPseudoId(pseudoId++);
+            tmp.add(v);
+        }
+        vaccines.setAll(tmp);
         vaccinesTable.setItems(vaccines);
     }
 }
