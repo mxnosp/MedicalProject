@@ -1,5 +1,9 @@
 package gui.controllers;
 
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,8 +17,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Patient;
 import model.Visit;
 import service.PatientService;
@@ -22,7 +28,9 @@ import service.VisitService;
 import utils.DateParser;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class PatientDashboardController {
@@ -73,6 +81,24 @@ public class PatientDashboardController {
 
     @FXML
     private Button morePatientInfoButton;
+
+    @FXML
+    private VBox selectedPatientPanel;
+
+    @FXML
+    private VBox visitsPanel;
+
+    @FXML
+    private Button addPatient;
+
+    @FXML
+    private Button editPatient;
+
+    @FXML
+    private Button deletePatient;
+
+    private final Map<Node, Animation> activeAnimations =
+            new HashMap<>();
 
 
     // =========================
@@ -159,6 +185,9 @@ public class PatientDashboardController {
 
         initializePatientSelection();
         initializeVisitSelection();
+
+        setInitialVisibilityState();
+        updateVisitActionState();
     }
 
 
@@ -259,12 +288,14 @@ public class PatientDashboardController {
 
                                 clearSelectedPatientLabels();
                                 clearVisits();
+                                hidePatientDependentUiAnimated();
 
                                 return;
                             }
 
                             showSelectedPatient(newPatient);
                             loadVisits();
+                            showPatientDependentUiAnimated();
                         }
                 );
     }
@@ -281,14 +312,290 @@ public class PatientDashboardController {
                 .addListener(
                         (observable, oldVisit, newVisit) -> {
 
-                            if (newVisit == null) {
-                                selectedVisit = null;
-                                return;
-                            }
-
                             selectedVisit = newVisit;
+                            updateVisitActionState();
                         }
                 );
+    }
+
+
+    /**
+     * Keeps Add Patient available at all times.
+     * Everything that requires a selected patient starts hidden.
+     */
+    private void setInitialVisibilityState() {
+
+        hidePanelImmediately(selectedPatientPanel);
+        hidePanelImmediately(visitsPanel);
+
+        hideButtonImmediately(editPatient);
+        hideButtonImmediately(deletePatient);
+    }
+
+
+    /**
+     * Shows the patient-dependent sections with a short fade/slide animation.
+     */
+    private void showPatientDependentUiAnimated() {
+
+        animatePanelIn(selectedPatientPanel);
+        animatePanelIn(visitsPanel);
+
+        animateButtonIn(editPatient);
+        animateButtonIn(deletePatient);
+
+        updateVisitActionState();
+    }
+
+
+    /**
+     * Hides the patient-dependent sections while keeping the dashboard layout stable.
+     */
+    private void hidePatientDependentUiAnimated() {
+
+        animatePanelOut(selectedPatientPanel);
+        animatePanelOut(visitsPanel);
+
+        animateButtonOut(editPatient);
+        animateButtonOut(deletePatient);
+
+        updateVisitActionState();
+    }
+
+
+    /**
+     * Edit/Delete Visit are only usable when a visit is selected.
+     */
+    private void updateVisitActionState() {
+
+        boolean noVisitSelected = selectedVisit == null;
+
+        editVisit.setDisable(noVisitSelected);
+        deleteVisit.setDisable(noVisitSelected);
+    }
+
+
+    private void hidePanelImmediately(Node node) {
+
+        stopActiveAnimation(node);
+
+        node.setOpacity(0);
+        node.setTranslateY(0);
+        node.setVisible(false);
+        node.setManaged(true);
+        node.setMouseTransparent(true);
+    }
+
+
+    private void hideButtonImmediately(Button button) {
+
+        stopActiveAnimation(button);
+
+        button.setOpacity(0);
+        button.setTranslateY(0);
+        button.setVisible(false);
+        button.setManaged(false);
+        button.setDisable(true);
+    }
+
+
+    private void animatePanelIn(Node node) {
+
+        stopActiveAnimation(node);
+
+        node.setManaged(true);
+        node.setVisible(true);
+        node.setMouseTransparent(false);
+
+        node.setOpacity(0);
+        node.setTranslateY(8);
+
+        FadeTransition fade =
+                new FadeTransition(
+                        Duration.millis(180),
+                        node
+                );
+
+        fade.setFromValue(0);
+        fade.setToValue(1);
+
+        TranslateTransition slide =
+                new TranslateTransition(
+                        Duration.millis(180),
+                        node
+                );
+
+        slide.setFromY(8);
+        slide.setToY(0);
+
+        ParallelTransition animation =
+                new ParallelTransition(
+                        fade,
+                        slide
+                );
+
+        playAnimation(node, animation, null);
+    }
+
+
+    private void animatePanelOut(Node node) {
+
+        stopActiveAnimation(node);
+
+        node.setMouseTransparent(true);
+
+        FadeTransition fade =
+                new FadeTransition(
+                        Duration.millis(120),
+                        node
+                );
+
+        fade.setFromValue(node.getOpacity());
+        fade.setToValue(0);
+
+        TranslateTransition slide =
+                new TranslateTransition(
+                        Duration.millis(120),
+                        node
+                );
+
+        slide.setFromY(node.getTranslateY());
+        slide.setToY(4);
+
+        ParallelTransition animation =
+                new ParallelTransition(
+                        fade,
+                        slide
+                );
+
+        playAnimation(
+                node,
+                animation,
+                () -> {
+                    node.setVisible(false);
+                    node.setTranslateY(0);
+                }
+        );
+    }
+
+
+    private void animateButtonIn(Button button) {
+
+        stopActiveAnimation(button);
+
+        button.setManaged(true);
+        button.setVisible(true);
+        button.setDisable(false);
+        button.setMouseTransparent(false);
+
+        button.setOpacity(0);
+        button.setTranslateY(6);
+
+        FadeTransition fade =
+                new FadeTransition(
+                        Duration.millis(160),
+                        button
+                );
+
+        fade.setFromValue(0);
+        fade.setToValue(1);
+
+        TranslateTransition slide =
+                new TranslateTransition(
+                        Duration.millis(160),
+                        button
+                );
+
+        slide.setFromY(6);
+        slide.setToY(0);
+
+        ParallelTransition animation =
+                new ParallelTransition(
+                        fade,
+                        slide
+                );
+
+        playAnimation(button, animation, null);
+    }
+
+
+    private void animateButtonOut(Button button) {
+
+        stopActiveAnimation(button);
+
+        button.setDisable(true);
+        button.setMouseTransparent(true);
+
+        FadeTransition fade =
+                new FadeTransition(
+                        Duration.millis(100),
+                        button
+                );
+
+        fade.setFromValue(button.getOpacity());
+        fade.setToValue(0);
+
+        TranslateTransition slide =
+                new TranslateTransition(
+                        Duration.millis(100),
+                        button
+                );
+
+        slide.setFromY(button.getTranslateY());
+        slide.setToY(4);
+
+        ParallelTransition animation =
+                new ParallelTransition(
+                        fade,
+                        slide
+                );
+
+        playAnimation(
+                button,
+                animation,
+                () -> {
+                    button.setVisible(false);
+                    button.setManaged(false);
+                    button.setTranslateY(0);
+                }
+        );
+    }
+
+
+    private void playAnimation(
+            Node node,
+            Animation animation,
+            Runnable onFinished
+    ) {
+
+        activeAnimations.put(
+                node,
+                animation
+        );
+
+        animation.setOnFinished(event -> {
+
+            if (activeAnimations.get(node) == animation) {
+                activeAnimations.remove(node);
+            }
+
+            if (onFinished != null) {
+                onFinished.run();
+            }
+        });
+
+        animation.play();
+    }
+
+
+    private void stopActiveAnimation(Node node) {
+
+        Animation animation =
+                activeAnimations.remove(node);
+
+        if (animation != null) {
+            animation.stop();
+        }
     }
 
 
@@ -816,6 +1123,7 @@ public class PatientDashboardController {
 
         clearSelectedPatientLabels();
         clearVisits();
+        hidePatientDependentUiAnimated();
 
         loadPatients();
 
@@ -830,6 +1138,7 @@ public class PatientDashboardController {
 
         visits.clear();
         selectedVisit = null;
+        updateVisitActionState();
     }
 
 
@@ -840,6 +1149,7 @@ public class PatientDashboardController {
     private void loadVisits() {
 
         selectedVisit = null;
+        updateVisitActionState();
 
         if (selectedPatient == null) {
 

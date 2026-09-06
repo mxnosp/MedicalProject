@@ -72,7 +72,7 @@
 
     <!-- Left selected patient info -->
     <left>
-        <VBox spacing="16" prefWidth="420" alignment="TOP_LEFT">
+        <VBox fx:id="selectedPatientPanel" spacing="16" prefWidth="420" alignment="TOP_LEFT">
             <padding>
                 <Insets top="45" right="30" bottom="25" left="35"/>
             </padding>
@@ -284,7 +284,8 @@
 
     <!-- Right patient visits -->
     <right>
-        <VBox spacing="10"
+        <VBox fx:id="visitsPanel"
+              spacing="10"
               prefWidth="360"
               maxWidth="360"
               VBox.vgrow="ALWAYS">
