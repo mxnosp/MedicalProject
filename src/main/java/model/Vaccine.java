@@ -18,7 +18,7 @@ public class Vaccine{
     public Vaccine(String name,Integer id,LocalDate date,Integer patient_id,Integer shotnumber){
         this.id=id;
         this.patient_id=patient_id;
-        if(name==null){
+        if(name==null|| name.isBlank()){
             throw new ValidationException("Το όνομα του εμβολίου είναι υποχρεωτικό!");
         }
         this.name=name;
@@ -26,7 +26,7 @@ public class Vaccine{
             throw new ValidationException("Η ημερομηνία εμβολίου είναι υποχρεωτική!");
         }
         this.date=date;
-        if(shotnumber==null){
+        if(shotnumber==null ){
             throw new ValidationException("Ο αριθμός δόσης του εμβολίου είναι υποχρεωτικος!");
         }
         this.shotnumber=shotnumber;

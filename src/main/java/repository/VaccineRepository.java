@@ -74,7 +74,7 @@ public class VaccineRepository {
             ResultSet rs=stmt.executeQuery();
             ArrayList<Vaccine> vaccines=new ArrayList<>();
             while(rs.next()){
-                vaccines.add(mapVaccine(rs));
+                vaccines.add(mapVaccine(rs,patient_id));
             }
             return vaccines;
         }catch (SQLException e){
@@ -88,9 +88,9 @@ public class VaccineRepository {
      * @return
      * @throws SQLException
      */
-    private Vaccine mapVaccine(ResultSet rs) throws SQLException{
+    private Vaccine mapVaccine(ResultSet rs,int patient_id) throws SQLException{
         return new Vaccine(rs.getString("name"),rs.getInt("id"),DateParser.parseDateFromString(rs.getString("date"))
-                ,rs.getInt("patient_id"),rs.getInt("shotnumber"));
+                ,patient_id,rs.getInt("shotnumber"));
     }
 
 }

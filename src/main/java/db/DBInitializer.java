@@ -19,6 +19,7 @@ public final class DBInitializer {
         createPatientsTable();
         createVisitsTable();
         createDocTable();
+        createVaccineTable();
     }
     
     private static void createPatientsTable(){
@@ -95,6 +96,25 @@ public final class DBInitializer {
             throw new DBCreationException("Failed to create documents table", e);
         }
 
+
+    }
+
+    private static void createVaccineTable(){
+        String sql = """
+                CREATE TABLE IF NOT EXISTS vaccines (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    patient_id INTEGER NOT NULL,
+                    date TEXT NOT NULL,
+                    shotnumber INTEGER NOT NULL,
+                    name TEXT NOT NULL
+                );
+                """;
+
+        try(Connection conn=DBConnector.getConnection(); Statement stmt = conn.createStatement()){
+            stmt.execute(sql);
+        }catch(SQLException e){
+            throw new DBCreationException("Failed to create visits table", e);
+        }
 
     }
 }

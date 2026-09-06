@@ -5,10 +5,7 @@ import model.Patient;
 import model.exceptions.DBAccessException;
 import model.exceptions.PatientExistsException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,37 +23,43 @@ public class PatientRepository {
      * inserts the patient given as a parameter to the db
      * @param patient
      */
-    public void insertPatient(Patient patient) throws DBAccessException, PatientExistsException {
+    public long insertPatient(Patient patient)
+            throws DBAccessException, PatientExistsException {
 
-        if (patient.getPatientAmka() != null && searchPatientsByAMKA(patient.getPatientAmka()) != null) {
-            throw new PatientExistsException("Υπάρχει ήδη ασθενής με αυτόν τον ΑΜΚΑ!");
+        if (patient.getPatientAmka() != null
+                && searchPatientsByAMKA(patient.getPatientAmka()) != null) {
+            throw new PatientExistsException(
+                    "Υπάρχει ήδη ασθενής με αυτόν τον ΑΜΚΑ!"
+            );
         }
 
         String sql = """
-            INSERT INTO patients (
-                first_name,
-                last_name,
-                phone,
-                amka,
-                smoking,
-                height,
-                weight,
-                medical_history,
-                chronic_medication,
-                notes,
-                search_text
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """;
+        INSERT INTO patients (
+            first_name,
+            last_name,
+            phone,
+            amka,
+            smoking,
+            height,
+            weight,
+            medical_history,
+            chronic_medication,
+            notes,
+            search_text
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
 
         try (Connection conn = DBConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(
+                     sql,
+                     Statement.RETURN_GENERATED_KEYS)) {
 
             String firstName = patient.getPatientFirstName();
             String lastName = patient.getPatientLastName();
 
             String searchText = normalizeGreekSearchText(
-                    firstName + " " +lastName
+                    firstName + " " + lastName
             );
 
             setNullableString(stmt, 1, firstName);
@@ -84,8 +87,20 @@ public class PatientRepository {
                 throw new DBAccessException("Insert failed: no rows affected");
             }
 
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+
+                if (generatedKeys.next()) {
+                    return generatedKeys.getLong(1);
+                }
+
+                throw new DBAccessException(
+                        "Insert succeeded but no patient ID was returned"
+                );
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
+
             throw new DBAccessException(
                     "Failed to insert patient " +
                             patient.getPatientFirstName() + " " +
@@ -94,6 +109,7 @@ public class PatientRepository {
             );
         }
     }
+
     /**
      * deletes the patient with the given id
      * @param id
@@ -287,6 +303,8 @@ public class PatientRepository {
         );
     }
 
+
+
     /**
      * searches the db for a patient with the given amka if the patient doesn't exist returns null
      * @param amka
@@ -381,5 +399,8 @@ public class PatientRepository {
 
         return value;
     }
+
+
+
 }
 
